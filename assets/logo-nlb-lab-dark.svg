@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">NLB LAB Logo Dark</title>
+  <desc id="logoDesc">Orange four-point icon with light NLB LAB wordmark for dark backgrounds.</desc>
+
+  <defs>
+    <linearGradient id="armGradientDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffa347"/>
+      <stop offset="100%" stop-color="#f26500"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(380 145)">
+    <path d="M0 -78 C0 -36 -36 0 -78 0 L-78 34 C-16 34 34 -16 34 -78Z" fill="url(#armGradientDark)"/>
+    <path d="M78 0 C36 0 0 -36 0 -78 L-34 -78 C-34 -16 16 34 78 34Z" fill="url(#armGradientDark)"/>
+    <path d="M0 78 C0 36 36 0 78 0 L78 -34 C16 -34 -34 16 -34 78Z" fill="url(#armGradientDark)"/>
+    <path d="M-78 0 C-36 0 0 36 0 78 L34 78 C34 16 -16 -34 -78 -34Z" fill="url(#armGradientDark)"/>
+    <path d="M0 -23 L23 0 L0 23 L-23 0 Z" fill="#ffffff"/>
+  </g>
+
+  <text x="380" y="302" text-anchor="middle" font-size="84" font-family="Times New Roman, Georgia, serif" font-weight="700" fill="#f8fafc" letter-spacing="1.5">
+    NLB LAB
+  </text>
+</svg>

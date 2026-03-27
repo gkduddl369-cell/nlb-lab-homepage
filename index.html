@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <<meta name="naver-site-verification" content="b388785eb20b9aaf2f8db44da7b14754a12a1f20" />
+    <title>NLB LAB - Nation's Lightbearer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        'primary-dark': '#0284c7',
+                        'primary-light': '#38bdf8',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                        light: '#f8fafc',
+                    },
+                    fontFamily: {
+                        display: ['system-ui', '-apple-system', 'sans-serif'],
+                        body: ['system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        :root {
+            --header-offset: 96px;
+        }
+
+        section[id] {
+            scroll-margin-top: calc(var(--header-offset) + 12px);
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: #1b1d23;
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode header {
+            background: rgba(27, 29, 35, 0.9);
+        }
+        
+        body.dark-mode .nav-link {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .nav-link:hover {
+            color: #38bdf8;
+        }
+        
+        body.dark-mode .service-card,
+        body.dark-mode .bg-white {
+            background: #242933 !important;
+        }
+        
+        body.dark-mode .text-gray-700,
+        body.dark-mode .text-gray-600 {
+            color: #cbd5e1 !important;
+        }
+        
+        body.dark-mode .text-gray-500 {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .consultation-note {
+            color: #cbd5e1 !important;
+        }
+        
+        body.dark-mode .bg-gradient-to-br.from-slate-50 {
+            background: linear-gradient(to bottom right, #242933, #1b1d23) !important;
+        }
+        
+        body.dark-mode .form-input {
+            background: #334155;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+
+        body.dark-mode select.form-input {
+            background: #334155 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E") right 0.5rem center no-repeat !important;
+            background-size: 1.5em 1.5em !important;
+        }
+
+        body.dark-mode select {
+            background: #334155 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E") right 0.5rem center no-repeat !important;
+            background-size: 1.5em 1.5em !important;
+            color: #f1f5f9;
+        }
+
+        body.dark-mode select option {
+            background: #334155;
+            color: #f1f5f9;
+        }
+
+        body.dark-mode select.form-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%230ea5e9' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        }
+        
+        body.dark-mode footer {
+            background: #15171c;
+        }
+
+        .problem-section {
+            background: #ffffff;
+        }
+
+        .problem-title {
+            color: #111111;
+        }
+
+        .problem-chip {
+            background: #0b77b6;
+            color: #ffffff;
+        }
+
+        .problem-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .problem-row {
+            display: flex;
+        }
+
+        .problem-row.left {
+            justify-content: flex-start;
+        }
+
+        .problem-row.right {
+            justify-content: flex-end;
+        }
+
+        .problem-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+            transition-delay: var(--reveal-delay, 0s);
+        }
+
+        .problem-row.left.problem-reveal {
+            transform: translate3d(-28px, 20px, 0);
+        }
+
+        .problem-row.right.problem-reveal {
+            transform: translate3d(28px, 20px, 0);
+        }
+
+        .problem-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .section-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .problem-bubble {
+            position: relative;
+            max-width: min(100%, 46rem);
+        }
+
+        .problem-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            transform: rotate(45deg);
+        }
+
+        .problem-row.left .problem-bubble::after {
+            left: 26px;
+        }
+
+        .problem-row.right .problem-bubble::after {
+            right: 26px;
+        }
+
+        @media (min-width: 768px) {
+            .problem-list {
+                gap: 1.25rem;
+            }
+        }
+
+        body.dark-mode .problem-section {
+            background: #1b1d23;
+        }
+
+        body.dark-mode .problem-title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .problem-chip {
+            background: #242933;
+            color: #f8fafc;
+        }
+
+        .problem-title-sweep {
+            position: relative;
+            display: inline-block;
+            color: #94a3b8;
+        }
+
+        .problem-title-sweep::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            color: transparent;
+            background-image: linear-gradient(90deg, #0b77b6 0%, #0ea5e9 48%, #38bdf8 100%);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            pointer-events: none;
+        }
+
+        body.dark-mode .problem-title-sweep {
+            color: #9ca3af;
+        }
+
+        .problem-title-sweep.is-animated::after {
+            animation: problemTitleFill 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        @keyframes problemTitleFill {
+            from {
+                background-size: 4% 100%;
+            }
+            to {
+                background-size: 100% 100%;
+            }
+        }
+
+        .answer-solutions {
+            margin-top: 6.5rem;
+        }
+
+        .answer-circles {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            justify-items: center;
+        }
+
+        .answer-circle {
+            width: min(100%, 24rem);
+            min-height: 24rem;
+            border-radius: 9999px;
+            border: 2px solid #c7dbef;
+            background: radial-gradient(circle at 30% 25%, #f3f9ff 0%, #e7f3ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2.5rem 2.2rem;
+            box-shadow: 0 10px 28px rgba(14, 116, 196, 0.08);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+        }
+
+        .answer-circle-title {
+            color: #0b77b6;
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.35;
+            margin-bottom: 1rem;
+            word-break: keep-all;
+        }
+
+        .answer-circle-desc {
+            color: #334155;
+            font-size: 1.01rem;
+            line-height: 1.75;
+            word-break: keep-all;
+        }
+
+        .solution-marker-highlight {
+            color: #0f172a;
+            font-weight: 700;
+            background-image: linear-gradient(rgba(56, 189, 248, 0.52), rgba(56, 189, 248, 0.52));
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+            border-radius: 0.18em;
+            padding: 0 0.12em;
+            text-shadow: 0 0 0.01px rgba(15, 23, 42, 0.6);
+        }
+
+        body.dark-mode .solution-marker-highlight {
+            color: #f8fafc;
+            background-image: linear-gradient(rgba(14, 165, 233, 0.76), rgba(14, 165, 233, 0.76));
+            text-shadow: 0 0 0.01px rgba(248, 250, 252, 0.85);
+        }
+
+        .solution-marker-highlight.is-painted {
+            animation: markerPaint 1.4s ease-out forwards;
+        }
+
+        @keyframes markerPaint {
+            from {
+                background-size: 0% 100%;
+            }
+            to {
+                background-size: 100% 100%;
+            }
+        }
+
+        .answer-circle:hover,
+        .answer-circle:focus-within {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #79b6e6;
+            background: radial-gradient(circle at 30% 22%, #ffffff 0%, #dff0ff 100%);
+            box-shadow: 0 20px 40px rgba(8, 103, 175, 0.2);
+        }
+
+        .answer-circle:hover .answer-circle-title,
+        .answer-circle:focus-within .answer-circle-title {
+            color: #075985;
+        }
+
+        @media (min-width: 1024px) {
+            .answer-circles {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            .answer-circle {
+                width: 100%;
+                max-width: 22rem;
+                min-height: 22rem;
+            }
+        }
+
+        body.dark-mode .answer-circle {
+            border-color: #376286;
+            background: radial-gradient(circle at 30% 25%, #1f3952 0%, #173149 100%);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
+        }
+
+        body.dark-mode .answer-circle-title {
+            color: #86d4ff;
+        }
+
+        body.dark-mode .answer-circle-desc {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .answer-circle:hover,
+        body.dark-mode .answer-circle:focus-within {
+            border-color: #4c86b6;
+            background: radial-gradient(circle at 30% 20%, #294c6d 0%, #1a3853 100%);
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+        }
+
+        body.dark-mode .answer-circle:hover .answer-circle-title,
+        body.dark-mode .answer-circle:focus-within .answer-circle-title {
+            color: #b9e6ff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .answer-circle {
+                transition: none;
+            }
+
+            .answer-circle:hover,
+            .answer-circle:focus-within {
+                transform: none;
+            }
+
+            .problem-reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+        
+        /* Section Title Underline */
+        .section-title {
+            display: inline-block;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3), 
+                        0 10px 15px -3px rgba(14, 165, 233, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4), 
+                        0 20px 25px -5px rgba(14, 165, 233, 0.3);
+        }
+        
+        .btn-primary:focus {
+            outline: none;
+            ring: 3px;
+            ring-color: rgba(14, 165, 233, 0.5);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #0ea5e9;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            border: 2px solid #0ea5e9;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+        }
+        
+        .btn-secondary:focus {
+            outline: none;
+            ring: 3px;
+            ring-color: rgba(14, 165, 233, 0.3);
+        }
+        
+        .btn-secondary:active {
+            transform: translateY(0);
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+                        0 10px 20px -5px rgba(14, 165, 233, 0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(14, 165, 233, 0.25),
+                        0 10px 20px -5px rgba(6, 182, 212, 0.15);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .consultation-note {
+            color: #64748b;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%230ea5e9' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        
+        /* Navigation Links */
+        .nav-link {
+            color: #475569;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: #0ea5e9;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link-cta {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+        }
+        
+        .nav-link-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4);
+        }
+        
+        .nav-link-cta:active {
+            transform: translateY(0);
+        }
+        
+        .nav-link-mobile {
+            color: #475569;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        
+        .nav-link-mobile:hover {
+            background-color: #f0f9ff;
+            color: #0ea5e9;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: #e2e8f0;
+            transform: rotate(20deg);
+        }
+        
+        .theme-toggle:active {
+            transform: rotate(20deg) scale(0.95);
+        }
+        
+        body.dark-mode .theme-toggle {
+            background: #334155;
+            border-color: #475569;
+        }
+        
+        body.dark-mode .theme-toggle:hover {
+            background: #475569;
+        }
+        
+        .theme-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #0ea5e9;
+        }
+        
+        body.dark-mode .theme-icon {
+            color: #fbbf24;
+        }
+
+        /* Success Cases Slider */
+        .cases-slider {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cases-track {
+            display: flex;
+            --case-gap: 2rem;
+            gap: var(--case-gap);
+            width: max-content;
+            animation: scrollCases 30s linear infinite;
+        }
+
+        .case-card {
+            width: var(--case-card-width, 20rem);
+            min-width: 16rem;
+            flex-shrink: 0;
+        }
+
+        .cases-slider:hover .cases-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollCases {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(calc(-1 * ((var(--case-card-width, 20rem) * 4) + (var(--case-gap) * 4))));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .case-card {
+                width: var(--case-card-width, calc(100vw - 3rem));
+                min-width: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cases-track {
+                animation: none;
+            }
+        }
+
+        /* Team Slider */
+        .team-slider-wrapper {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .team-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .team-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .team-slider-container {
+            position: relative;
+            padding: 0 2.75rem;
+        }
+
+        .team-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-nav-btn:hover {
+            background: #0ea5e9;
+            color: #ffffff;
+            box-shadow: 0 12px 28px rgba(14, 165, 233, 0.35);
+        }
+
+        .team-nav-btn-prev {
+            left: 0;
+        }
+
+        .team-nav-btn-next {
+            right: 0;
+        }
+
+        @media (max-width: 640px) {
+            .team-slider-container {
+                padding: 0 2.25rem;
+            }
+
+            .team-nav-btn {
+                width: 2.75rem;
+                height: 2.75rem;
+            }
+        }
+
+        .team-indicator {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .team-indicator.active {
+            width: 1.5rem;
+            background-color: var(--primary-color, #0ea5e9);
+        }
+
+        /* Main Hero Slider */
+        .hero-section {
+            position: relative;
+            min-height: 760px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .hero-track {
+            display: flex;
+            height: 100%;
+            transition: transform 1.4s ease;
+            will-change: transform;
+        }
+
+        .hero-bg-slide {
+            position: relative;
+            min-width: 100%;
+            height: 760px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1);
+            transition: transform 8s ease;
+            will-change: transform;
+        }
+
+        .hero-bg-slide.active {
+            transform: scale(1.07);
+        }
+
+        .hero-bg-slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(3, 18, 48, 0.76) 0%, rgba(3, 18, 48, 0.58) 35%, rgba(3, 18, 48, 0.18) 100%);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 4;
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 9999px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .hero-arrow:hover {
+            background: rgba(255, 255, 255, 0.24);
+            transform: translateY(-50%) scale(1.03);
+        }
+
+        .hero-arrow.left {
+            left: 16px;
+        }
+
+        .hero-arrow.right {
+            right: 16px;
+        }
+
+        .hero-indicators {
+            position: absolute;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            gap: 0.55rem;
+        }
+
+        .hero-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.45);
+            transition: width 0.25s ease, background 0.25s ease;
+        }
+
+        .hero-indicator.active {
+            width: 28px;
+            background: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 620px;
+            }
+
+            .hero-bg-slide {
+                height: 620px;
+                background-position: 70% center;
+            }
+
+            .hero-arrow {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-bg-slide,
+            .hero-bg-slide.active {
+                transition: none;
+                transform: scale(1);
+            }
+        }
+
+        /* GovsBiz Banner */
+        .govsbiz-banner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            background: linear-gradient(120deg, #0b5ee8 0%, #1574ff 55%, #0da8ff 100%);
+            box-shadow: 0 20px 40px -15px rgba(11, 94, 232, 0.45);
+        }
+
+        .govsbiz-glow {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(0.5px);
+            opacity: 0.72;
+            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.96) 0%, rgba(132, 235, 255, 0.8) 45%, rgba(62, 151, 255, 0.25) 100%);
+            animation: floatBubble 7s ease-in-out infinite;
+        }
+
+        .govsbiz-glow.g1 {
+            width: 190px;
+            height: 190px;
+            top: -32px;
+            right: 120px;
+        }
+
+        .govsbiz-glow.g2 {
+            width: 120px;
+            height: 120px;
+            top: 22px;
+            right: 36px;
+            animation-delay: 1.2s;
+        }
+
+        .govsbiz-glow.g3 {
+            width: 72px;
+            height: 72px;
+            bottom: 24px;
+            right: 200px;
+            animation-delay: 0.7s;
+        }
+
+        .govsbiz-asset {
+            position: absolute;
+            right: 70px;
+            bottom: 34px;
+            width: 86px;
+            height: 86px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .govsbiz-asset img {
+            width: 58px;
+            height: 58px;
+            object-fit: contain;
+        }
+
+        .govsbiz-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #0b2e79;
+            font-weight: 700;
+            border-radius: 9999px;
+            padding: 0.85rem 1.9rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+        }
+
+        .govsbiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .govsbiz-btn:active {
+            transform: scale(0.98);
+        }
+
+        .govsbiz-btn:focus {
+            outline: 3px solid rgba(255, 255, 255, 0.65);
+            outline-offset: 2px;
+        }
+
+        @keyframes floatBubble {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-12px) translateX(8px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animated-gradient {
+            background-size: 300% 300%;
+            animation: gradientMove 6s ease infinite;
+        }
+
+        .contact-section,
+        .night-sky-section {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 48%, #cffafe 100%);
+        }
+
+        .contact-section > div,
+        .night-sky-section > div {
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark-mode .contact-section,
+        body.dark-mode .night-sky-section {
+            background-color: #030509 !important;
+            background-image:
+                radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.92) 0 0.85px, transparent 1.9px),
+                radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.85) 0 0.75px, transparent 1.75px),
+                radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.9) 0 0.8px, transparent 1.85px),
+                radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.82) 0 0.72px, transparent 1.7px),
+                radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.9) 0 0.78px, transparent 1.8px),
+                radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.82) 0 0.7px, transparent 1.68px),
+                radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px) !important;
+            background-repeat: repeat;
+            background-size: 100% 100%;
+            background-position: top center;
+            background-attachment: fixed;
+            box-shadow: none;
+            animation: starTwinkleBg 5.4s ease-in-out infinite;
+        }
+
+        body.dark-mode #services.night-sky-section,
+        body.dark-mode #cases.night-sky-section,
+        body.dark-mode #team.night-sky-section {
+            background-color: #030509 !important;
+            background-image:
+                radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.92) 0 0.85px, transparent 1.9px),
+                radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.85) 0 0.75px, transparent 1.75px),
+                radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.9) 0 0.8px, transparent 1.85px),
+                radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.82) 0 0.72px, transparent 1.7px),
+                radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.9) 0 0.78px, transparent 1.8px),
+                radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.82) 0 0.7px, transparent 1.68px),
+                radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px) !important;
+            background-repeat: repeat !important;
+            background-size: 100% 100% !important;
+            background-position: top center !important;
+            background-attachment: fixed !important;
+            animation: starTwinkleBg 5.4s ease-in-out infinite !important;
+        }
+
+        body.dark-mode .contact-section.animated-gradient {
+            animation: starTwinkleBg 5.4s ease-in-out infinite !important;
+        }
+
+        @keyframes meteorSweep {
+            0% {
+                transform: translate3d(26%, -16%, 0);
+                opacity: 0;
+            }
+            78% {
+                opacity: 0;
+            }
+            86% {
+                opacity: 0.18;
+            }
+            100% {
+                transform: translate3d(-28%, 18%, 0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes starTwinkleBg {
+            0% {
+                background-image:
+                    radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.72) 0 0.85px, transparent 1.9px),
+                    radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.66) 0 0.75px, transparent 1.75px),
+                    radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.7) 0 0.8px, transparent 1.85px),
+                    radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.62) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.7) 0 0.78px, transparent 1.8px),
+                    radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.6) 0 0.7px, transparent 1.68px),
+                    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                    radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                    radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                    radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                    radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px);
+            }
+            30% {
+                background-image:
+                    radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.98) 0 0.85px, transparent 1.9px),
+                    radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.92) 0 0.75px, transparent 1.75px),
+                    radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.96) 0 0.8px, transparent 1.85px),
+                    radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.86) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.96) 0 0.78px, transparent 1.8px),
+                    radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.84) 0 0.7px, transparent 1.68px),
+                    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                    radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                    radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                    radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                    radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px);
+            }
+            65% {
+                background-image:
+                    radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.76) 0 0.85px, transparent 1.9px),
+                    radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.68) 0 0.75px, transparent 1.75px),
+                    radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.74) 0 0.8px, transparent 1.85px),
+                    radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.64) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.72) 0 0.78px, transparent 1.8px),
+                    radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.64) 0 0.7px, transparent 1.68px),
+                    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                    radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                    radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                    radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                    radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px);
+            }
+            100% {
+                background-image:
+                    radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.94) 0 0.85px, transparent 1.9px),
+                    radial-gradient(circle at 26% 44%, rgba(241, 245, 249, 0.84) 0 0.75px, transparent 1.75px),
+                    radial-gradient(circle at 43% 18%, rgba(255, 255, 255, 0.92) 0 0.8px, transparent 1.85px),
+                    radial-gradient(circle at 58% 52%, rgba(226, 232, 240, 0.82) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.9) 0 0.78px, transparent 1.8px),
+                    radial-gradient(circle at 86% 62%, rgba(241, 245, 249, 0.8) 0 0.7px, transparent 1.68px),
+                    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.35) 0 0.7px, transparent 1.7px),
+                    radial-gradient(circle at 32% 38%, rgba(241, 245, 249, 0.3) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 48% 16%, rgba(226, 232, 240, 0.28) 0 0.72px, transparent 1.7px),
+                    radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.32) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 24% 68%, rgba(226, 232, 240, 0.28) 0 0.68px, transparent 1.65px),
+                    radial-gradient(circle at 62% 76%, rgba(241, 245, 249, 0.28) 0 0.66px, transparent 1.6px),
+                    radial-gradient(circle at 18% 48%, rgba(255, 255, 255, 0.52) 0 1.05px, transparent 2.6px),
+                    radial-gradient(circle at 58% 26%, rgba(241, 245, 249, 0.46) 0 1px, transparent 2.5px),
+                    radial-gradient(circle at 82% 58%, rgba(226, 232, 240, 0.44) 0 0.95px, transparent 2.45px);
+            }
+        }
+
+        body.dark-mode .contact-section::before,
+        body.dark-mode .night-sky-section::before {
+            display: none;
+        }
+
+        body.dark-mode .contact-section::after,
+        body.dark-mode .night-sky-section::after {
+            content: '';
+            position: absolute;
+            inset: -10% -12%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(140deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 48%, rgba(255, 255, 255, 0) 100%),
+                linear-gradient(140deg, rgba(255, 255, 255, 0) 0%, rgba(226, 232, 240, 0.45) 50%, rgba(255, 255, 255, 0) 100%),
+                linear-gradient(140deg, rgba(255, 255, 255, 0) 0%, rgba(241, 245, 249, 0.38) 52%, rgba(255, 255, 255, 0) 100%);
+            background-size: 180px 2px, 130px 1.6px, 95px 1.4px;
+            background-repeat: no-repeat;
+            background-position: 84% 18%, 64% 32%, 90% 42%;
+            filter: blur(0.2px);
+            animation: meteorSweep 15s linear infinite;
+        }
+
+        @media (max-width: 1024px) {
+            .govsbiz-glow.g1 {
+                right: 50px;
+            }
+
+            .govsbiz-glow.g3 {
+                right: 120px;
+            }
+
+            .govsbiz-asset {
+                right: 26px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .govsbiz-glow {
+                opacity: 0.5;
+            }
+
+            .govsbiz-glow.g1 {
+                width: 130px;
+                height: 130px;
+                top: -16px;
+                right: 10px;
+            }
+
+            .govsbiz-glow.g2 {
+                width: 86px;
+                height: 86px;
+                right: 12px;
+            }
+
+            .govsbiz-glow.g3 {
+                width: 56px;
+                height: 56px;
+                right: 86px;
+                bottom: 16px;
+            }
+
+            .govsbiz-asset {
+                width: 62px;
+                height: 62px;
+                right: 14px;
+                bottom: 18px;
+            }
+
+            .govsbiz-asset img {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 60;
+            width: 3.5rem;
+            height: 3.5rem;
+            border: 0;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #ffffff 0%, #e7edf5 100%);
+            color: #111827;
+            box-shadow: 0 14px 28px rgba(2, 8, 23, 0.24);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .scroll-top-btn.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .scroll-top-btn:hover {
+            background: linear-gradient(160deg, #ffffff 0%, #f1f5f9 100%);
+            color: #0ea5e9;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 30px rgba(2, 8, 23, 0.28);
+        }
+
+        .scroll-top-btn:focus-visible {
+            outline: 3px solid rgba(14, 165, 233, 0.45);
+            outline-offset: 2px;
+        }
+
+        body.dark-mode .scroll-top-btn {
+            background: linear-gradient(160deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #111827;
+        }
+
+        .scroll-top-icon {
+            width: 1.35rem;
+            height: 1.35rem;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.22s ease;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-top-btn {
+                right: 1rem;
+                bottom: 1rem;
+                width: 3.15rem;
+                height: 3.15rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+    
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center" aria-label="NLB LAB 홈">
+                    <img id="headerLogo" src="assets/nlblogo.png" alt="NLB LAB 로고" class="h-12 md:h-14 w-auto" loading="eager">
+                </a>
+                
+                <!-- Navigation Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <button id="themeToggle" class="theme-toggle" aria-label="테마 전환">
+                        <svg id="sunIcon" class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moonIcon" class="theme-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <a href="#about" class="nav-link">엔엘비랩</a>
+                    <a href="#services" class="nav-link">서비스</a>
+                    <a href="#cases" class="nav-link">성공사례</a>
+                    <a href="#team" class="nav-link">전문가 소개</a>
+                    <a href="#contact" class="nav-link-cta">상담신청</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="lg:hidden p-2">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden lg:hidden mt-4 pb-4 space-y-3">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold text-gray-700">테마 설정</span>
+                    <button id="themeToggleMobile" class="theme-toggle" aria-label="테마 전환">
+                        <svg id="sunIconMobile" class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moonIconMobile" class="theme-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <a href="#about" class="block nav-link-mobile">엔엘비랩</a>
+                <a href="#services" class="block nav-link-mobile">서비스</a>
+                <a href="#cases" class="block nav-link-mobile">성공사례</a>
+                <a href="#team" class="block nav-link-mobile">전문가 소개</a>
+                <a href="#contact" class="block nav-link-mobile">상담신청</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" aria-label="메인 슬라이드">
+        <div id="heroTrack" class="hero-track">
+            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-1.jpg.png');"></div>
+            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-2.jpg.png');"></div>
+            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-3.jpg.png');"></div>
+        </div>
+
+        <button id="heroPrevBtn" class="hero-arrow left" aria-label="이전 슬라이드">&#10094;</button>
+        <button id="heroNextBtn" class="hero-arrow right" aria-label="다음 슬라이드">&#10095;</button>
+
+        <div class="hero-overlay">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="fade-in-up max-w-3xl">
+                    <h2 class="text-5xl md:text-7xl font-bold mb-6 text-white">
+                        Nation's Lightbearer
+                    </h2>
+                    <p id="heroLeadText" class="text-xl md:text-2xl text-white/90 mb-4">
+                        기업의 성장에는 전략이 필요합니다
+                    </p>
+                    <p id="heroSubText" class="text-lg md:text-xl text-white/85 mb-12">
+                        정책자금 · 정부지원금 · 기업인증까지<br class="hidden md:block">
+                        <span id="heroSubHighlight" class="font-semibold">엔엘비랩이 기업의 자금 전략을 설계합니다</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact">
+                            <button class="btn-primary w-full sm:w-auto">무료 상담 신청</button>
+                        </a>
+                        <a href="#services">
+                            <button class="btn-secondary w-full sm:w-auto bg-white/90 border-white text-slate-800 hover:bg-white">서비스 알아보기</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-indicators" role="tablist" aria-label="메인 슬라이드 페이지">
+            <button class="hero-indicator active" data-slide="0" aria-label="1번 슬라이드"></button>
+            <button class="hero-indicator" data-slide="1" aria-label="2번 슬라이드"></button>
+            <button class="hero-indicator" data-slide="2" aria-label="3번 슬라이드"></button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 problem-section night-sky-section">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl md:text-5xl font-bold problem-title problem-title-sweep leading-tight mb-14 md:mb-16" data-text="기업 운영 과정에서 이런 문제를 겪고 계신가요?">
+                기업 운영 과정에서 이런 문제를 겪고 계신가요?
+            </h3>
+
+            <div class="problem-list">
+                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.08s;">
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;계속 올라가는 인건비 걱정되요&quot;</p>
+                </div>
+                <div class="problem-row right problem-reveal" style="--reveal-delay: 0.16s;">
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;비지니스 모델이 필요해요&quot;</p>
+                </div>
+                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.24s;">
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;아이템은 있는데 마케팅 방법을 모르겠어요&quot;</p>
+                </div>
+                <div class="problem-row right problem-reveal" style="--reveal-delay: 0.32s;">
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;회사의 기본적인 자료가 부족해요&quot;</p>
+                </div>
+                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.4s;">
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;사업을 더 키우고 성장 시키고 싶어요&quot;</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Solutions Section -->
+    <section id="about-solution" class="py-24 problem-section night-sky-section">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-base md:text-xl font-normal problem-title opacity-80">고민이 많은 대표님들께</p>
+                <p class="mt-3 text-3xl md:text-5xl font-bold problem-title leading-tight">엔엘비랩이 드리는 해답</p>
+
+                <div class="answer-solutions" aria-label="엔엘비랩 3가지 솔루션">
+                    <div class="answer-circles">
+                        <article class="answer-circle">
+                            <h4 class="answer-circle-title">기업 맞춤<br>솔루션 제공</h4>
+                            <p class="answer-circle-desc">기업의 상황과 성장 단계에 맞춰 <span class="solution-marker-highlight">최적의 자금 전략과 컨설팅 솔루션을 제공합니다.</span></p>
+                        </article>
+                        <article class="answer-circle">
+                            <h4 class="answer-circle-title">다양한 전문분야로<br>파트너십 체결</h4>
+                            <p class="answer-circle-desc"><span class="solution-marker-highlight">각 분야의 전문 파트너와 협업</span>하여 기업 운영에 필요한 종합적인 컨설팅을 제공합니다.</p>
+                        </article>
+                        <article class="answer-circle">
+                            <h4 class="answer-circle-title">광고 마케팅 및<br>홈페이지 구축</h4>
+                            <p class="answer-circle-desc"><span class="solution-marker-highlight">광고 마케팅과 디자인, 홈페이지 구축</span> 등 기업의 성장을 지원합니다.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
+                    제공 <span class="gradient-text">서비스</span>
+                </h3>
+                <p class="text-xl text-gray-600 mt-8">기업의 성장 단계별 맞춤 솔루션을 제공합니다</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-piggy-bank"></i></div>
+                    <h4 class="text-xl font-bold mb-3">기업 컨설팅</h4>
+                    <p class="text-gray-600">각 기업에 필요한 기업 맞춤 인건비·운영자금을 정부지원금과 정책자금으로 확보</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-chart-line"></i></div>
+                    <h4 class="text-xl font-bold mb-3">광고 마케팅</h4>
+                    <p class="text-gray-600">메타광고, 블로그, 디자인, 홈페이지·상세페이지 제작 등 지원</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-flask-vial"></i></div>
+                    <h4 class="text-xl font-bold mb-3">연구소 설립 및 기업인증</h4>
+                    <p class="text-gray-600">기업부설연구소 설립 및 연구일지 제작과 벤처인증 등 전반적인 기업인증 지원</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-rocket"></i></div>
+                    <h4 class="text-xl font-bold mb-3">투자 및 투자자 연계</h4>
+                    <p class="text-gray-600">벤처기업 인증 취득을 위한 전문 컨설팅</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-star"></i></div>
+                    <h4 class="text-xl font-bold mb-3">세무·법무</h4>
+                    <p class="text-gray-600">ㅇ</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-medal"></i></div>
+                    <h4 class="text-xl font-bold mb-3">법무법인 업무</h4>
+                    <p class="text-gray-600">각종 기업 인증 및 가점 요건 확보 지원</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Cases Section -->
+    <section id="cases" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
+                    <span class="gradient-text">성공</span> 사례
+                </h3>
+                <p class="text-xl text-gray-600 mt-8">지금도 수많은 기업이 실행으로 결과를 증명하고 있습니다</p>
+            </div>
+
+            <div class="cases-slider">
+                <div class="cases-track">
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">제조업 A사</h4>
+                                <p class="text-sm text-gray-500">법인설립 → 연구소 인증</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아
+                            정책자금 <strong>5억원</strong>을 확보했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">법인설립</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">연구소인증</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">정책자금</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">IT 스타트업 B사</h4>
+                                <p class="text-sm text-gray-500">벤처인증 → 투자 유치</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고
+                            성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">벤처인증</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">이노비즈</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">투자유치</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">부동산 개발사 C사</h4>
+                                <p class="text-sm text-gray-500">사업용 부동산 취득</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            설립자금과 운영자금 조달을 통해 사업장 부지 확보 및
+                            <strong>공장 신축</strong>을 완료했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">설립자금</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">부동산</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">공장신축</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">서비스업 D사</h4>
+                                <p class="text-sm text-gray-500">창업자금 → 사업 확장</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고
+                            성공적으로 사업을 시작했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">창업자금</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">사업확장</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">컨설팅</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">제조업 A사</h4>
+                                <p class="text-sm text-gray-500">법인설립 → 연구소 인증</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아
+                            정책자금 <strong>5억원</strong>을 확보했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">법인설립</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">연구소인증</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">정책자금</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">IT 스타트업 B사</h4>
+                                <p class="text-sm text-gray-500">벤처인증 → 투자 유치</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고
+                            성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">벤처인증</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">이노비즈</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">투자유치</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">부동산 개발사 C사</h4>
+                                <p class="text-sm text-gray-500">사업용 부동산 취득</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            설립자금과 운영자금 조달을 통해 사업장 부지 확보 및
+                            <strong>공장 신축</strong>을 완료했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">설립자금</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">부동산</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">공장신축</span>
+                        </div>
+                    </article>
+
+                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">서비스업 D사</h4>
+                                <p class="text-sm text-gray-500">창업자금 → 사업 확장</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고
+                            성공적으로 사업을 시작했습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">창업자금</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">사업확장</span>
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">컨설팅</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section with Slider -->
+    <section id="team" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Title Section -->
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4 section-title">
+                    <span class="gradient-text">조직도 소개</span> 및 오시는 길
+                </h3>
+                <p class="text-lg text-gray-600 mt-8">각 분야 최고의 전문가들이 검증된 전략으로 성과를 만듭니다</p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Left Side: Slider -->
+                <div>
+                    <div class="team-slider-container">
+                        <div class="team-slider-wrapper overflow-hidden">
+                            <div class="team-slider flex transition-transform duration-500">
+                                <!-- Expert 1 -->
+                                <div class="team-slide flex-shrink-0 w-full">
+                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
+                                        <div class="w-32 h-40 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
+                                            <i class="fas fa-user-tie"></i>
+                                        </div>
+                                        <h4 class="text-2xl font-bold mb-1 text-center">컨설팅팀</h4>
+                                        <p class="text-sm text-primary font-semibold text-center mb-6">대표CEO</p>
+                                        <div class="space-y-2 text-sm text-gray-700">
+                                            <p>• 재무컨설팅 담당</p>
+                                            <p>• 한국비즈플랜 에너지 자금 담당</p>
+                                            <p>• 기업 재무 분석</p>
+                                            <p>• 정책자금 심사 지원</p>
+                                            <p>• 투자자치 전략 수립</p>
+                                            <p>• 기술보증기금 연계</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">연간 300여 기업 재무컨설팅 경험<br>투자자치 중액 50억원 달성</p>
+                                    </div>
+                                </div>
+
+                                <!-- Expert 2 -->
+                                <div class="team-slide flex-shrink-0 w-full">
+                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
+                                        <div class="w-32 h-40 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <h4 class="text-2xl font-bold mb-1 text-center">연구소</h4>
+                                        <p class="text-sm text-primary font-semibold text-center mb-6">연구소 소장</p>
+                                        <div class="space-y-2 text-sm text-gray-700">
+                                            <p>• 기업 인증 및 법무 전문가</p>
+                                            <p>• 벤처기업 및 이노비즈 인증</p>
+                                            <p>• 법인 설립 및 구두 변경</p>
+                                            <p>• 지식재산권 보호</p>
+                                            <p>• 계약서 검토 및 작성</p>
+                                            <p>• 규제 자유특구 신청</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">10년 이상 기업 인증 경험<br>연간 150건 이상 인증 추진</p>
+                                    </div>
+                                </div>
+
+                                <!-- Expert 3 -->
+                                <div class="team-slide flex-shrink-0 w-full">
+                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
+                                        <div class="w-32 h-40 bg-gradient-to-br from-green-400 to-emerald-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
+                                            <i class="fas fa-flask"></i>
+                                        </div>
+                                        <h4 class="text-2xl font-bold mb-1 text-center">송하영</h4>
+                                        <p class="text-sm text-primary font-semibold text-center mb-6">대리</p>
+                                        <div class="space-y-2 text-sm text-gray-700">
+                                            <p>• 기업 연구소설립 지원</p>
+                                            <p>• 비지니스 모델 설계 및 사업소개서 담당</p>
+                                            <p>• 연구소 설립 및 연구일지 제작</p>
+                                            <p>• 메타광고 및 마케팅 담당</p>
+                                            <p>• 웹디자인 및 디자인</p>
+                                            <p>• ㅇㅇ</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">기술개발 연간 20건 이상 지원<br>연구비 감액 누적 30억원</p>
+                                    </div>
+                                </div>
+
+                                <!-- Expert 4 -->
+                                <div class="team-slide flex-shrink-0 w-full">
+                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
+                                        <div class="w-32 h-40 bg-gradient-to-br from-orange-400 to-red-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                        <h4 class="text-2xl font-bold mb-1 text-center">최종수</h4>
+                                        <p class="text-sm text-primary font-semibold text-center mb-6">이사</p>
+                                        <div class="space-y-2 text-sm text-gray-700">
+                                            <p>• 전략 컨설턴트 및 경영 고문</p>
+                                            <p>• 중소기업 성장 전략 수립</p>
+                                            <p>• 정부지원 프로그램 연계</p>
+                                            <p>• 사업계획서 작성 및 검증</p>
+                                            <p>• 시장 진출 전략 컨설팅</p>
+                                            <p>• 기업 관리 및 운영 개선</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">20년 이상 컨설팅 경력<br>500건 이상 프로젝트 운영</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Arrows -->
+                        <button id="teamPrevBtn" class="team-nav-btn team-nav-btn-prev" aria-label="이전 전문가">
+                            <span class="text-xl">‹</span>
+                        </button>
+                        <button id="teamNextBtn" class="team-nav-btn team-nav-btn-next" aria-label="다음 전문가">
+                            <span class="text-xl">›</span>
+                        </button>
+                    </div>
+
+                    <!-- Indicators -->
+                    <div class="flex justify-center gap-3 mt-8">
+                        <button class="team-indicator w-2 h-2 rounded-full bg-primary active transition-all" data-index="0"></button>
+                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="1"></button>
+                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="2"></button>
+                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="3"></button>
+                    </div>
+                </div>
+
+                <!-- Right Side: Map -->
+                <div>
+                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl overflow-hidden h-full min-h-96 flex flex-col">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.5844652779166!2d126.86084952346947!3d37.47886587059824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b63e09abcdef1%3A0x1234567890abcdef!2z7J2I64GVRyCsgqDsp4Hsp4g!5e0!3m2!1sko!2skr!4v1234567890" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full flex-1 min-h-80"></iframe>
+                    </div>
+                    <div class="mt-8 bg-white p-6 rounded-xl border border-gray-200">
+                        <h4 class="font-bold text-lg mb-3">주소</h4>
+                        <p class="text-gray-700 mb-4">경기도 소하로 190, 광명G타워 A동 628호</p>
+                        <h4 class="font-bold text-lg mb-3 mt-6">운영시간</h4>
+                        <p class="text-gray-700">월-토 09:00 - 18:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GovsBiz Reference Banner -->
+    <section class="w-full">
+        <div class="govsbiz-banner px-6 py-10 md:py-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative z-10 max-w-3xl md:pl-6">
+                    <p class="text-white text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+                        내 기업에 맞는 지원사업을<br>
+                        AI로 한 번에 찾아보세요
+                    </p>
+                    <a href="https://www.govsbiz.com/" target="_blank" rel="noopener noreferrer" class="govsbiz-btn mt-8">
+                        AI 이용해보기
+                    </a>
+                </div>
+            </div>
+
+            <span class="govsbiz-glow g1" aria-hidden="true"></span>
+            <span class="govsbiz-glow g2" aria-hidden="true"></span>
+            <span class="govsbiz-glow g3" aria-hidden="true"></span>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-20 contact-section animated-gradient">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
+                    <span class="gradient-text">무료 상담</span> 신청
+                </h3>
+                <p class="text-xl text-gray-700 mt-8">지금 이 순간에도 수많은 기업 대표님들이 기회를 선점하고 있습니다.<br>주저함은 성공의 타이밍을 늦출 뿐입니다.</p>
+            </div>
+            
+            <form id="consultationForm" class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-3xl p-8 md:p-12 shadow-2xl">
+                <div class="space-y-6">
+                    <!-- 사업자 유형 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">사업자 유형 *</label>
+                        <select name="businessType" class="form-input" required>
+                            <option value="">선택해주세요</option>
+                            <option value="개인 사업자">개인 사업자</option>
+                            <option value="법인 사업자">법인 사업자</option>
+                            <option value="예비창업">예비창업 예정</option>
+                            <option value="법인설립">법인설립 예정</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 상담 종류 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">상담 종류 *</label>
+                        <select name="consultationType" class="form-input" required>
+                            <option value="">선택해주세요</option>
+                            <option value="기업 컨설팅">기업 컨설팅</option>
+                            <option value="창업자금">창업자금</option>
+                            <option value="정책자금">정책자금</option>
+                            <option value="연구소 설립">연구소 설립</option>
+                            <option value="벤처인증">벤처인증</option>
+                            <option value="이노비즈">이노비즈</option>
+                            <option value="기업인증">기업인증</option>
+                            <option value="마케팅">마케팅</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 성함 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">성함 *</label>
+                        <input type="text" name="name" class="form-input" placeholder="홍길동" required>
+                    </div>
+                    
+                    <!-- 연락처 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">연락처 *</label>
+                        <input type="tel" name="phone" class="form-input" placeholder="010-1234-5678" required>
+                    </div>
+                    
+                    <!-- 이메일 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">이메일 *</label>
+                        <input type="email" name="email" class="form-input" placeholder="example@email.com" required>
+                    </div>
+                    
+                    <!-- 제출 버튼 -->
+                    <div class="pt-4">
+                        <button type="submit" class="btn-primary w-full text-center">
+                            상담 신청하기
+                        </button>
+                    </div>
+                    
+                    <p class="consultation-note text-sm text-center">
+                        접수하신 내용은 24시간 이내에 담당자가 연락드립니다.
+                    </p>
+                </div>
+            </form>
+            
+            <!-- Success Message (hidden by default) -->
+            <div id="successMessage" class="hidden mt-8 bg-green-50 border-2 border-green-500 rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">✅</div>
+                <h4 class="text-2xl font-bold text-green-800 mb-2">상담 신청이 완료되었습니다!</h4>
+                <p class="text-green-700">빠른 시일 내에 연락드리겠습니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- First Row: Company Info -->
+            <div class="border-b border-gray-700 pb-8 mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-gray-300">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                        <div>
+                            <span class="font-semibold text-gray-200">상호명 :</span>
+                            <span class="ml-2">엔엘비랩</span>
+                        </div>
+                        <div class="hidden md:inline-block text-gray-500">|</div>
+                        <div>
+                            <span class="font-semibold text-gray-200">ADDRESS :</span>
+                            <span class="ml-2">경기도 광명시 소하로 190, 광명메위타 A동 628호</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                        <div class="hidden md:inline-block text-gray-500">|</div>
+                        <div>
+                            <span class="font-semibold text-gray-200">TEL :</span>
+                            <a href="tel:0260710600" class="ml-2 hover:text-primary transition">02-6071-0600</a>
+                        </div>
+                        <div class="hidden md:inline-block text-gray-500">|</div>
+                        <div>
+                            <span class="font-semibold text-gray-200">FAX :</span>
+                            <span class="ml-2">02-6071-0600</span>
+                        </div>
+                        <div class="hidden md:inline-block text-gray-500">|</div>
+                        <div>
+                            <span class="font-semibold text-gray-200">이메일 :</span>
+                            <a href="mailto:contact@nlblab.com" class="ml-2 hover:text-primary transition">contact@nlblab.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Second Row: Registration & Copyright -->
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-gray-400">
+                <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                    <div>
+                        <span class="font-semibold text-gray-300">사업자등록번호 :</span>
+                        <span class="ml-2">1729-87-02492</span>
+                    </div>
+                    <div class="hidden md:inline-block text-gray-500">|</div>
+                    <div>
+                        <span class="font-semibold text-gray-300">(c)2026. NLB LAB</span>
+                        <span class="ml-1">All rights reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" class="scroll-top-btn" type="button" aria-label="맨 위로 이동" title="맨 위로 이동">
+        <svg class="scroll-top-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 18V6"></path>
+            <path d="M7.5 10.5 12 6l4.5 4.5"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeToggleMobile = document.getElementById('themeToggleMobile');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIconMobile = document.getElementById('sunIconMobile');
+        const moonIconMobile = document.getElementById('moonIconMobile');
+        const headerLogo = document.getElementById('headerLogo');
+
+        function updateHeaderLogoByTheme() {
+            if (!headerLogo) {
+                return;
+            }
+
+            headerLogo.src = document.body.classList.contains('dark-mode')
+                ? 'assets/nlblogo2.png'
+                : 'assets/nlblogo.png';
+        }
+        
+        // Check for saved theme preference or default to 'dark'
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            sunIconMobile.classList.add('hidden');
+            moonIconMobile.classList.remove('hidden');
+            updateHeaderLogoByTheme();
+        } else {
+            document.body.classList.remove('dark-mode');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+            sunIconMobile.classList.remove('hidden');
+            moonIconMobile.classList.add('hidden');
+            updateHeaderLogoByTheme();
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                sunIconMobile.classList.add('hidden');
+                moonIconMobile.classList.remove('hidden');
+                updateHeaderLogoByTheme();
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                sunIconMobile.classList.remove('hidden');
+                moonIconMobile.classList.add('hidden');
+                updateHeaderLogoByTheme();
+            }
+        }
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        themeToggleMobile.addEventListener('click', toggleTheme);
+
+        // Keep exactly 3 case cards visible on desktop (1 on mobile).
+        function updateCaseCardWidth() {
+            const slider = document.querySelector('.cases-slider');
+            if (!slider) {
+                return;
+            }
+
+            const desktop = window.innerWidth >= 1024;
+            const visibleCards = desktop ? 3 : 1;
+            const gap = 32; // 2rem
+            const totalGap = gap * (visibleCards - 1);
+            const cardWidth = (slider.clientWidth - totalGap) / visibleCards;
+
+            slider.style.setProperty('--case-card-width', `${cardWidth}px`);
+        }
+
+        updateCaseCardWidth();
+        window.addEventListener('resize', updateCaseCardWidth);
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link-mobile').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Google Sheet link provided by user
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1uKS8WEentkmNRSBQjKySVLoNQpEPOP_-opHK25l1tSw/edit?usp=sharing';
+        const GOOGLE_SHEET_ID = (GOOGLE_SHEET_URL.match(/\/d\/([a-zA-Z0-9-_]+)/) || [])[1] || '';
+
+        // Paste your deployed Google Apps Script Web App URL here.
+        // Example: https://script.google.com/macros/s/AKfycb.../exec
+        const GOOGLE_APPS_SCRIPT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyB46pFfqR_ykFNW1jjtCWNK1sg5K8dIchmiCoPQzowZNU4ybTE4n2fC-u2A6lk8XrdGA/exec';
+
+        async function submitConsultationToGoogleSheet(formData) {
+            if (!GOOGLE_APPS_SCRIPT_WEBAPP_URL) {
+                throw new Error('Google Apps Script Web App URL이 설정되지 않았습니다.');
+            }
+
+            const payload = {
+                ...formData,
+                sheetId: GOOGLE_SHEET_ID,
+                source: 'nlb-lab-homepage'
+            };
+
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_WEBAPP_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`시트 저장 실패 (HTTP ${response.status})`);
+                }
+
+                try {
+                    return await response.json();
+                } catch {
+                    return { ok: true };
+                }
+            } catch (primaryError) {
+                // Apps Script Web App can fail CORS checks on some browser/network setups.
+                // Retry with no-cors so the request can still be delivered.
+                await fetch(GOOGLE_APPS_SCRIPT_WEBAPP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload)
+                });
+
+                return { ok: true, mode: 'no-cors-fallback', error: String(primaryError) };
+            }
+        }
+
+        // Form submission handling (Google Sheet 저장)
+        document.getElementById('consultationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+
+            const formData = {
+                businessType: this.businessType.value,
+                consultationType: this.consultationType.value,
+                name: this.name.value,
+                phone: this.phone.value,
+                email: this.email.value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = '전송 중...';
+
+                await submitConsultationToGoogleSheet(formData);
+
+                // Show success message
+                document.getElementById('successMessage').classList.remove('hidden');
+                this.reset();
+
+                // Scroll to success message
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.add('hidden');
+                }, 5000);
+            } catch (error) {
+                console.error('상담 신청 전송 실패:', error);
+                alert('전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            }
+        });
+        
+        function getHeaderOffset() {
+            const header = document.querySelector('header');
+            const headerHeight = header ? header.offsetHeight : 0;
+            return headerHeight + 12;
+        }
+
+        function updateHeaderOffsetVar() {
+            document.documentElement.style.setProperty('--header-offset', `${getHeaderOffset()}px`);
+        }
+
+        function scrollToTargetWithHeaderOffset(target, behavior = 'smooth') {
+            const targetTop = target.getBoundingClientRect().top + window.pageYOffset;
+            const offsetTop = targetTop - getHeaderOffset();
+            window.scrollTo({ top: offsetTop, behavior });
+        }
+
+        updateHeaderOffsetVar();
+        window.addEventListener('resize', updateHeaderOffsetVar);
+
+        // Smooth scrolling for anchor links with sticky-header offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+
+                // Allow brand link (#) to move to top cleanly.
+                if (!href || href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                const target = document.querySelector(href);
+                if (!target) {
+                    return;
+                }
+
+                e.preventDefault();
+                scrollToTargetWithHeaderOffset(target);
+            });
+        });
+
+        // When opening page with hash, keep section title visible below header.
+        if (window.location.hash) {
+            const initialTarget = document.querySelector(window.location.hash);
+            if (initialTarget) {
+                requestAnimationFrame(() => {
+                    scrollToTargetWithHeaderOffset(initialTarget, 'auto');
+                });
+            }
+        }
+
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        function toggleScrollTopButton() {
+            if (!scrollTopBtn) {
+                return;
+            }
+
+            if (window.scrollY > 420) {
+                scrollTopBtn.classList.add('is-visible');
+            } else {
+                scrollTopBtn.classList.remove('is-visible');
+            }
+        }
+
+        if (scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', toggleScrollTopButton, { passive: true });
+            toggleScrollTopButton();
+        }
+
+        // Team Slider functionality
+        let currentTeamSlide = 0;
+        const totalTeamSlides = 4;
+        
+        function updateTeamSlider() {
+            const slider = document.querySelector('.team-slider');
+            const offset = -currentTeamSlide * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+            
+            // Update indicators
+            document.querySelectorAll('.team-indicator').forEach((indicator, index) => {
+                if (index === currentTeamSlide) {
+                    indicator.classList.add('active');
+                    indicator.classList.remove('bg-gray-300');
+                    indicator.classList.add('bg-primary');
+                    indicator.style.width = indicator.classList.contains('active') ? '1.5rem' : '0.5rem';
+                } else {
+                    indicator.classList.remove('active');
+                    indicator.classList.add('bg-gray-300');
+                    indicator.classList.remove('bg-primary');
+                    indicator.style.width = '0.5rem';
+                }
+            });
+        }
+        
+        document.getElementById('teamPrevBtn').addEventListener('click', () => {
+            currentTeamSlide = (currentTeamSlide - 1 + totalTeamSlides) % totalTeamSlides;
+            updateTeamSlider();
+        });
+        
+        document.getElementById('teamNextBtn').addEventListener('click', () => {
+            currentTeamSlide = (currentTeamSlide + 1) % totalTeamSlides;
+            updateTeamSlider();
+        });
+        
+        document.querySelectorAll('.team-indicator').forEach((indicator) => {
+            indicator.addEventListener('click', () => {
+                currentTeamSlide = parseInt(indicator.getAttribute('data-index'));
+                updateTeamSlider();
+            });
+        });
+
+        // Hero main slider
+        let currentHeroIndex = 0;
+        const heroTrack = document.getElementById('heroTrack');
+        const heroIndicators = document.querySelectorAll('.hero-indicator');
+        const heroSlides = document.querySelectorAll('.hero-bg-slide');
+        const heroSlideCount = heroIndicators.length;
+        const heroLeadText = document.getElementById('heroLeadText');
+        const heroSubText = document.getElementById('heroSubText');
+        const heroSubHighlight = document.getElementById('heroSubHighlight');
+        const heroCopyBySlide = [
+            {
+                lead: '나라를 빛나게 하는 사람, 빛을 드는 자',
+                sub: '법인 설립부터 기업의 성장 전 과정을 함께 설계하는',
+                highlight: '종합 경영·재무 컨설팅 파트너'
+            },
+            {
+                lead: '기업의 성장에는 전략이 필요합니다',
+                sub: '정책자금 · 정부지원금 · 기업인증까지',
+                highlight: '엔엘비랩이 기업의 자금 전략을 설계합니다'
+            },
+            {
+                lead: '기업의 성장은 혼자 이루어지지 않습니다',
+                sub: '세무·법무 전문 파트너와의 협업 네트워크를 기반으로',
+                highlight: '기업 경영 전반을 아우르는 통합 컨설팅 솔루션을 제공'
+            }
+        ];
+
+        function updateHeroSlider(index) {
+            currentHeroIndex = (index + heroSlideCount) % heroSlideCount;
+            if (heroTrack) {
+                heroTrack.style.transform = `translateX(-${currentHeroIndex * 100}%)`;
+            }
+
+            heroIndicators.forEach((indicator, indicatorIndex) => {
+                indicator.classList.toggle('active', indicatorIndex === currentHeroIndex);
+            });
+
+            heroSlides.forEach((slide, slideIndex) => {
+                slide.classList.toggle('active', slideIndex === currentHeroIndex);
+            });
+
+            const copy = heroCopyBySlide[currentHeroIndex] || heroCopyBySlide[0];
+            if (heroLeadText && heroSubText && heroSubHighlight) {
+                heroLeadText.textContent = copy.lead;
+                heroSubText.childNodes[0].textContent = `${copy.sub}`;
+                heroSubHighlight.textContent = copy.highlight;
+            }
+        }
+
+        const heroPrevBtn = document.getElementById('heroPrevBtn');
+        const heroNextBtn = document.getElementById('heroNextBtn');
+
+        if (heroPrevBtn && heroNextBtn) {
+            heroPrevBtn.addEventListener('click', () => updateHeroSlider(currentHeroIndex - 1));
+            heroNextBtn.addEventListener('click', () => updateHeroSlider(currentHeroIndex + 1));
+        }
+
+        heroIndicators.forEach((indicator) => {
+            indicator.addEventListener('click', () => {
+                const slide = Number(indicator.getAttribute('data-slide'));
+                updateHeroSlider(slide);
+            });
+        });
+
+        setInterval(() => {
+            updateHeroSlider(currentHeroIndex + 1);
+        }, 8000);
+
+        const problemRevealItems = document.querySelectorAll('.problem-reveal');
+        const problemListSection = document.querySelector('#about .problem-list');
+        const problemTitleSweep = document.querySelector('#about .problem-title-sweep');
+        const aboutSolutionSection = document.getElementById('about-solution');
+        const solutionMarkerHighlights = document.querySelectorAll('.solution-marker-highlight');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const revealSections = document.querySelectorAll(
+            'section:not(.hero-section) > div, section:not(.hero-section) > .govsbiz-banner'
+        );
+
+        if (prefersReducedMotion) {
+            problemRevealItems.forEach((item) => item.classList.add('is-visible'));
+            if (problemTitleSweep) {
+                problemTitleSweep.classList.add('is-animated');
+            }
+            if (solutionMarkerHighlights.length) {
+                solutionMarkerHighlights.forEach((item) => item.classList.add('is-painted'));
+            }
+
+            revealSections.forEach((content) => {
+                content.classList.add('is-visible');
+            });
+        } else if (problemListSection) {
+            const problemObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        problemRevealItems.forEach((item) => item.classList.add('is-visible'));
+                        if (problemTitleSweep) {
+                            problemTitleSweep.classList.remove('is-animated');
+                            void problemTitleSweep.offsetWidth;
+                            problemTitleSweep.classList.add('is-animated');
+                        }
+                    } else {
+                        problemRevealItems.forEach((item) => item.classList.remove('is-visible'));
+                        if (problemTitleSweep) {
+                            problemTitleSweep.classList.remove('is-animated');
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.25,
+                rootMargin: '0px 0px -12% 0px'
+            });
+
+            problemObserver.observe(problemListSection);
+        }
+
+        if (!prefersReducedMotion && aboutSolutionSection && solutionMarkerHighlights.length) {
+            const solutionObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        solutionMarkerHighlights.forEach((item) => {
+                            item.classList.remove('is-painted');
+                            void item.offsetWidth;
+                            item.classList.add('is-painted');
+                        });
+                    } else {
+                        solutionMarkerHighlights.forEach((item) => item.classList.remove('is-painted'));
+                    }
+                });
+            }, {
+                threshold: 0.28,
+                rootMargin: '0px 0px -12% 0px'
+            });
+
+            solutionObserver.observe(aboutSolutionSection);
+        }
+
+        if (!prefersReducedMotion) {
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.16,
+                rootMargin: '0px 0px -8% 0px'
+            });
+
+            revealSections.forEach((content) => {
+                content.classList.add('section-reveal');
+                sectionObserver.observe(content);
+            });
+        }
+        
+        // Initialize first slide
+        updateTeamSlider();
+        updateHeroSlider(0);
+    </script>
+</body>
+</html>

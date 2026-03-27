@@ -1,0 +1,13 @@
+{
+  "name": "nlb-lab-website",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "NLB LAB Landing Page",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "screenshot": "node screenshot.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}

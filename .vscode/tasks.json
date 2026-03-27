@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "auto-push-watch",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\scripts\\auto-push.ps1"
+      ],
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "deploy-once",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\scripts\\deploy-once.ps1"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
