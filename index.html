@@ -1437,7 +1437,8 @@
             flex-wrap: wrap;
         }
 
-        .chatbot-actions a {
+        .chatbot-actions a,
+        .chatbot-actions button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -1448,10 +1449,111 @@
             border: 1px solid #bae6fd;
             color: #0369a1;
             background: #f0f9ff;
+            cursor: pointer;
         }
 
-        .chatbot-actions a:hover {
+        .chatbot-actions a:hover,
+        .chatbot-actions button:hover {
             background: #e0f2fe;
+        }
+
+        .chatbot-consult-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 75;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(2, 6, 23, 0.55);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .chatbot-consult-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chatbot-consult-panel {
+            width: min(30rem, 100%);
+            border-radius: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: #ffffff;
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.28);
+            overflow: hidden;
+        }
+
+        .chatbot-consult-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1rem;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: #ffffff;
+        }
+
+        .chatbot-consult-body {
+            padding: 1rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .chatbot-consult-body label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 0.35rem;
+        }
+
+        .chatbot-consult-body input,
+        .chatbot-consult-body select {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.65rem;
+            padding: 0.6rem 0.7rem;
+            font-size: 0.9rem;
+            color: #0f172a;
+            background: #ffffff;
+        }
+
+        .chatbot-consult-body input:focus,
+        .chatbot-consult-body select:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        .chatbot-consult-submit {
+            border: 0;
+            border-radius: 0.65rem;
+            padding: 0.72rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            cursor: pointer;
+        }
+
+        .chatbot-consult-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .chatbot-consult-success {
+            display: none;
+            font-size: 0.85rem;
+            color: #166534;
+            background: #ecfdf5;
+            border: 1px solid #86efac;
+            border-radius: 0.6rem;
+            padding: 0.55rem 0.65rem;
+        }
+
+        .chatbot-consult-success.is-visible {
+            display: block;
         }
 
         body.dark-mode .chatbot-window {
@@ -1467,14 +1569,38 @@
             background: rgba(30, 41, 59, 0.75);
         }
 
-        body.dark-mode .chatbot-actions a {
+        body.dark-mode .chatbot-actions a,
+        body.dark-mode .chatbot-actions button {
             border-color: rgba(56, 189, 248, 0.35);
             color: #bae6fd;
             background: rgba(14, 116, 144, 0.2);
         }
 
-        body.dark-mode .chatbot-actions a:hover {
+        body.dark-mode .chatbot-actions a:hover,
+        body.dark-mode .chatbot-actions button:hover {
             background: rgba(14, 116, 144, 0.3);
+        }
+
+        body.dark-mode .chatbot-consult-panel {
+            background: #0f172a;
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        body.dark-mode .chatbot-consult-body label {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .chatbot-consult-body input,
+        body.dark-mode .chatbot-consult-body select {
+            color: #e2e8f0;
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.dark-mode .chatbot-consult-success {
+            color: #bbf7d0;
+            background: rgba(22, 101, 52, 0.2);
+            border-color: rgba(34, 197, 94, 0.35);
         }
 
         @media (max-width: 768px) {
@@ -2197,11 +2323,49 @@
         <div class="chatbot-body">
             <div class="chatbot-msg">안녕하세요. 엔엘비랩입니다.<br>궁금하신 내용을 빠르게 안내해드릴게요.</div>
             <div class="chatbot-actions">
-                <a href="#contact">상담 신청하기</a>
+                <button id="chatConsultOpen" type="button">상담 신청하기</button>
                 <a href="#services">서비스 보기</a>
             </div>
         </div>
     </aside>
+
+    <div id="chatConsultModal" class="chatbot-consult-modal" aria-hidden="true">
+        <div class="chatbot-consult-panel" role="dialog" aria-label="챗봇 상담 신청">
+            <div class="chatbot-consult-header">
+                <strong>챗봇 상담 신청</strong>
+                <button id="chatConsultClose" class="chatbot-close" type="button" aria-label="상담 신청 창 닫기">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form id="chatConsultForm" class="chatbot-consult-body">
+                <div>
+                    <label for="chatConsultType">상담 종류 *</label>
+                    <select id="chatConsultType" name="consultationType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="기업 컨설팅">기업 컨설팅</option>
+                        <option value="창업자금">창업자금</option>
+                        <option value="정책자금">정책자금</option>
+                        <option value="연구소 설립">연구소 설립</option>
+                        <option value="벤처인증">벤처인증</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="chatConsultName">성함 *</label>
+                    <input id="chatConsultName" name="name" type="text" placeholder="홍길동" required>
+                </div>
+                <div>
+                    <label for="chatConsultPhone">연락처 *</label>
+                    <input id="chatConsultPhone" name="phone" type="tel" placeholder="010-1234-5678" required>
+                </div>
+                <div>
+                    <label for="chatConsultEmail">이메일</label>
+                    <input id="chatConsultEmail" name="email" type="email" placeholder="example@email.com">
+                </div>
+                <button id="chatConsultSubmit" class="chatbot-consult-submit" type="submit">상담 신청 접수</button>
+                <p id="chatConsultSuccess" class="chatbot-consult-success">상담 신청이 접수되었습니다. 담당자가 빠르게 연락드리겠습니다.</p>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Dark mode toggle
@@ -2467,6 +2631,12 @@
         const chatbotFab = document.getElementById('chatbotFab');
         const chatbotWindow = document.getElementById('chatbotWindow');
         const chatbotClose = document.getElementById('chatbotClose');
+        const chatConsultOpen = document.getElementById('chatConsultOpen');
+        const chatConsultModal = document.getElementById('chatConsultModal');
+        const chatConsultClose = document.getElementById('chatConsultClose');
+        const chatConsultForm = document.getElementById('chatConsultForm');
+        const chatConsultSubmit = document.getElementById('chatConsultSubmit');
+        const chatConsultSuccess = document.getElementById('chatConsultSuccess');
 
         function setChatbotOpen(isOpen) {
             if (!chatbotFab || !chatbotWindow) {
@@ -2500,6 +2670,63 @@
                 setChatbotOpen(false);
             });
         }
+
+        function setChatConsultModalOpen(isOpen) {
+            if (!chatConsultModal) {
+                return;
+            }
+
+            chatConsultModal.classList.toggle('is-open', isOpen);
+            chatConsultModal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        }
+
+        chatConsultOpen?.addEventListener('click', () => {
+            setChatConsultModalOpen(true);
+        });
+
+        chatConsultClose?.addEventListener('click', () => {
+            setChatConsultModalOpen(false);
+        });
+
+        chatConsultModal?.addEventListener('click', (event) => {
+            if (event.target === chatConsultModal) {
+                setChatConsultModalOpen(false);
+            }
+        });
+
+        chatConsultForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!chatConsultSubmit) {
+                return;
+            }
+
+            const originalText = chatConsultSubmit.textContent;
+            const formData = {
+                businessType: '챗봇 상담',
+                consultationType: chatConsultForm.consultationType.value,
+                name: chatConsultForm.name.value,
+                phone: chatConsultForm.phone.value,
+                email: chatConsultForm.email.value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                chatConsultSubmit.disabled = true;
+                chatConsultSubmit.textContent = '접수 중...';
+                await submitConsultationToGoogleSheet(formData);
+                if (chatConsultSuccess) {
+                    chatConsultSuccess.classList.add('is-visible');
+                }
+                chatConsultForm.reset();
+            } catch (error) {
+                console.error('챗봇 상담 신청 실패:', error);
+                alert('상담 접수에 실패했습니다. 잠시 후 다시 시도해주세요.');
+            } finally {
+                chatConsultSubmit.disabled = false;
+                chatConsultSubmit.textContent = originalText;
+            }
+        });
 
         // Team Slider functionality
         let currentTeamSlide = 0;
