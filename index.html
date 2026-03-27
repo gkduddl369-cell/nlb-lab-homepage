@@ -1340,12 +1340,161 @@
             transition: stroke 0.22s ease;
         }
 
+        .chatbot-fab {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 5.35rem;
+            z-index: 61;
+            width: 3.5rem;
+            height: 3.5rem;
+            border: 0;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 14px 30px rgba(2, 8, 23, 0.28);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chatbot-fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(2, 8, 23, 0.32);
+        }
+
+        .chatbot-fab:focus-visible {
+            outline: 3px solid rgba(14, 165, 233, 0.45);
+            outline-offset: 2px;
+        }
+
+        .chatbot-window {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 9.55rem;
+            z-index: 61;
+            width: min(22rem, calc(100vw - 2rem));
+            border-radius: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.28);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .chatbot-window.is-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: #ffffff;
+        }
+
+        .chatbot-close {
+            border: 0;
+            background: transparent;
+            color: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .chatbot-body {
+            padding: 1rem;
+            display: grid;
+            gap: 0.65rem;
+            color: #1f2937;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .chatbot-msg {
+            background: #f1f5f9;
+            border-radius: 0.75rem;
+            padding: 0.7rem 0.8rem;
+        }
+
+        .chatbot-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chatbot-actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            background: #f0f9ff;
+        }
+
+        .chatbot-actions a:hover {
+            background: #e0f2fe;
+        }
+
+        body.dark-mode .chatbot-window {
+            background: rgba(15, 23, 42, 0.96);
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        body.dark-mode .chatbot-body {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .chatbot-msg {
+            background: rgba(30, 41, 59, 0.75);
+        }
+
+        body.dark-mode .chatbot-actions a {
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #bae6fd;
+            background: rgba(14, 116, 144, 0.2);
+        }
+
+        body.dark-mode .chatbot-actions a:hover {
+            background: rgba(14, 116, 144, 0.3);
+        }
+
         @media (max-width: 768px) {
             .scroll-top-btn {
                 right: 1rem;
                 bottom: 1rem;
                 width: 3.15rem;
                 height: 3.15rem;
+            }
+
+            .chatbot-fab {
+                right: 1rem;
+                bottom: 4.95rem;
+                width: 3.15rem;
+                height: 3.15rem;
+            }
+
+            .chatbot-window {
+                right: 1rem;
+                bottom: 8.9rem;
             }
         }
     </style>
@@ -2034,6 +2183,26 @@
         </svg>
     </button>
 
+    <button id="chatbotFab" class="chatbot-fab" type="button" aria-label="챗봇 열기" aria-expanded="false" title="챗봇 열기">
+        <i class="fas fa-robot text-xl" aria-hidden="true"></i>
+    </button>
+
+    <aside id="chatbotWindow" class="chatbot-window" aria-hidden="true" role="dialog" aria-label="엔엘비랩 챗봇">
+        <div class="chatbot-header">
+            <strong><i class="fas fa-robot mr-1" aria-hidden="true"></i>엔엘비랩 챗봇</strong>
+            <button id="chatbotClose" class="chatbot-close" type="button" aria-label="챗봇 닫기">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-msg">안녕하세요. 엔엘비랩입니다.<br>궁금하신 내용을 빠르게 안내해드릴게요.</div>
+            <div class="chatbot-actions">
+                <a href="#contact">상담 신청하기</a>
+                <a href="#services">서비스 보기</a>
+            </div>
+        </div>
+    </aside>
+
     <script>
         // Dark mode toggle
         const themeToggle = document.getElementById('themeToggle');
@@ -2293,6 +2462,43 @@
 
             window.addEventListener('scroll', toggleScrollTopButton, { passive: true });
             toggleScrollTopButton();
+        }
+
+        const chatbotFab = document.getElementById('chatbotFab');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+
+        function setChatbotOpen(isOpen) {
+            if (!chatbotFab || !chatbotWindow) {
+                return;
+            }
+
+            chatbotFab.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            chatbotWindow.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            chatbotWindow.classList.toggle('is-open', isOpen);
+        }
+
+        if (chatbotFab && chatbotWindow) {
+            chatbotFab.addEventListener('click', () => {
+                const currentlyOpen = chatbotWindow.classList.contains('is-open');
+                setChatbotOpen(!currentlyOpen);
+            });
+
+            chatbotClose?.addEventListener('click', () => {
+                setChatbotOpen(false);
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!chatbotWindow.classList.contains('is-open')) {
+                    return;
+                }
+
+                if (chatbotWindow.contains(event.target) || chatbotFab.contains(event.target)) {
+                    return;
+                }
+
+                setChatbotOpen(false);
+            });
         }
 
         // Team Slider functionality
