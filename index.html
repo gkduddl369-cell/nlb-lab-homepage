@@ -45,10 +45,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0ea5e9',
-                        'primary-dark': '#0284c7',
-                        'primary-light': '#38bdf8',
-                        accent: '#06b6d4',
+                        primary: '#1F3A5F',
+                        'primary-dark': '#162A44',
+                        'primary-light': '#4C7A97',
+                        accent: '#4C7A97',
                         dark: '#0f172a',
                         light: '#f8fafc',
                     },
@@ -76,6 +76,14 @@
 
         :root {
             --header-offset: 96px;
+            --color-primary: #1f3a5f;
+            --color-primary-dark: #162a44;
+            --color-primary-accent: #4c7a97;
+            --color-primary-soft: #dce7ef;
+            --color-primary-soft-bg: #f6f8fa;
+            --color-primary-soft-alt: #eef3f7;
+            --color-primary-contrast: #ffffff;
+            --color-ink: #17202b;
         }
 
         section[id] {
@@ -97,7 +105,7 @@
         }
         
         body.dark-mode .nav-link:hover {
-            color: #38bdf8;
+            color: var(--color-primary-accent);
         }
         
         body.dark-mode .service-card,
@@ -161,7 +169,7 @@
         }
 
         .problem-chip {
-            background: #0b77b6;
+            background: var(--color-primary);
             color: #ffffff;
         }
 
@@ -267,7 +275,7 @@
             position: absolute;
             inset: 0;
             color: transparent;
-            background-image: linear-gradient(90deg, #0b77b6 0%, #0ea5e9 48%, #38bdf8 100%);
+            background-image: linear-gradient(90deg, var(--color-primary-dark) 0%, var(--color-primary) 48%, var(--color-primary-accent) 100%);
             background-repeat: no-repeat;
             background-size: 0% 100%;
             -webkit-background-clip: text;
@@ -308,20 +316,20 @@
             width: min(100%, 24rem);
             min-height: 24rem;
             border-radius: 9999px;
-            border: 2px solid #c7dbef;
-            background: radial-gradient(circle at 30% 25%, #f3f9ff 0%, #e7f3ff 100%);
+            border: 2px solid #d3dee8;
+            background: radial-gradient(circle at 30% 25%, #fbfcfd 0%, var(--color-primary-soft-alt) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 2.5rem 2.2rem;
-            box-shadow: 0 10px 28px rgba(14, 116, 196, 0.08);
+            box-shadow: 0 10px 28px rgba(22, 42, 68, 0.08);
             transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
         }
 
         .answer-circle-title {
-            color: #0b77b6;
+            color: var(--color-primary);
             font-size: 1.5rem;
             font-weight: 800;
             line-height: 1.35;
@@ -339,7 +347,7 @@
         .solution-marker-highlight {
             color: #0f172a;
             font-weight: 700;
-            background-image: linear-gradient(rgba(56, 189, 248, 0.52), rgba(56, 189, 248, 0.52));
+            background-image: linear-gradient(rgba(76, 122, 151, 0.34), rgba(76, 122, 151, 0.34));
             background-repeat: no-repeat;
             background-size: 0% 100%;
             box-decoration-break: clone;
@@ -351,7 +359,7 @@
 
         body.dark-mode .solution-marker-highlight {
             color: #f8fafc;
-            background-image: linear-gradient(rgba(14, 165, 233, 0.76), rgba(14, 165, 233, 0.76));
+            background-image: linear-gradient(rgba(76, 122, 151, 0.64), rgba(76, 122, 151, 0.64));
             text-shadow: 0 0 0.01px rgba(248, 250, 252, 0.85);
         }
 
@@ -371,14 +379,14 @@
         .answer-circle:hover,
         .answer-circle:focus-within {
             transform: translateY(-10px) scale(1.02);
-            border-color: #79b6e6;
-            background: radial-gradient(circle at 30% 22%, #ffffff 0%, #dff0ff 100%);
-            box-shadow: 0 20px 40px rgba(8, 103, 175, 0.2);
+            border-color: #9ab2c5;
+            background: radial-gradient(circle at 30% 22%, #ffffff 0%, #e6edf3 100%);
+            box-shadow: 0 20px 40px rgba(22, 42, 68, 0.16);
         }
 
         .answer-circle:hover .answer-circle-title,
         .answer-circle:focus-within .answer-circle-title {
-            color: #075985;
+            color: var(--color-primary-dark);
         }
 
         @media (min-width: 1024px) {
@@ -395,13 +403,13 @@
         }
 
         body.dark-mode .answer-circle {
-            border-color: #376286;
-            background: radial-gradient(circle at 30% 25%, #1f3952 0%, #173149 100%);
+            border-color: #3d5870;
+            background: radial-gradient(circle at 30% 25%, #24364a 0%, #1a2838 100%);
             box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
         }
 
         body.dark-mode .answer-circle-title {
-            color: #86d4ff;
+            color: #c1d1de;
         }
 
         body.dark-mode .answer-circle-desc {
@@ -410,14 +418,14 @@
 
         body.dark-mode .answer-circle:hover,
         body.dark-mode .answer-circle:focus-within {
-            border-color: #4c86b6;
-            background: radial-gradient(circle at 30% 20%, #294c6d 0%, #1a3853 100%);
+            border-color: #5a7790;
+            background: radial-gradient(circle at 30% 20%, #2d4359 0%, #1d2f42 100%);
             box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
         }
 
         body.dark-mode .answer-circle:hover .answer-circle-title,
         body.dark-mode .answer-circle:focus-within .answer-circle-title {
-            color: #b9e6ff;
+            color: #d5e1ea;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -451,11 +459,11 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-accent) 100%);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
             color: white;
             padding: 1rem 2rem;
             border-radius: 0.75rem;
@@ -464,20 +472,19 @@
             border: none;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3), 
-                        0 10px 15px -3px rgba(14, 165, 233, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(22, 42, 68, 0.28), 
+                        0 10px 15px -3px rgba(31, 58, 95, 0.18);
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4), 
-                        0 20px 25px -5px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 10px 20px -5px rgba(22, 42, 68, 0.36), 
+                        0 20px 25px -5px rgba(31, 58, 95, 0.24);
         }
         
         .btn-primary:focus {
-            outline: none;
-            ring: 3px;
-            ring-color: rgba(14, 165, 233, 0.5);
+            outline: 3px solid rgba(76, 122, 151, 0.35);
+            outline-offset: 2px;
         }
         
         .btn-primary:active {
@@ -486,26 +493,25 @@
         
         .btn-secondary {
             background: white;
-            color: #0ea5e9;
+            color: var(--color-primary);
             padding: 1rem 2rem;
             border-radius: 0.75rem;
             font-weight: 600;
             font-size: 1.125rem;
-            border: 2px solid #0ea5e9;
+            border: 2px solid var(--color-primary);
             cursor: pointer;
             transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
         }
         
         .btn-secondary:hover {
-            background: #f0f9ff;
+            background: var(--color-primary-soft-bg);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.16);
         }
         
         .btn-secondary:focus {
-            outline: none;
-            ring: 3px;
-            ring-color: rgba(14, 165, 233, 0.3);
+            outline: 3px solid rgba(76, 122, 151, 0.28);
+            outline-offset: 2px;
         }
         
         .btn-secondary:active {
@@ -518,13 +524,13 @@
             padding: 2rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
-                        0 10px 20px -5px rgba(14, 165, 233, 0.1);
+                        0 10px 20px -5px rgba(31, 58, 95, 0.08);
         }
         
         .service-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 30px -10px rgba(14, 165, 233, 0.25),
-                        0 10px 20px -5px rgba(6, 182, 212, 0.15);
+            box-shadow: 0 20px 30px -10px rgba(22, 42, 68, 0.18),
+                        0 10px 20px -5px rgba(76, 122, 151, 0.12);
         }
         
         .form-input {
@@ -538,8 +544,8 @@
         
         .form-input:focus {
             outline: none;
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+            border-color: var(--color-primary-accent);
+            box-shadow: 0 0 0 3px rgba(76, 122, 151, 0.14);
         }
 
         .consultation-note {
@@ -547,7 +553,7 @@
         }
         
         .gradient-text {
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -570,7 +576,7 @@
         
         select.form-input {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%230ea5e9' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%231F3A5F' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
             background-size: 1.5em 1.5em;
@@ -589,7 +595,7 @@
         }
         
         .nav-link:hover {
-            color: #0ea5e9;
+            color: var(--color-primary);
         }
         
         .nav-link::after {
@@ -599,7 +605,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-accent) 100%);
             transition: width 0.3s ease;
         }
         
@@ -613,15 +619,15 @@
             font-weight: 600;
             text-decoration: none;
             padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
             border-radius: 0.75rem;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(22, 42, 68, 0.26);
         }
         
         .nav-link-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 10px 20px -5px rgba(22, 42, 68, 0.34);
         }
         
         .nav-link-cta:active {
@@ -639,8 +645,8 @@
         }
         
         .nav-link-mobile:hover {
-            background-color: #f0f9ff;
-            color: #0ea5e9;
+            background-color: var(--color-primary-soft-bg);
+            color: var(--color-primary);
         }
         
         /* Theme Toggle Button */
@@ -678,7 +684,7 @@
         .theme-icon {
             width: 1.25rem;
             height: 1.25rem;
-            color: #0ea5e9;
+            color: var(--color-primary);
         }
         
         body.dark-mode .theme-icon {
@@ -772,9 +778,9 @@
         }
 
         .team-nav-btn:hover {
-            background: #0ea5e9;
+            background: var(--color-primary);
             color: #ffffff;
-            box-shadow: 0 12px 28px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 12px 28px rgba(31, 58, 95, 0.28);
         }
 
         .team-nav-btn-prev {
@@ -803,7 +809,7 @@
 
         .team-indicator.active {
             width: 1.5rem;
-            background-color: var(--primary-color, #0ea5e9);
+            background-color: var(--primary-color, var(--color-primary));
         }
 
         /* Main Hero Slider */
@@ -932,8 +938,8 @@
             position: relative;
             overflow: hidden;
             border-radius: 0;
-            background: linear-gradient(120deg, #0b5ee8 0%, #1574ff 55%, #0da8ff 100%);
-            box-shadow: 0 20px 40px -15px rgba(11, 94, 232, 0.45);
+            background: linear-gradient(120deg, var(--color-primary-dark) 0%, var(--color-primary) 55%, var(--color-primary-accent) 100%);
+            box-shadow: 0 20px 40px -15px rgba(22, 42, 68, 0.34);
         }
 
         .govsbiz-glow {
@@ -993,7 +999,7 @@
             align-items: center;
             justify-content: center;
             background: #ffffff;
-            color: #0b2e79;
+            color: var(--color-primary-dark);
             font-weight: 700;
             border-radius: 9999px;
             padding: 0.85rem 1.9rem;
@@ -1050,7 +1056,7 @@
             position: relative;
             overflow: hidden;
             isolation: isolate;
-            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 48%, #cffafe 100%);
+            background: linear-gradient(135deg, #edf2f5 0%, #f6f8fa 48%, #e8eef3 100%);
         }
 
         .contact-section > div,
@@ -1313,14 +1319,14 @@
         }
 
         .scroll-top-btn:hover {
-            background: linear-gradient(160deg, #ffffff 0%, #f1f5f9 100%);
-            color: #0ea5e9;
+            background: linear-gradient(160deg, #ffffff 0%, var(--color-primary-soft-bg) 100%);
+            color: var(--color-primary);
             transform: translateY(-2px);
             box-shadow: 0 16px 30px rgba(2, 8, 23, 0.28);
         }
 
         .scroll-top-btn:focus-visible {
-            outline: 3px solid rgba(14, 165, 233, 0.45);
+            outline: 3px solid rgba(76, 122, 151, 0.35);
             outline-offset: 2px;
         }
 
@@ -1352,7 +1358,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
             color: #ffffff;
             box-shadow: 0 14px 30px rgba(2, 8, 23, 0.28);
             cursor: pointer;
@@ -1365,7 +1371,7 @@
         }
 
         .chatbot-fab:focus-visible {
-            outline: 3px solid rgba(14, 165, 233, 0.45);
+            outline: 3px solid rgba(76, 122, 151, 0.35);
             outline-offset: 2px;
         }
 
@@ -1397,7 +1403,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0.85rem 1rem;
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
             color: #ffffff;
         }
 
@@ -1426,7 +1432,7 @@
         }
 
         .chatbot-msg {
-            background: #f1f5f9;
+            background: var(--color-primary-soft-bg);
             border-radius: 0.75rem;
             padding: 0.7rem 0.8rem;
         }
@@ -1437,7 +1443,7 @@
         }
 
         .chatbot-faq-item {
-            border: 1px solid #dbeafe;
+            border: 1px solid #d3dee8;
             border-radius: 0.85rem;
             overflow: hidden;
             background: #ffffff;
@@ -1461,7 +1467,7 @@
 
         .chatbot-faq-question span:last-child {
             font-size: 1rem;
-            color: #0284c7;
+            color: var(--color-primary-accent);
             transition: transform 0.2s ease;
         }
 
@@ -1496,15 +1502,15 @@
             padding: 0.45rem 0.75rem;
             font-size: 0.78rem;
             font-weight: 600;
-            border: 1px solid #bae6fd;
-            color: #0369a1;
-            background: #f0f9ff;
+            border: 1px solid #ccd9e3;
+            color: var(--color-primary);
+            background: var(--color-primary-soft-bg);
             cursor: pointer;
         }
 
         .chatbot-actions a:hover,
         .chatbot-actions button:hover {
-            background: #e0f2fe;
+            background: var(--color-primary-soft);
         }
 
 
@@ -1523,7 +1529,7 @@
 
         body.dark-mode .chatbot-faq-item {
             background: rgba(15, 23, 42, 0.9);
-            border-color: rgba(56, 189, 248, 0.18);
+            border-color: rgba(76, 122, 151, 0.24);
         }
 
         body.dark-mode .chatbot-faq-question {
@@ -1536,14 +1542,14 @@
 
         body.dark-mode .chatbot-actions a,
         body.dark-mode .chatbot-actions button {
-            border-color: rgba(56, 189, 248, 0.35);
-            color: #bae6fd;
-            background: rgba(14, 116, 144, 0.2);
+            border-color: rgba(76, 122, 151, 0.35);
+            color: #d5e1ea;
+            background: rgba(76, 122, 151, 0.16);
         }
 
         body.dark-mode .chatbot-actions a:hover,
         body.dark-mode .chatbot-actions button:hover {
-            background: rgba(14, 116, 144, 0.3);
+            background: rgba(76, 122, 151, 0.24);
         }
 
 
@@ -1681,16 +1687,16 @@
                     <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;계속 올라가는 인건비 걱정되요&quot;</p>
                 </div>
                 <div class="problem-row right problem-reveal" style="--reveal-delay: 0.16s;">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;비지니스 모델이 필요해요&quot;</p>
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;운영자금이 필요해요&quot;</p>
                 </div>
                 <div class="problem-row left problem-reveal" style="--reveal-delay: 0.24s;">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;아이템은 있는데 마케팅 방법을 모르겠어요&quot;</p>
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;광고 마케팅 방법을 모르겠어요&quot;</p>
                 </div>
                 <div class="problem-row right problem-reveal" style="--reveal-delay: 0.32s;">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;회사의 기본적인 자료가 부족해요&quot;</p>
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;투자를 받고싶은데 방법을 모르겠어요&quot;</p>
                 </div>
                 <div class="problem-row left problem-reveal" style="--reveal-delay: 0.4s;">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;사업을 더 키우고 성장 시키고 싶어요&quot;</p>
+                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;회사 비지니스모델이 필요해요&quot;</p>
                 </div>
             </div>
         </div>
@@ -1710,12 +1716,12 @@
                             <p class="answer-circle-desc">기업의 상황과 성장 단계에 맞춰 <span class="solution-marker-highlight">최적의 자금 전략과 컨설팅 솔루션을 제공합니다.</span></p>
                         </article>
                         <article class="answer-circle">
-                            <h4 class="answer-circle-title">다양한 전문분야로<br>파트너십 체결</h4>
-                            <p class="answer-circle-desc"><span class="solution-marker-highlight">각 분야의 전문 파트너와 협업</span>하여 기업 운영에 필요한 종합적인 컨설팅을 제공합니다.</p>
+                            <h4 class="answer-circle-title">다양한 파트너십 체결<br>업무 시너지 UP</h4>
+                            <p class="answer-circle-desc"><span class="solution-marker-highlight">각 분야의 전문 파트너와 협업</span>하여 기업 운영에 필요한 종합적인 서비스를 제공합니다.</p>
                         </article>
                         <article class="answer-circle">
                             <h4 class="answer-circle-title">광고 마케팅 및<br>홈페이지 구축</h4>
-                            <p class="answer-circle-desc"><span class="solution-marker-highlight">광고 마케팅과 디자인, 홈페이지 구축</span> 등 기업의 성장을 지원합니다.</p>
+                            <p class="answer-circle-desc"><span class="solution-marker-highlight">메타광고, 디자인, 홈페이지 구축, 회사소개서 제작, 사업계획서 제작</span> 등 기업을 홍보하고 성장시킵니다.</p>
                         </article>
                     </div>
                 </div>
@@ -1730,14 +1736,15 @@
                 <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
                     제공 <span class="gradient-text">서비스</span>
                 </h3>
-                <p class="text-xl text-gray-600 mt-8">기업의 성장 단계별 맞춤 솔루션을 제공합니다</p>
+                <p class="text-xl text-gray-600 mt-8">AI 플랫폼과 전문 컨설턴트의 협업으로, 귀사에 가장 유리한 정부지원 전략을 설계합니다</p>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="service-card">
                     <div class="text-4xl mb-4 text-primary"><i class="fas fa-piggy-bank"></i></div>
-                    <h4 class="text-xl font-bold mb-3">기업 컨설팅</h4>
-                    <p class="text-gray-600">각 기업에 필요한 기업 맞춤 인건비·운영자금을 정부지원금과 정책자금으로 확보</p>
+                    <h4 class="text-xl font-bold mb-3">정부지원사업 컨설팅</h4>
+                    <p class="text-gray-600">기업 맞춤 컨설팅을 제공하며, GovSBiz AI로 맞춤 공고를 제공.사업계획서 작성부터 제출까지 함께합니다.
+</p>
                 </div>
                 
                 <div class="service-card">
