@@ -187,7 +187,7 @@
         .problem-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .problem-row {
@@ -210,17 +210,17 @@
 
         .problem-reveal {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.65s ease, transform 0.65s ease;
+            transform: translateY(28px);
+            transition: opacity 0.95s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.95s cubic-bezier(0.22, 0.61, 0.36, 1);
             transition-delay: var(--reveal-delay, 0s);
         }
 
         .problem-row.left.problem-reveal {
-            transform: translate3d(-28px, 20px, 0);
+            transform: translate3d(-72px, 28px, 0);
         }
 
         .problem-row.right.problem-reveal {
-            transform: translate3d(28px, 20px, 0);
+            transform: translate3d(72px, 28px, 0);
         }
 
         .problem-reveal.is-visible {
@@ -264,7 +264,7 @@
 
         @media (min-width: 768px) {
             .problem-list {
-                gap: 1.25rem;
+                gap: 1.85rem;
             }
         }
 
@@ -1644,6 +1644,10 @@
                 border-radius: 1.5rem;
             }
 
+            .problem-list {
+                gap: 1.15rem;
+            }
+
             .answer-solutions {
                 margin-top: 4rem;
             }
@@ -1908,20 +1912,17 @@
             </h3>
 
             <div class="problem-list">
-                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.08s;">
+                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.18s;">
                     <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;계속 올라가는 인건비 걱정되요&quot;</p>
                 </div>
-                <div class="problem-row right problem-reveal" style="--reveal-delay: 0.16s;">
+                <div class="problem-row right problem-reveal" style="--reveal-delay: 0.6s;">
                     <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;운영자금이 필요해요&quot;</p>
                 </div>
-                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.24s;">
+                <div class="problem-row left problem-reveal" style="--reveal-delay: 1.02s;">
                     <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;광고 마케팅 방법을 모르겠어요&quot;</p>
                 </div>
-                <div class="problem-row right problem-reveal" style="--reveal-delay: 0.32s;">
+                <div class="problem-row right problem-reveal" style="--reveal-delay: 1.44s;">
                     <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;투자를 받고싶은데 방법을 모르겠어요&quot;</p>
-                </div>
-                <div class="problem-row left problem-reveal" style="--reveal-delay: 0.4s;">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;회사 비지니스모델이 필요해요&quot;</p>
                 </div>
             </div>
         </div>
@@ -3000,8 +3001,8 @@
                     }
                 });
             }, {
-                threshold: 0.25,
-                rootMargin: '0px 0px -12% 0px'
+                threshold: 0.32,
+                rootMargin: '0px 0px -8% 0px'
             });
 
             problemObserver.observe(problemListSection);
