@@ -322,6 +322,130 @@
             margin-top: 6.5rem;
         }
 
+        .section-bridge {
+            display: flex;
+            justify-content: center;
+            margin: -1.25rem auto 2.75rem;
+            pointer-events: none;
+        }
+
+        .section-bridge-inner {
+            position: relative;
+            width: 4.5rem;
+            height: 8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-bridge-inner::before,
+        .section-bridge-inner::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 1.5px;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(76, 122, 151, 0) 0%, rgba(76, 122, 151, 0.7) 26%, rgba(31, 58, 95, 0.92) 100%);
+        }
+
+        .section-bridge-inner::before {
+            top: 0;
+            height: 2.8rem;
+        }
+
+        .section-bridge-inner::after {
+            bottom: 0;
+            height: 3rem;
+            background: linear-gradient(180deg, rgba(31, 58, 95, 0.92) 0%, rgba(76, 122, 151, 0.7) 72%, rgba(76, 122, 151, 0) 100%);
+        }
+
+        .section-bridge-badge {
+            position: relative;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: linear-gradient(160deg, #ffffff 0%, var(--color-primary-soft-bg) 100%);
+            border: 1px solid rgba(76, 122, 151, 0.24);
+            box-shadow: 0 14px 30px rgba(22, 42, 68, 0.12);
+        }
+
+        .section-bridge-badge span {
+            position: absolute;
+            display: block;
+            border-radius: 9999px;
+            background: var(--color-primary);
+        }
+
+        .section-bridge-badge .bridge-node-main {
+            width: 0.5rem;
+            height: 0.5rem;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-primary-dark);
+            box-shadow: 0 0 0 4px rgba(76, 122, 151, 0.12);
+        }
+
+        .section-bridge-badge .bridge-node-top,
+        .section-bridge-badge .bridge-node-bottom {
+            width: 0.28rem;
+            height: 0.28rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary-accent);
+        }
+
+        .section-bridge-badge .bridge-node-top {
+            top: 0.58rem;
+        }
+
+        .section-bridge-badge .bridge-node-bottom {
+            bottom: 0.58rem;
+        }
+
+        .section-bridge-badge .bridge-link {
+            width: 1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(76, 122, 151, 0.74) 0%, rgba(31, 58, 95, 0.96) 100%);
+        }
+
+        .section-bridge-badge .bridge-link-top {
+            top: 0.82rem;
+            height: 0.62rem;
+        }
+
+        .section-bridge-badge .bridge-link-bottom {
+            bottom: 0.82rem;
+            height: 0.62rem;
+        }
+
+        body.dark-mode .section-bridge-badge {
+            background: linear-gradient(160deg, #223246 0%, #1a2533 100%);
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+        }
+
+        body.dark-mode .section-bridge-inner::before,
+        body.dark-mode .section-bridge-inner::after,
+        body.dark-mode .section-bridge-badge .bridge-link {
+            background: linear-gradient(180deg, rgba(193, 209, 222, 0) 0%, rgba(193, 209, 222, 0.74) 26%, rgba(213, 225, 234, 0.92) 100%);
+        }
+
+        body.dark-mode .section-bridge-inner::after {
+            background: linear-gradient(180deg, rgba(213, 225, 234, 0.92) 0%, rgba(193, 209, 222, 0.74) 72%, rgba(193, 209, 222, 0) 100%);
+        }
+
+        body.dark-mode .section-bridge-badge .bridge-node-main {
+            background: #d5e1ea;
+            box-shadow: 0 0 0 4px rgba(193, 209, 222, 0.12);
+        }
+
+        body.dark-mode .section-bridge-badge .bridge-node-top,
+        body.dark-mode .section-bridge-badge .bridge-node-bottom {
+            background: #c1d1de;
+        }
+
         .answer-circles {
             display: grid;
             grid-template-columns: 1fr;
@@ -1652,6 +1776,14 @@
                 margin-top: 4rem;
             }
 
+            .section-bridge {
+                margin: -0.5rem auto 2rem;
+            }
+
+            .section-bridge-inner {
+                height: 6.6rem;
+            }
+
             .answer-circle {
                 min-height: 18.5rem;
                 padding: 2rem 1.5rem;
@@ -1724,6 +1856,11 @@
                 font-size: 2.35rem;
                 line-height: 1.08;
                 margin-bottom: 1rem;
+            }
+
+            .section-bridge-badge {
+                width: 2.75rem;
+                height: 2.75rem;
             }
 
             .problem-title-sweep,
@@ -1931,6 +2068,17 @@
     <!-- About Solutions Section -->
     <section id="about-solution" class="py-24 problem-section night-sky-section">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-bridge" aria-hidden="true">
+                <div class="section-bridge-inner">
+                    <div class="section-bridge-badge">
+                        <span class="bridge-node-top"></span>
+                        <span class="bridge-link bridge-link-top"></span>
+                        <span class="bridge-node-main"></span>
+                        <span class="bridge-link bridge-link-bottom"></span>
+                        <span class="bridge-node-bottom"></span>
+                    </div>
+                </div>
+            </div>
             <div class="text-center">
                 <p class="text-base md:text-xl font-normal problem-title opacity-80">고민이 많은 대표님들께</p>
                 <p class="mt-3 text-3xl md:text-5xl font-bold problem-title leading-tight">엔엘비랩이 드리는 해답</p>
