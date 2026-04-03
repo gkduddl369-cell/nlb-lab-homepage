@@ -309,6 +309,18 @@
             animation: problemTitleFill 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
         }
 
+        #about.night-sky-section,
+        #about-solution.night-sky-section {
+            background: #f3f6f8;
+        }
+
+        body.dark-mode #about.night-sky-section,
+        body.dark-mode #about-solution.night-sky-section {
+            background: #1b1d23 !important;
+            background-image: none !important;
+            animation: none !important;
+        }
+
         @keyframes problemTitleFill {
             from {
                 background-size: 4% 100%;
