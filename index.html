@@ -71,7 +71,18 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: #1e293b;
+            overflow-x: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        iframe {
+            display: block;
         }
 
         :root {
@@ -185,6 +196,12 @@
 
         .problem-row.left {
             justify-content: flex-start;
+        }
+
+        .problem-bubble {
+            max-width: min(100%, 32rem);
+            white-space: normal;
+            word-break: keep-all;
         }
 
         .problem-row.right {
@@ -1381,6 +1398,7 @@
             bottom: 9.55rem;
             z-index: 61;
             width: min(22rem, calc(100vw - 2rem));
+            max-height: calc(100svh - 7rem);
             border-radius: 1rem;
             border: 1px solid rgba(148, 163, 184, 0.35);
             background: rgba(255, 255, 255, 0.96);
@@ -1429,6 +1447,7 @@
             color: #1f2937;
             font-size: 0.92rem;
             line-height: 1.5;
+            overflow-y: auto;
         }
 
         .chatbot-msg {
@@ -1554,6 +1573,115 @@
 
 
         @media (max-width: 768px) {
+            body.dark-mode .contact-section,
+            body.dark-mode .night-sky-section,
+            body.dark-mode #services.night-sky-section,
+            body.dark-mode #cases.night-sky-section,
+            body.dark-mode #team.night-sky-section {
+                background-attachment: scroll !important;
+            }
+
+            .hero-section {
+                min-height: 100svh;
+            }
+
+            .hero-bg-slide {
+                height: 100svh;
+                background-position: 68% center;
+            }
+
+            .hero-overlay {
+                align-items: flex-end;
+                padding: 6rem 0 5rem;
+            }
+
+            .hero-overlay .max-w-3xl {
+                max-width: 100%;
+            }
+
+            #heroLeadText {
+                font-size: 1.05rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #heroSubText {
+                font-size: 0.98rem;
+                line-height: 1.6;
+                margin-bottom: 2rem;
+            }
+
+            .hero-arrow {
+                top: auto;
+                bottom: 4.6rem;
+                transform: none;
+            }
+
+            .hero-arrow:hover {
+                transform: scale(1.03);
+            }
+
+            .hero-indicators {
+                bottom: 1rem;
+            }
+
+            #about,
+            #about-solution,
+            #services,
+            #cases,
+            #team,
+            #contact {
+                padding-top: 4.5rem;
+                padding-bottom: 4.5rem;
+            }
+
+            .problem-title-sweep {
+                font-size: 2rem;
+                line-height: 1.35;
+            }
+
+            .problem-bubble {
+                max-width: 100%;
+                border-radius: 1.5rem;
+            }
+
+            .answer-solutions {
+                margin-top: 4rem;
+            }
+
+            .answer-circle {
+                min-height: 18.5rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .answer-circle-title {
+                font-size: 1.28rem;
+            }
+
+            .answer-circle-desc {
+                font-size: 0.95rem;
+                line-height: 1.68;
+            }
+
+            .service-card,
+            .case-card {
+                padding: 1.5rem;
+            }
+
+            .team-slide > div,
+            #consultationForm {
+                padding: 1.5rem;
+            }
+
+            .govsbiz-banner {
+                padding-top: 2.75rem;
+                padding-bottom: 2.75rem;
+            }
+
+            .govsbiz-btn {
+                width: 100%;
+                max-width: 15rem;
+            }
+
             .scroll-top-btn {
                 right: 1rem;
                 bottom: 1rem;
@@ -1571,6 +1699,103 @@
             .chatbot-window {
                 right: 1rem;
                 bottom: 8.9rem;
+            }
+
+            footer {
+                word-break: keep-all;
+            }
+
+            footer a,
+            footer span {
+                overflow-wrap: anywhere;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-arrow {
+                display: none;
+            }
+
+            .hero-section h2 {
+                font-size: 2.35rem;
+                line-height: 1.08;
+                margin-bottom: 1rem;
+            }
+
+            .problem-title-sweep,
+            #about-solution .problem-title,
+            #services h3,
+            #cases h3,
+            #team h3,
+            #contact h3 {
+                font-size: 1.85rem;
+                line-height: 1.25;
+            }
+
+            .team-slider-container {
+                padding: 0 2rem;
+            }
+
+            .team-slide > div {
+                padding: 1.25rem;
+            }
+
+            .govsbiz-glow,
+            .govsbiz-asset {
+                display: none;
+            }
+
+            .govsbiz-banner .max-w-3xl {
+                max-width: 100%;
+                padding-left: 0;
+            }
+
+            .govsbiz-banner p {
+                font-size: 1.85rem;
+                line-height: 1.25;
+            }
+
+            .chatbot-window {
+                right: 0.75rem;
+                left: 0.75rem;
+                width: auto;
+                bottom: 8.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-overlay {
+                padding-top: 5.5rem;
+                padding-bottom: 4.5rem;
+            }
+
+            .hero-section h2 {
+                font-size: 2rem;
+            }
+
+            #heroLeadText {
+                font-size: 1rem;
+            }
+
+            #heroSubText {
+                font-size: 0.92rem;
+                margin-bottom: 1.6rem;
+            }
+
+            .answer-circle {
+                min-height: 17rem;
+                padding: 1.65rem 1.25rem;
+            }
+
+            .service-card,
+            .case-card,
+            .team-slide > div,
+            #consultationForm {
+                padding: 1.2rem;
+            }
+
+            .chatbot-body {
+                padding: 0.85rem;
             }
         }
     </style>
