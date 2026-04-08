@@ -1,6 +1,7 @@
 param(
     [string]$RepoPath = (Get-Location).Path,
     [int]$DebounceSeconds = 4,
+    [bool]$RequireApproval = $true,
     [string[]]$IncludeExtensions = @('.html', '.css', '.js', '.mjs', '.json', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp')
 )
 
@@ -10,6 +11,49 @@ function Write-Status {
     param([string]$Message)
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     Write-Host "[$timestamp] $Message"
+}
+
+function Get-GitCommand {
+    $gitCommand = (Get-Command git -ErrorAction SilentlyContinue)
+    if ($gitCommand) {
+        return $gitCommand.Source
+    }
+
+    $candidates = @(
+        'C:\Program Files\Git\cmd\git.exe',
+        'C:\Program Files\Git\bin\git.exe',
+        'C:\Program Files (x86)\Git\cmd\git.exe'
+    )
+
+    foreach ($candidate in $candidates) {
+        if (Test-Path $candidate) {
+            return $candidate
+        }
+    }
+
+    return $null
+}
+
+function Confirm-AutoPush {
+    param([string]$ChangedPath)
+
+    if (-not $RequireApproval) {
+        return $true
+    }
+
+    try {
+        $answer = Read-Host "변경 파일 감지됨: $ChangedPath`n지금 GitHub로 업로드할까요? (Y/N)"
+    } catch {
+        Write-Status '승인 입력을 받을 수 없어 자동 업로드를 건너뜁니다.'
+        return $false
+    }
+
+    if ([string]::IsNullOrWhiteSpace($answer)) {
+        Write-Status '승인이 없어 자동 업로드를 건너뜁니다.'
+        return $false
+    }
+
+    return @('y', 'yes') -contains $answer.Trim().ToLowerInvariant()
 }
 
 function Test-TrackedPath {
@@ -36,40 +80,45 @@ function Invoke-GitAutoPush {
 
     Push-Location $WorkingPath
     try {
-        $insideRepo = git rev-parse --is-inside-work-tree 2>$null
+        if (-not $script:GitCommand) {
+            Write-Status 'Git 실행 파일을 찾을 수 없습니다. Git 설치 또는 PATH 설정을 확인하세요.'
+            return
+        }
+
+        $insideRepo = & $script:GitCommand rev-parse --is-inside-work-tree 2>$null
         if ($insideRepo -ne 'true') {
             Write-Status 'Git 저장소가 아닙니다. 자동 업로드를 건너뜁니다.'
             return
         }
 
-        $originUrl = git remote get-url origin 2>$null
+        $originUrl = & $script:GitCommand remote get-url origin 2>$null
         if (-not $originUrl) {
             Write-Status 'origin 원격 저장소가 없습니다. 먼저 GitHub 원격을 연결해야 자동 업로드됩니다.'
             return
         }
 
-        git add -A
+        & $script:GitCommand add -A
 
-        $hasChanges = git diff --cached --quiet
+        $hasChanges = & $script:GitCommand diff --cached --quiet
         if ($LASTEXITCODE -eq 0) {
             Write-Status '업로드할 변경 사항이 없습니다.'
             return
         }
 
-        $branch = git branch --show-current
+        $branch = & $script:GitCommand branch --show-current
         if (-not $branch) {
             Write-Status '현재 브랜치를 찾을 수 없습니다.'
             return
         }
 
         $message = 'chore: auto sync website changes'
-        git commit -m $message | Out-Host
+        & $script:GitCommand commit -m $message | Out-Host
         if ($LASTEXITCODE -ne 0) {
             Write-Status '자동 커밋에 실패했습니다.'
             return
         }
 
-        git push origin $branch | Out-Host
+        & $script:GitCommand push origin $branch | Out-Host
         if ($LASTEXITCODE -eq 0) {
             Write-Status "자동 업로드 완료: $branch"
         } else {
@@ -83,6 +132,8 @@ function Invoke-GitAutoPush {
 if (-not (Test-Path $RepoPath)) {
     throw "경로를 찾을 수 없습니다: $RepoPath"
 }
+
+$script:GitCommand = Get-GitCommand
 
 $fullRepoPath = (Resolve-Path $RepoPath).Path
 $watcher = New-Object System.IO.FileSystemWatcher
@@ -105,18 +156,28 @@ $action = {
 
     $script:lastEvent = $now
     Write-Status "변경 감지: $path"
+
+    if (-not (Confirm-AutoPush -ChangedPath $path)) {
+        Write-Status '사용자 승인 거부로 업로드를 건너뜁니다.'
+        return
+    }
+
     Start-Sleep -Seconds $DebounceSeconds
     Invoke-GitAutoPush -WorkingPath $fullRepoPath
 }
 
 $subscriptions = @(
-    Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $action,
-    Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action,
-    Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $action,
+    Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $action
+    Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
+    Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $action
     Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $action
 )
 
-Write-Status '자동 업로드 감시를 시작했습니다. 종료하려면 Ctrl+C를 누르세요.'
+if ($RequireApproval) {
+    Write-Status '자동 업로드 감시를 시작했습니다. 변경 시 승인(Y/N) 후 업로드됩니다. 종료하려면 Ctrl+C를 누르세요.'
+} else {
+    Write-Status '자동 업로드 감시를 시작했습니다. 종료하려면 Ctrl+C를 누르세요.'
+}
 
 try {
     while ($true) {
