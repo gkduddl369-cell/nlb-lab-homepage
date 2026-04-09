@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="NLB LAB favicon">
+  <defs>
+    <linearGradient id="nlbTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2dd4ff"/>
+      <stop offset="100%" stop-color="#0d7cf2"/>
+    </linearGradient>
+    <linearGradient id="nlbRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0b2f9f"/>
+    </linearGradient>
+    <linearGradient id="nlbBottom" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#14b8ff"/>
+    </linearGradient>
+    <linearGradient id="nlbLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(128 128)">
+    <path d="M0 -62 C0 -29 -29 0 -62 0 L-62 27 C-13 27 27 -13 27 -62Z" fill="url(#nlbTop)"/>
+    <path d="M62 0 C29 0 0 -29 0 -62 L-27 -62 C-27 -13 13 27 62 27Z" fill="url(#nlbRight)"/>
+    <path d="M0 62 C0 29 29 0 62 0 L62 -27 C13 -27 -27 13 -27 62Z" fill="url(#nlbBottom)"/>
+    <path d="M-62 0 C-29 0 0 29 0 62 L27 62 C27 13 -13 -27 -62 -27Z" fill="url(#nlbLeft)"/>
+    <path d="M0 -18 L18 0 L0 18 L-18 0 Z" fill="#ffffff"/>
+  </g>
+</svg>

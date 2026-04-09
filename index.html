@@ -9,6 +9,9 @@
     <meta name="keywords" content="엔엘비랩, NLB LAB, AI, 데이터, 디지털전환, DX, 인공지능, 분석, 컨설팅" />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://www.nlb-ai.com/" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/nlblogo.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="assets/nlblogo.png" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:site_name" content="엔엘비랩" />
@@ -275,6 +278,24 @@
             color: #eef4f8;
         }
 
+        body.dark-mode .section-title,
+        body.dark-mode .service-card h4,
+        body.dark-mode .case-card h4,
+        body.dark-mode .team-slide h4,
+        body.dark-mode #team .font-bold.text-lg,
+        body.dark-mode #contact h3,
+        body.dark-mode #services h3,
+        body.dark-mode #cases h3,
+        body.dark-mode #team h3 {
+            color: #e6edf3;
+        }
+
+        body.dark-mode #cases .case-card .flex.flex-wrap.gap-2 span {
+            color: #ffffff !important;
+            background: rgba(76, 122, 151, 0.28) !important;
+            border: 1px solid rgba(181, 198, 213, 0.18);
+        }
+
         body.dark-mode .problem-chip {
             background: linear-gradient(135deg, #32485f 0%, #26384b 100%);
             color: #f8fafc;
@@ -306,6 +327,10 @@
             color: #b7c5d1;
         }
 
+        body.dark-mode .problem-title-sweep::after {
+            background-image: linear-gradient(90deg, #8fd3ff 0%, #d2ebff 52%, #a8d8ff 100%);
+        }
+
         .problem-title-sweep.is-animated::after {
             animation: problemTitleFill 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
         }
@@ -317,7 +342,7 @@
 
         body.dark-mode #about.night-sky-section,
         body.dark-mode #about-solution.night-sky-section {
-            background: linear-gradient(180deg, #15202d 0%, #1a2635 50%, #1d2b3c 100%) !important;
+            background: linear-gradient(180deg, #223245 0%, #27384b 52%, #2b3d51 100%) !important;
             background-image: none !important;
             animation: none !important;
         }
@@ -333,9 +358,9 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at 18% 22%, rgba(76, 122, 151, 0.16) 0, transparent 28%),
-                radial-gradient(circle at 82% 30%, rgba(49, 72, 95, 0.18) 0, transparent 24%),
-                radial-gradient(circle at 50% 78%, rgba(118, 146, 170, 0.1) 0, transparent 30%);
+                radial-gradient(circle at 18% 22%, rgba(120, 154, 183, 0.2) 0, transparent 28%),
+                radial-gradient(circle at 82% 30%, rgba(87, 118, 145, 0.22) 0, transparent 24%),
+                radial-gradient(circle at 50% 78%, rgba(155, 183, 205, 0.12) 0, transparent 30%);
             pointer-events: none;
             z-index: 0;
         }
@@ -356,125 +381,112 @@
         .section-bridge {
             display: flex;
             justify-content: center;
-            margin: -1.25rem auto 2.75rem;
+            margin: 2.25rem auto;
             pointer-events: none;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.22s ease, transform 0.22s ease;
         }
 
-        .section-bridge-inner {
-            position: relative;
-            width: 4.5rem;
-            height: 8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .section-bridge.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .section-bridge-inner::before,
-        .section-bridge-inner::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            width: 1.5px;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, rgba(76, 122, 151, 0) 0%, rgba(76, 122, 151, 0.7) 26%, rgba(31, 58, 95, 0.92) 100%);
+        .section-bridge-dots {
+            display: grid;
+            gap: 0.58rem;
+            justify-items: center;
         }
 
-        .section-bridge-inner::before {
-            top: 0;
-            height: 2.8rem;
-        }
-
-        .section-bridge-inner::after {
-            bottom: 0;
-            height: 3rem;
-            background: linear-gradient(180deg, rgba(31, 58, 95, 0.92) 0%, rgba(76, 122, 151, 0.7) 72%, rgba(76, 122, 151, 0) 100%);
-        }
-
-        .section-bridge-badge {
-            position: relative;
-            width: 3rem;
-            height: 3rem;
+        .section-bridge-dot {
+            width: 0.58rem;
+            height: 0.58rem;
             border-radius: 9999px;
-            background: linear-gradient(160deg, #ffffff 0%, var(--color-primary-soft-bg) 100%);
-            border: 1px solid rgba(76, 122, 151, 0.24);
-            box-shadow: 0 14px 30px rgba(22, 42, 68, 0.12);
+            background: rgba(76, 122, 151, 0.34);
+            transform: scale(0.82);
+            opacity: 0;
         }
 
-        .section-bridge-badge span {
-            position: absolute;
-            display: block;
-            border-radius: 9999px;
-            background: var(--color-primary);
+        .section-bridge.is-visible .section-bridge-dot {
+            animation: bridgeDotReveal 0.24s ease forwards;
         }
 
-        .section-bridge-badge .bridge-node-main {
-            width: 0.5rem;
-            height: 0.5rem;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--color-primary-dark);
-            box-shadow: 0 0 0 4px rgba(76, 122, 151, 0.12);
+        .section-bridge.is-visible .section-bridge-dot:nth-child(2) {
+            animation-delay: 0.05s;
         }
 
-        .section-bridge-badge .bridge-node-top,
-        .section-bridge-badge .bridge-node-bottom {
-            width: 0.28rem;
-            height: 0.28rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--color-primary-accent);
+        .section-bridge.is-visible .section-bridge-dot:nth-child(3) {
+            animation-delay: 0.1s;
         }
 
-        .section-bridge-badge .bridge-node-top {
-            top: 0.58rem;
+        .section-bridge.is-visible .section-bridge-dot:nth-child(4) {
+            animation-delay: 0.15s;
         }
 
-        .section-bridge-badge .bridge-node-bottom {
-            bottom: 0.58rem;
+        .section-bridge-dot:nth-child(1) {
+            width: 0.44rem;
+            height: 0.44rem;
         }
 
-        .section-bridge-badge .bridge-link {
-            width: 1.5px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, rgba(76, 122, 151, 0.74) 0%, rgba(31, 58, 95, 0.96) 100%);
+        .section-bridge-dot:nth-child(2) {
+            width: 0.56rem;
+            height: 0.56rem;
+            background: rgba(76, 122, 151, 0.56);
         }
 
-        .section-bridge-badge .bridge-link-top {
-            top: 0.82rem;
-            height: 0.62rem;
+        .section-bridge-dot:nth-child(3) {
+            width: 0.66rem;
+            height: 0.66rem;
+            background: rgba(76, 122, 151, 0.76);
+            box-shadow: 0 0 14px rgba(76, 122, 151, 0.16);
         }
 
-        .section-bridge-badge .bridge-link-bottom {
-            bottom: 0.82rem;
-            height: 0.62rem;
+        .section-bridge-dot:nth-child(4) {
+            width: 0.8rem;
+            height: 0.8rem;
+            background: rgba(76, 122, 151, 0.96);
+            box-shadow: 0 0 20px rgba(76, 122, 151, 0.24);
         }
 
-        body.dark-mode .section-bridge-badge {
-            background: linear-gradient(160deg, #223246 0%, #1a2533 100%);
-            border-color: rgba(148, 163, 184, 0.2);
-            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+        @keyframes bridgeDotReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(-6px) scale(0.74);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
-        body.dark-mode .section-bridge-inner::before,
-        body.dark-mode .section-bridge-inner::after,
-        body.dark-mode .section-bridge-badge .bridge-link {
-            background: linear-gradient(180deg, rgba(193, 209, 222, 0) 0%, rgba(193, 209, 222, 0.74) 26%, rgba(213, 225, 234, 0.92) 100%);
+        .solution-content {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.72s ease, transform 0.72s ease;
         }
 
-        body.dark-mode .section-bridge-inner::after {
-            background: linear-gradient(180deg, rgba(213, 225, 234, 0.92) 0%, rgba(193, 209, 222, 0.74) 72%, rgba(193, 209, 222, 0) 100%);
+        .solution-content.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        body.dark-mode .section-bridge-badge .bridge-node-main {
-            background: #d5e1ea;
-            box-shadow: 0 0 0 4px rgba(193, 209, 222, 0.12);
+        body.dark-mode .section-bridge-dot:nth-child(1) {
+            background: rgba(213, 225, 234, 0.28);
         }
 
-        body.dark-mode .section-bridge-badge .bridge-node-top,
-        body.dark-mode .section-bridge-badge .bridge-node-bottom {
-            background: #c1d1de;
+        body.dark-mode .section-bridge-dot:nth-child(2) {
+            background: rgba(213, 225, 234, 0.52);
+        }
+
+        body.dark-mode .section-bridge-dot:nth-child(3) {
+            background: rgba(213, 225, 234, 0.72);
+            box-shadow: 0 0 14px rgba(213, 225, 234, 0.12);
+        }
+
+        body.dark-mode .section-bridge-dot:nth-child(4) {
+            background: rgba(238, 244, 248, 0.96);
+            box-shadow: 0 0 18px rgba(213, 225, 234, 0.18);
         }
 
         .answer-circles {
@@ -1808,11 +1820,7 @@
             }
 
             .section-bridge {
-                margin: -0.5rem auto 2rem;
-            }
-
-            .section-bridge-inner {
-                height: 6.6rem;
+                margin: 1.75rem auto;
             }
 
             .answer-circle {
@@ -1889,9 +1897,8 @@
                 margin-bottom: 1rem;
             }
 
-            .section-bridge-badge {
-                width: 2.75rem;
-                height: 2.75rem;
+            .section-bridge-dots {
+                gap: 0.38rem;
             }
 
             .problem-title-sweep,
@@ -2096,21 +2103,19 @@
         </div>
     </section>
 
+    <div class="section-bridge" aria-hidden="true">
+        <div class="section-bridge-dots">
+            <span class="section-bridge-dot"></span>
+            <span class="section-bridge-dot"></span>
+            <span class="section-bridge-dot"></span>
+            <span class="section-bridge-dot"></span>
+        </div>
+    </div>
+
     <!-- About Solutions Section -->
     <section id="about-solution" class="py-24 problem-section night-sky-section">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-bridge" aria-hidden="true">
-                <div class="section-bridge-inner">
-                    <div class="section-bridge-badge">
-                        <span class="bridge-node-top"></span>
-                        <span class="bridge-link bridge-link-top"></span>
-                        <span class="bridge-node-main"></span>
-                        <span class="bridge-link bridge-link-bottom"></span>
-                        <span class="bridge-node-bottom"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
+            <div class="text-center solution-content">
                 <p class="text-base md:text-xl font-normal problem-title opacity-80">고민이 많은 대표님들께</p>
                 <p class="mt-3 text-3xl md:text-5xl font-bold problem-title leading-tight">엔엘비랩이 드리는 해답</p>
 
@@ -3143,9 +3148,12 @@
         const problemListSection = document.querySelector('#about .problem-list');
         const problemTitleSweep = document.querySelector('#about .problem-title-sweep');
         const aboutSolutionSection = document.getElementById('about-solution');
+        const aboutSolutionBridge = document.querySelector('.section-bridge');
+        const aboutSolutionContent = document.querySelector('#about-solution .solution-content');
         const solutionMarkerHighlights = document.querySelectorAll('.solution-marker-highlight');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let problemRevealTimeouts = [];
+        let solutionRevealTimeoutId = null;
 
         function clearProblemRevealTimers() {
             problemRevealTimeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
@@ -3171,7 +3179,7 @@
         }
 
         const revealSections = document.querySelectorAll(
-            'section:not(.hero-section) > div, section:not(.hero-section) > .govsbiz-banner'
+            'section:not(.hero-section):not(#about-solution) > div, section:not(.hero-section) > .govsbiz-banner'
         );
 
         if (prefersReducedMotion) {
@@ -3179,6 +3187,8 @@
             if (problemTitleSweep) {
                 problemTitleSweep.classList.add('is-animated');
             }
+            aboutSolutionBridge?.classList.add('is-visible');
+            aboutSolutionContent?.classList.add('is-visible');
             if (solutionMarkerHighlights.length) {
                 solutionMarkerHighlights.forEach((item) => item.classList.add('is-painted'));
             }
@@ -3215,18 +3225,38 @@
             const solutionObserver = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
+                        if (solutionRevealTimeoutId) {
+                            window.clearTimeout(solutionRevealTimeoutId);
+                            solutionRevealTimeoutId = null;
+                        }
+
+                        aboutSolutionBridge?.classList.add('is-visible');
+                        aboutSolutionContent?.classList.remove('is-visible');
+
+                        solutionRevealTimeoutId = window.setTimeout(() => {
+                            aboutSolutionContent?.classList.add('is-visible');
+                        }, 520);
+
                         solutionMarkerHighlights.forEach((item) => {
                             item.classList.remove('is-painted');
                             void item.offsetWidth;
                             item.classList.add('is-painted');
                         });
                     } else {
+                        if (solutionRevealTimeoutId) {
+                            window.clearTimeout(solutionRevealTimeoutId);
+                            solutionRevealTimeoutId = null;
+                        }
+
+                        aboutSolutionBridge?.classList.remove('is-visible');
+                        aboutSolutionContent?.classList.remove('is-visible');
+
                         solutionMarkerHighlights.forEach((item) => item.classList.remove('is-painted'));
                     }
                 });
             }, {
-                threshold: 0.28,
-                rootMargin: '0px 0px -12% 0px'
+                threshold: 0.12,
+                rootMargin: '0px 0px -26% 0px'
             });
 
             solutionObserver.observe(aboutSolutionSection);
