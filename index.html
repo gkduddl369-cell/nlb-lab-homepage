@@ -268,16 +268,18 @@
         }
 
         body.dark-mode .problem-section {
-            background: #1b1d23;
+            background: #182330;
         }
 
         body.dark-mode .problem-title {
-            color: #ffffff;
+            color: #eef4f8;
         }
 
         body.dark-mode .problem-chip {
-            background: #242933;
+            background: linear-gradient(135deg, #32485f 0%, #26384b 100%);
             color: #f8fafc;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            box-shadow: 0 12px 26px rgba(8, 15, 26, 0.22);
         }
 
         .problem-title-sweep {
@@ -301,7 +303,7 @@
         }
 
         body.dark-mode .problem-title-sweep {
-            color: #9ca3af;
+            color: #b7c5d1;
         }
 
         .problem-title-sweep.is-animated::after {
@@ -315,9 +317,27 @@
 
         body.dark-mode #about.night-sky-section,
         body.dark-mode #about-solution.night-sky-section {
-            background: #1b1d23 !important;
+            background: linear-gradient(180deg, #15202d 0%, #1a2635 50%, #1d2b3c 100%) !important;
             background-image: none !important;
             animation: none !important;
+        }
+
+        body.dark-mode #about .problem-list,
+        body.dark-mode #about-solution .text-center {
+            position: relative;
+        }
+
+        body.dark-mode #about.night-sky-section::before,
+        body.dark-mode #about-solution.night-sky-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 22%, rgba(76, 122, 151, 0.16) 0, transparent 28%),
+                radial-gradient(circle at 82% 30%, rgba(49, 72, 95, 0.18) 0, transparent 24%),
+                radial-gradient(circle at 50% 78%, rgba(118, 146, 170, 0.1) 0, transparent 30%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes problemTitleFill {
