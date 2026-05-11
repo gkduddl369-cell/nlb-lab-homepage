@@ -75,7 +75,21 @@
             line-height: 1.6;
             color: #1e293b;
             overflow-x: hidden;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-break: auto;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-wrap: balance;
+            word-break: keep-all;
+        }
+
+        p, li, dt, dd, blockquote {
+            text-wrap: pretty;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         img {
@@ -102,6 +116,128 @@
 
         section[id] {
             scroll-margin-top: calc(var(--header-offset) + 12px);
+        }
+
+        body.fullpage-mode {
+            min-height: 100svh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            overscroll-behavior-y: contain;
+            scroll-padding-top: 0;
+        }
+
+        body.fullpage-mode > section {
+            min-height: 100svh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            padding-top: var(--header-offset);
+        }
+
+        body.fullpage-mode > section.hero-section {
+            padding-top: 0;
+        }
+
+        body.fullpage-mode > footer > * {
+            width: 100%;
+        }
+
+        body.fullpage-mode > footer {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        body.fullpage-mode .section-bridge {
+            display: none;
+        }
+
+        .fullpage-indicator {
+            position: fixed;
+            top: calc(50% + 6rem);
+            right: 1.2rem;
+            transform: translateY(-50%);
+            z-index: 58;
+            padding: 0.65rem 0.48rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(31, 58, 95, 0.12);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(31, 58, 95, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body:not(.fullpage-mode) .fullpage-indicator {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-50%) translateX(20px);
+        }
+
+        .fullpage-indicator:hover {
+            box-shadow: 0 14px 40px rgba(31, 58, 95, 0.14);
+            border-color: rgba(31, 58, 95, 0.18);
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .fullpage-indicator-dots {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.36rem;
+        }
+
+        .fullpage-dot {
+            width: 0.48rem;
+            height: 0.48rem;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.45);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0;
+        }
+
+        .fullpage-dot:hover {
+            background: rgba(76, 122, 151, 0.6);
+            transform: scale(1.2);
+        }
+
+        .fullpage-dot.is-active {
+            width: 0.56rem;
+            height: 1.2rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #4c7a97 100%);
+            border-radius: 0.28rem;
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.25);
+            transform: scale(1);
+        }
+
+        .fullpage-dot.is-active:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(31, 58, 95, 0.32);
+        }
+
+        @media (max-width: 768px) {
+            .fullpage-indicator {
+                right: 0.85rem;
+                top: calc(50% + 5rem);
+                padding: 0.55rem 0.4rem;
+                border-radius: 1rem;
+            }
+
+            .fullpage-indicator-dots {
+                gap: 0.3rem;
+            }
+
+            .fullpage-dot {
+                width: 0.42rem;
+                height: 0.42rem;
+            }
+
+            .fullpage-dot.is-active {
+                width: 0.48rem;
+                height: 1rem;
+                border-radius: 0.24rem;
+            }
         }
         
         /* Dark Mode Styles */
@@ -241,6 +377,18 @@
             transform: translateY(0);
         }
 
+        .section-reveal .motion-stagger .motion-item {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.52s ease, transform 0.52s cubic-bezier(0.22, 0.61, 0.36, 1);
+            transition-delay: calc(var(--motion-index, 0) * 90ms);
+        }
+
+        .section-reveal.is-visible .motion-stagger .motion-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .problem-bubble {
             position: relative;
             max-width: min(100%, 46rem);
@@ -270,6 +418,18 @@
             }
         }
 
+        @media (max-width: 768px) {
+            body.fullpage-mode {
+                scroll-snap-type: y proximity;
+            }
+
+            body.fullpage-mode > section,
+            body.fullpage-mode > footer {
+                min-height: auto;
+                scroll-snap-align: none;
+            }
+        }
+
         body.dark-mode .problem-section {
             background: #182330;
         }
@@ -280,20 +440,11 @@
 
         body.dark-mode .section-title,
         body.dark-mode .service-card h4,
-        body.dark-mode .case-card h4,
-        body.dark-mode .team-slide h4,
-        body.dark-mode #team .font-bold.text-lg,
         body.dark-mode #contact h3,
         body.dark-mode #services h3,
         body.dark-mode #cases h3,
         body.dark-mode #team h3 {
             color: #e6edf3;
-        }
-
-        body.dark-mode #cases .case-card .flex.flex-wrap.gap-2 span {
-            color: #ffffff !important;
-            background: rgba(76, 122, 151, 0.28) !important;
-            border: 1px solid rgba(181, 198, 213, 0.18);
         }
 
         body.dark-mode .problem-chip {
@@ -327,6 +478,532 @@
             color: #b7c5d1;
         }
 
+        body.scene-light:not(.dark-mode) .nav-link {
+            color: rgba(17, 24, 39, 0.75);
+        }
+
+        body.scene-light:not(.dark-mode) .nav-link:hover {
+            color: #111827;
+        }
+
+        body.scene-light:not(.dark-mode) .theme-toggle {
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(17, 24, 39, 0.18);
+            color: #1f2937;
+        }
+
+        body.scene-light:not(.dark-mode) .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        body:not(.dark-mode) .page-two-scene,
+        body:not(.dark-mode) .page-three-scene {
+            background: #ffffff !important;
+        }
+
+        body:not(.dark-mode) #services,
+        body:not(.dark-mode) #cases,
+        body:not(.dark-mode) #team,
+        body:not(.dark-mode) #contact {
+            background: #ffffff !important;
+        }
+
+        .page-two-shell,
+        .page-three-shell {
+            max-width: 1220px;
+        }
+
+        .page-two-eyebrow,
+        .page-three-eyebrow {
+            color: rgba(17, 19, 24, 0.55);
+            letter-spacing: 0.12em;
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .about-slide .page-two-eyebrow {
+            margin-top: 2.5rem;
+        }
+
+        .page-two-grid {
+            margin-top: 1.25rem;
+            display: grid;
+            grid-template-columns: minmax(280px, 1.25fr) minmax(280px, 1fr);
+            gap: clamp(1.2rem, 3vw, 4rem);
+            align-items: start;
+        }
+
+        .page-two-title {
+            color: #111318;
+            font-size: clamp(2.6rem, 8vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        .page-two-subtitle {
+            margin-top: 1rem;
+            color: rgba(17, 19, 24, 0.7);
+            font-size: clamp(1rem, 1.7vw, 1.5rem);
+        }
+
+        .page-two-right-title {
+            color: #1f2937;
+            font-size: clamp(1rem, 1.5vw, 1.4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.2);
+            padding-bottom: 0.7rem;
+            white-space: nowrap;
+        }
+
+        .page-two-list {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 0.45rem;
+            color: rgba(31, 41, 55, 0.8);
+            font-size: clamp(0.96rem, 1.25vw, 1.2rem);
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        .page-two-list li::before {
+            content: '· ';
+            color: rgba(17, 24, 39, 0.62);
+        }
+
+        .page-two-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            display: grid;
+            grid-template-columns: auto auto 1fr;
+            align-items: center;
+            gap: 0.8rem;
+            color: #111827;
+        }
+
+        .page-two-footer strong {
+            font-size: clamp(1.6rem, 2.5vw, 2.3rem);
+            font-weight: 800;
+        }
+
+        .page-two-footer span {
+            color: rgba(17, 24, 39, 0.58);
+        }
+
+        .page-two-progress {
+            height: 1px;
+            background: rgba(17, 24, 39, 0.22);
+            position: relative;
+        }
+
+        .page-two-progress::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 50%;
+            background: #111827;
+            transition: width 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .about-slider {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .about-slider-track {
+            --about-slide-index: 0;
+            display: flex;
+            width: 200%;
+            align-items: stretch;
+            transform: translateX(calc(var(--about-slide-index) * -50%));
+            transition: transform 0.58s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .about-slide {
+            flex: 0 0 50%;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        /* 그리드(본문)가 남은 공간을 채워 숫자+버튼을 항상 하단에 */
+        .about-slide > .page-two-grid {
+            flex: 1;
+            align-content: flex-start;
+              padding-top: 2.5rem;
+        }
+
+        .solution-list-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+
+        .solution-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding-bottom: 1.4rem;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+        }
+
+        .solution-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .solution-item-num {
+            flex-shrink: 0;
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            font-weight: 800;
+            color: var(--color-primary);
+            letter-spacing: -0.04em;
+            line-height: 1;
+            padding-top: 0.1rem;
+        }
+
+        .solution-item strong {
+            display: block;
+            font-size: clamp(1rem, 1.4vw, 1.25rem);
+            font-weight: 700;
+            color: #111318;
+            margin-bottom: 0.25rem;
+        }
+
+        .solution-item p {
+            font-size: clamp(0.88rem, 1.1vw, 1rem);
+            color: rgba(17, 24, 39, 0.65);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        body.dark-mode .solution-item {
+            border-color: rgba(184, 198, 212, 0.15);
+        }
+
+        body.dark-mode .solution-item strong {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .solution-item p {
+            color: rgba(184, 198, 212, 0.7);
+        }
+
+        .page-two-progress {
+            --progress-width: 50%;
+        }
+
+        .page-two-progress::before {
+            width: var(--progress-width, 50%);
+        }
+
+        .about-slide-controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.65rem;
+            justify-content: flex-end;
+        }
+
+        .about-slide > .about-slide-controls {
+            margin-top: 1rem;
+        }
+
+        .about-slide-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 5rem;
+            padding: 0.42rem 0.9rem;
+            border: 1px solid rgba(17, 24, 39, 0.24);
+            color: rgba(17, 24, 39, 0.78);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: all 0.22s ease;
+        }
+
+        .about-slide-btn:hover {
+            background: rgba(17, 24, 39, 0.08);
+            border-color: rgba(17, 24, 39, 0.42);
+            color: #111827;
+        }
+
+        .about-slide-btn[aria-disabled='true'] {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        /* ---- Services Section ---- */
+        .svc-grid {
+            margin-top: 0;
+            display: grid;
+            grid-template-columns: minmax(280px, 1.7fr) minmax(200px, 0.8fr);
+            gap: clamp(2rem, 4vw, 6rem);
+            align-items: start;
+            padding-top: 6rem;
+        }
+
+        /* ticker */
+        .svc-ticker-wrap {
+            overflow: hidden;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(31, 58, 95, 0.02), rgba(17, 24, 39, 0.01), rgba(31, 58, 95, 0.02));
+            border-top: 1px solid rgba(17, 24, 39, 0.08);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+            padding: 0.52rem 0;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .svc-ticker-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #f3f4f6 0%, transparent 10%, transparent 90%, #f3f4f6 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .svc-ticker-track {
+            display: flex;
+            width: max-content;
+            animation: svcTicker 24s linear infinite;
+            will-change: transform;
+        }
+
+        .svc-ticker-track span {
+            white-space: nowrap;
+            font-size: clamp(0.9rem, 1.12vw, 1.05rem);
+            font-weight: 700;
+            color: rgba(31, 58, 95, 0.26);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding-right: 3.2rem;
+            z-index: 0;
+        }
+
+        @keyframes svcTicker {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        body.dark-mode .svc-ticker-track span {
+            color: rgba(184, 198, 212, 0.24);
+        }
+
+        body.dark-mode .svc-ticker-wrap::after {
+            background: linear-gradient(90deg, #0f1826 0%, transparent 10%, transparent 90%, #0f1826 100%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .svc-ticker-track {
+                animation: none;
+            }
+
+            .section-reveal .motion-stagger .motion-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .svc-item,
+            .svc-item::before,
+            .page-two-progress::before {
+                transition: none;
+            }
+
+            .svc-item:hover {
+                transform: none;
+            }
+        }
+
+        /* 얼짤한 세로 타이틀 (우측) */
+        .svc-title-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            padding-top: 0.4rem;
+        }
+
+        .svc-eyebrow {
+            color: rgba(17, 19, 24, 0.45);
+            letter-spacing: 0.18em;
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+
+        .svc-big-title {
+            font-size: clamp(3rem, 5.5vw, 5.2rem);
+            font-weight: 200;
+            letter-spacing: 0.1em;
+            line-height: 1.1;
+            color: #111318;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .svc-sub {
+            margin-top: 1.2rem;
+            font-size: clamp(0.85rem, 1.1vw, 1rem);
+            color: rgba(17, 24, 39, 0.55);
+            line-height: 1.65;
+            font-weight: 400;
+        }
+
+        .svc-divider {
+            width: 2rem;
+            height: 1px;
+            background: rgba(17, 24, 39, 0.25);
+            margin-top: 1.4rem;
+            margin-left: auto;
+        }
+
+        /* 서비스 아이템 그리드 */
+        .svc-item-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-top: 2.2rem;
+        }
+
+        .svc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.9rem 1rem;
+            border-left: 2px solid var(--color-primary);
+            background: rgba(31, 58, 95, 0.03);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s ease, background-color 0.22s ease;
+        }
+
+        .svc-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background: var(--color-primary-dark);
+            transition: height 0.3s ease;
+        }
+
+        .svc-item:hover {
+            transform: translateX(3px);
+            background: rgba(31, 58, 95, 0.06);
+        }
+
+        .svc-item:hover::before {
+            height: 100%;
+        }
+
+        .svc-item strong {
+            display: block;
+            font-size: clamp(0.82rem, 1.05vw, 0.98rem);
+            font-weight: 700;
+            color: #111318;
+        }
+
+        .svc-item p {
+            font-size: clamp(0.75rem, 0.9vw, 0.86rem);
+            color: rgba(17, 24, 39, 0.55);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .svc-right-title {
+            font-size: clamp(1rem, 1.5vw, 1.4rem);
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.15);
+        }
+
+        body.dark-mode .svc-item { background: rgba(184, 198, 212, 0.05); border-color: #4a7ab5; }
+        body.dark-mode .svc-item::before { background: #8eb5e2; }
+        body.dark-mode .svc-item strong { color: #e6edf3; }
+        body.dark-mode .svc-item p { color: rgba(184, 198, 212, 0.6); }
+        body.dark-mode .svc-big-title { color: #e6edf3; }
+        body.dark-mode .svc-big-title em { color: rgba(230, 237, 243, 0.35); }
+
+        @media (max-width: 900px) {
+            .svc-grid { grid-template-columns: 1fr; }
+            .svc-title-col { align-items: flex-start; text-align: left; }
+            .svc-divider { margin-left: 0; }
+            .svc-item-grid { grid-template-columns: 1fr; }
+        }
+
+        .page-three-shell {
+            color: #12141b;
+        }
+
+        .page-three-title-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.75rem;
+        }
+
+        .page-three-title {
+            margin: 0;
+            color: #111319;
+            font-size: clamp(2rem, 5vw, 4.6rem);
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .page-three-grid {
+            margin-top: 1.4rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(0.9rem, 2vw, 1.8rem);
+        }
+
+        .page-three-card {
+            background: rgba(255, 255, 255, 0.42);
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            padding: 0.8rem;
+        }
+
+        .page-three-card img {
+            width: 100%;
+            aspect-ratio: 4 / 2.3;
+            object-fit: cover;
+            filter: saturate(0.78) brightness(0.98);
+        }
+
+        .page-three-card h4 {
+            margin-top: 0.85rem;
+            color: rgba(19, 22, 30, 0.9);
+            font-size: clamp(1rem, 1.6vw, 1.6rem);
+            font-weight: 600;
+        }
+
+        .page-three-card p {
+            margin-top: 0.45rem;
+            color: rgba(19, 22, 30, 0.7);
+            font-size: clamp(0.86rem, 1.03vw, 1.02rem);
+            line-height: 1.55;
+        }
+
+        @media (max-width: 900px) {
+            .page-two-grid,
+            .page-three-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-three-title-row {
+                justify-content: flex-start;
+            }
+        }
+
         body.dark-mode .problem-title-sweep::after {
             background-image: linear-gradient(90deg, #8fd3ff 0%, #d2ebff 52%, #a8d8ff 100%);
         }
@@ -352,6 +1029,58 @@
             position: relative;
         }
 
+        body.dark-mode .page-three-card {
+            background: linear-gradient(135deg, rgba(38, 56, 75, 0.8) 0%, rgba(39, 56, 75, 0.7) 100%);
+            border-color: rgba(120, 154, 183, 0.2);
+        }
+
+        body.dark-mode .page-three-card:hover {
+            background: linear-gradient(135deg, rgba(45, 65, 85, 0.95) 0%, rgba(45, 62, 82, 0.85) 100%);
+            border-color: rgba(140, 170, 200, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .page-three-card h4 {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .page-three-card p {
+            color: rgba(184, 198, 212, 0.85);
+        }
+
+        body.dark-mode .solution-points li {
+            color: rgba(184, 198, 212, 0.8);
+        }
+
+        body.dark-mode .page-three-subtitle {
+            color: rgba(184, 198, 212, 0.8);
+        }
+
+        body.dark-mode .page-three-footer,
+        body.dark-mode .page-three-footer strong {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .page-three-footer span {
+            color: rgba(184, 198, 212, 0.6);
+        }
+
+        body.dark-mode .page-three-progress::before {
+            background: #a8d8ff;
+        }
+
+        body.dark-mode .about-slide-btn {
+            border-color: rgba(168, 216, 255, 0.32);
+            color: rgba(230, 237, 243, 0.88);
+            background: rgba(31, 48, 66, 0.2);
+        }
+
+        body.dark-mode .about-slide-btn:hover {
+            background: rgba(52, 78, 105, 0.38);
+            border-color: rgba(168, 216, 255, 0.52);
+            color: #f8fbff;
+        }
+
         body.dark-mode #about.night-sky-section::before,
         body.dark-mode #about-solution.night-sky-section::before {
             content: '';
@@ -374,46 +1103,135 @@
             }
         }
 
-        .answer-solutions {
-            margin-top: 6.5rem;
+        .page-three-title {
+            margin: 0;
+            color: #111319;
+            font-size: clamp(2rem, 5vw, 4.6rem);
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            line-height: 1;
+            text-transform: uppercase;
         }
 
-        .section-bridge {
-            display: flex;
-            justify-content: center;
-            margin: 2.25rem auto;
-            pointer-events: none;
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.22s ease, transform 0.22s ease;
+        .page-three-intro {
+            margin-top: 1rem;
+            margin-bottom: 1.8rem;
         }
 
-        .section-bridge.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        .page-three-subtitle {
+            margin: 0;
+            color: rgba(17, 19, 24, 0.7);
+            font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+            font-weight: 500;
         }
 
-        .section-bridge-dots {
+        .page-three-grid {
+            margin-top: 2rem;
             display: grid;
-            gap: 0.58rem;
-            justify-items: center;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 2.5vw, 2rem);
         }
 
-        .section-bridge-dot {
-            width: 0.58rem;
-            height: 0.58rem;
-            border-radius: 9999px;
-            background: rgba(76, 122, 151, 0.34);
-            transform: scale(0.82);
-            opacity: 0;
+        .page-three-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+            border: 1px solid rgba(17, 24, 39, 0.12);
+            padding: 1.6rem;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
         }
 
-        .section-bridge.is-visible .section-bridge-dot {
-            animation: bridgeDotReveal 0.24s ease forwards;
+        .page-three-card:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            border-color: rgba(31, 58, 95, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
-        .section-bridge.is-visible .section-bridge-dot:nth-child(2) {
-            animation-delay: 0.05s;
+        .page-three-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .solution-number {
+            font-size: clamp(1.4rem, 2vw, 1.8rem);
+            font-weight: 800;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .page-three-card h4 {
+            margin: 0;
+            color: rgba(19, 22, 30, 0.95);
+            font-size: clamp(1rem, 1.5vw, 1.4rem);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .page-three-card p {
+            margin-top: 0.8rem;
+            margin-bottom: 1rem;
+            color: rgba(19, 22, 30, 0.75);
+            font-size: clamp(0.88rem, 1vw, 1.02rem);
+            line-height: 1.6;
+        }
+
+        .solution-points {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .solution-points li {
+            color: rgba(31, 41, 55, 0.8);
+            font-size: clamp(0.85rem, 0.95vw, 1rem);
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .solution-points li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary-accent);
+            font-weight: 700;
+        }
+
+        .page-three-footer {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: auto auto 1fr;
+            align-items: center;
+            gap: 0.8rem;
+            color: #111827;
+        }
+
+        .page-three-footer strong {
+            font-size: clamp(1.6rem, 2.5vw, 2.3rem);
+            font-weight: 800;
+        }
+
+        .page-three-footer span {
+            color: rgba(17, 24, 39, 0.58);
+        }
+
+        .page-three-progress {
+            height: 1px;
+            background: rgba(17, 24, 39, 0.22);
+            position: relative;
+        }
+
+        .page-three-progress::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 100%;
+            background: #111827;
         }
 
         .section-bridge.is-visible .section-bridge-dot:nth-child(3) {
@@ -887,14 +1705,84 @@
         }
 
         /* Success Cases Slider */
+        #cases.cases-scene {
+            background: #f7f8fb !important;
+        }
+
+        .cases-shell {
+            max-width: 1220px;
+        }
+
+        .cases-intro {
+            display: grid;
+            grid-template-columns: minmax(280px, 1.2fr) minmax(220px, 0.8fr);
+            gap: clamp(1.6rem, 3.2vw, 4rem);
+            align-items: end;
+            margin-bottom: 2.45rem;
+        }
+
+        .cases-kicker {
+            color: rgba(17, 24, 39, 0.52);
+            letter-spacing: 0.16em;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .cases-title {
+            margin: 0;
+            font-size: clamp(2.2rem, 5.1vw, 4.9rem);
+            line-height: 0.98;
+            letter-spacing: -0.03em;
+            color: #111318;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .cases-title strong {
+            font-weight: 700;
+        }
+
+        .cases-summary {
+            margin: 0;
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            color: rgba(17, 24, 39, 0.65);
+            line-height: 1.65;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.14);
+        }
+
         .cases-slider {
             overflow: hidden;
             position: relative;
+            padding-top: 2.4rem;
+        }
+
+        .cases-slider::before,
+        .cases-slider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2rem;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .cases-slider::before {
+            left: 0;
+            background: linear-gradient(90deg, #f7f8fb 0%, rgba(247, 248, 251, 0) 100%);
+        }
+
+        .cases-slider::after {
+            right: 0;
+            background: linear-gradient(270deg, #f7f8fb 0%, rgba(247, 248, 251, 0) 100%);
         }
 
         .cases-track {
             display: flex;
-            --case-gap: 2rem;
+            --case-gap: 1.25rem;
             gap: var(--case-gap);
             width: max-content;
             animation: scrollCases 30s linear infinite;
@@ -904,10 +1792,118 @@
             width: var(--case-card-width, 20rem);
             min-width: 16rem;
             flex-shrink: 0;
+            background: transparent !important;
+            border: none !important;
+            border-top: 1.5px solid rgba(17, 24, 39, 0.13) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            padding: 1.4rem 1rem 1.4rem 0 !important;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            transition: border-color 0.22s ease;
+        }
+
+        .case-card:hover { border-color: #1f3a5f !important; }
+        .case-card:hover .case-company { color: #1f3a5f; }
+
+        .case-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            color: rgba(31, 58, 95, 0.58);
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .case-company {
+            font-size: clamp(1.12rem, 1.55vw, 1.38rem);
+            font-weight: 700;
+            color: #111318;
+            line-height: 1.2;
+            margin-bottom: 0.18rem;
+            transition: color 0.22s ease;
+        }
+
+        .case-route {
+            font-size: clamp(0.76rem, 0.9vw, 0.84rem);
+            color: rgba(17, 24, 39, 0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .case-body {
+            font-size: clamp(0.84rem, 0.98vw, 0.91rem);
+            line-height: 1.68;
+            color: rgba(17, 24, 39, 0.7);
+            flex: 1;
+            margin-bottom: 1rem;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            text-wrap: pretty;
+        }
+
+        .case-body strong { color: #1f3a5f; font-weight: 800; }
+
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+        }
+
+        .case-tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: rgba(31, 58, 95, 0.72);
+            padding: 0.2rem 0.52rem;
+            border: 1px solid rgba(31, 58, 95, 0.2);
+            background: rgba(31, 58, 95, 0.04);
         }
 
         .cases-slider:hover .cases-track {
             animation-play-state: paused;
+        }
+
+        body.dark-mode #cases.cases-scene {
+            background: #121a28 !important;
+        }
+
+        body.dark-mode .cases-kicker {
+            color: rgba(184, 198, 212, 0.62);
+        }
+
+        body.dark-mode .cases-title {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .cases-summary {
+            color: rgba(184, 198, 212, 0.72);
+            border-color: rgba(184, 198, 212, 0.16);
+        }
+
+        body.dark-mode .cases-slider::before {
+            background: linear-gradient(90deg, #121a28 0%, rgba(18, 26, 40, 0) 100%);
+        }
+
+        body.dark-mode .cases-slider::after {
+            background: linear-gradient(270deg, #121a28 0%, rgba(18, 26, 40, 0) 100%);
+        }
+
+        body.dark-mode .case-card {
+            border-color: rgba(184, 198, 212, 0.18) !important;
+        }
+
+        body.dark-mode .case-num { color: rgba(184, 198, 212, 0.42); }
+        body.dark-mode .case-company { color: #e6edf3; }
+        body.dark-mode .case-route { color: rgba(184, 198, 212, 0.55); }
+        body.dark-mode .case-body { color: rgba(184, 198, 212, 0.76); }
+        body.dark-mode .case-body strong { color: #a8d8ff; }
+        body.dark-mode .case-tag {
+            color: rgba(184, 198, 212, 0.68);
+            border-color: rgba(184, 198, 212, 0.2);
         }
 
         @keyframes scrollCases {
@@ -919,126 +1915,468 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .case-card {
-                width: var(--case-card-width, calc(100vw - 3rem));
-                min-width: 0;
+        @media (max-width: 1280px) {
+            .page-three-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .cases-intro {
+                grid-template-columns: 1fr;
+                gap: 0.95rem;
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .cases-track {
-                animation: none;
+        @media (max-width: 900px) {
+            .page-two-grid,
+            .page-three-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-slider {
+                min-height: auto;
+            }
+
+            .about-slide {
+                padding-right: 0;
+            }
+
+            .page-three-title-row {
+                justify-content: flex-start;
+            }
+
+            .page-three-card-header {
+                gap: 0.6rem;
+            }
+
+            .solution-number {
+                font-size: 1.3rem;
             }
         }
 
-        /* Team Slider */
-        .team-slider-wrapper {
-            width: 100%;
-            overflow: hidden;
-            border-radius: 1rem;
+        /* Directions Section */
+        #team.directions-scene {
+            background: #f7f8fb !important;
+            padding-top: 4.25rem !important;
+            padding-bottom: 6rem !important;
         }
 
-        .team-slider {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
+        body.fullpage-mode #team.directions-scene {
+            padding-top: 3.2rem !important;
+            padding-bottom: 2.4rem !important;
         }
 
-        .team-slide {
-            min-width: 100%;
-            flex-shrink: 0;
+        body.fullpage-mode #team .directions-intro {
+            margin-bottom: 1rem;
         }
 
-        .team-slider-container {
-            position: relative;
-            padding: 0 2.75rem;
+        body.fullpage-mode #team .directions-grid {
+            gap: 0.85rem;
+            margin-top: 1.8rem;
         }
 
-        .team-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(148, 163, 184, 0.35);
+        body.fullpage-mode #team .directions-map-wrap,
+        body.fullpage-mode #team .directions-map {
+            min-height: clamp(14rem, 34vh, 18.5rem);
+        }
+
+        /* In strict fullpage mode, disable map interactions to keep wheel paging consistent. */
+        body.fullpage-mode #team .directions-map {
+            pointer-events: none;
+        }
+
+        .directions-intro {
+            display: grid;
+            grid-template-columns: minmax(280px, 1.1fr) minmax(240px, 0.9fr);
+            align-items: end;
+            margin-bottom: 2.4rem;
+            gap: 1.25rem;
+        }
+
+        .directions-kicker {
+            color: rgba(17, 24, 39, 0.52);
+            letter-spacing: 0.16em;
+            font-size: 0.8rem;
+            margin-bottom: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .directions-title {
+            margin: 0;
+            font-size: clamp(2.15rem, 4.9vw, 4.55rem);
+            font-weight: 300;
+            line-height: 0.98;
+            letter-spacing: 0.02em;
+            color: #111318;
+            text-transform: uppercase;
+        }
+
+        .directions-title strong {
+            font-weight: 700;
+        }
+
+        .directions-summary {
+            font-size: clamp(0.95rem, 1.18vw, 1.08rem);
+            color: rgba(17, 24, 39, 0.64);
+            line-height: 1.65;
+            margin: 0;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.14);
+            padding-bottom: 0.72rem;
+        }
+
+        .directions-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.85fr);
+            gap: 1.15rem;
+            align-items: stretch;
+            margin-top: 1.2rem;
+        }
+
+        .directions-map-wrap {
+            border-top: 1.5px solid rgba(17, 24, 39, 0.18);
             background: #ffffff;
-            color: #0f172a;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-            transition: all 0.2s ease;
             display: flex;
+            height: 100%;
+            min-height: 23rem;
+        }
+
+        .directions-map {
+            display: block;
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 23rem;
+            border: 0;
+            filter: saturate(0.92) contrast(1.02);
+        }
+
+        .directions-panel {
+            border-top: 1.5px solid rgba(17, 24, 39, 0.18);
+            background: #ffffff;
+            padding: 1.75rem 0 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 1rem;
+        }
+
+        .directions-block {
+            padding: 0 0 0.9rem;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.09);
+        }
+
+        .directions-block:last-of-type {
+            border-bottom: 1px solid rgba(17, 24, 39, 0.09);
+        }
+
+        .directions-label {
+            font-size: 0.74rem;
+            letter-spacing: 0.14em;
+            color: rgba(31, 58, 95, 0.55);
+            margin-bottom: 0.35rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .directions-value {
+            margin: 0;
+            font-size: clamp(0.9rem, 1.02vw, 0.96rem);
+            color: rgba(17, 24, 39, 0.78);
+            line-height: 1.7;
+        }
+
+        .directions-link {
+            margin-top: auto;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            padding: 0.78rem 0.95rem;
+            border: 1px solid rgba(31, 58, 95, 0.38);
+            color: #1f3a5f;
+            font-size: 0.84rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
         }
 
-        .team-nav-btn:hover {
-            background: var(--color-primary);
+        .directions-link:hover {
+            background: #1f3a5f;
             color: #ffffff;
-            box-shadow: 0 12px 28px rgba(31, 58, 95, 0.28);
+            border-color: #1f3a5f;
         }
 
-        .team-nav-btn-prev {
-            left: 0;
+        body.dark-mode #team.directions-scene {
+            background: #121a28 !important;
         }
 
-        .team-nav-btn-next {
-            right: 0;
+        body.dark-mode .directions-kicker { color: rgba(184, 198, 212, 0.62); }
+        body.dark-mode .directions-title { color: #e6edf3; }
+        body.dark-mode .directions-summary {
+            color: rgba(184, 198, 212, 0.72);
+            border-color: rgba(184, 198, 212, 0.16);
+        }
+        body.dark-mode .directions-map-wrap,
+        body.dark-mode .directions-panel {
+            background: rgba(21, 31, 47, 0.92);
+            border-color: rgba(184, 198, 212, 0.18);
+        }
+        body.dark-mode .directions-block {
+            border-color: rgba(184, 198, 212, 0.14);
+        }
+        body.dark-mode .directions-label { color: rgba(168, 216, 255, 0.74); }
+        body.dark-mode .directions-value { color: rgba(184, 198, 212, 0.8); }
+        body.dark-mode .directions-link {
+            color: #cfe6ff;
+            border-color: rgba(168, 216, 255, 0.42);
+        }
+        body.dark-mode .directions-link:hover {
+            background: #31567f;
+            border-color: #31567f;
+            color: #ffffff;
         }
 
-        @media (max-width: 640px) {
-            .team-slider-container {
-                padding: 0 2.25rem;
+        @media (max-width: 1100px) {
+            #team.directions-scene {
+                padding-top: 3.4rem !important;
+                padding-bottom: 5rem !important;
             }
 
-            .team-nav-btn {
-                width: 2.75rem;
-                height: 2.75rem;
+            .directions-intro {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+
+            .directions-grid {
+                grid-template-columns: 1fr;
+                margin-top: 0.9rem;
+            }
+
+            .directions-map-wrap,
+            .directions-map {
+                min-height: 19rem;
             }
         }
 
-        .team-indicator {
-            cursor: pointer;
-            transition: all 0.3s ease;
+        /* Contact Section */
+        #contact.consultation-scene {
+            background: #f7f8fb !important;
+            padding-top: 4.75rem !important;
+            padding-bottom: 6.2rem !important;
         }
 
-        .team-indicator.active {
-            width: 1.5rem;
-            background-color: var(--primary-color, var(--color-primary));
+        .consult-intro {
+            display: grid;
+            grid-template-columns: minmax(280px, 1.1fr) minmax(240px, 0.9fr);
+            align-items: end;
+            gap: 1.2rem;
+            margin-bottom: 2.2rem;
         }
 
-        /* Main Hero Slider */
+        .consult-kicker {
+            color: rgba(17, 24, 39, 0.52);
+            letter-spacing: 0.16em;
+            font-size: 0.8rem;
+            margin-bottom: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .consult-title {
+            margin: 0;
+            font-size: clamp(2.1rem, 4.8vw, 4.4rem);
+            font-weight: 300;
+            line-height: 0.98;
+            color: #111318;
+            text-transform: uppercase;
+        }
+
+        .consult-title strong {
+            font-weight: 700;
+        }
+
+        .consult-summary {
+            margin: 0;
+            font-size: clamp(0.94rem, 1.14vw, 1.06rem);
+            color: rgba(17, 24, 39, 0.64);
+            line-height: 1.66;
+            border-bottom: 1px solid rgba(17, 24, 39, 0.14);
+            padding-bottom: 0.72rem;
+        }
+
+
+        .consult-form-wrap {
+            border-top: 1.5px solid rgba(17, 24, 39, 0.18);
+            background: #ffffff;
+            padding: 1.35rem 0 0;
+        }
+
+        .consult-form-wrap #consultationForm {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 1.05rem;
+        }
+
+        .consult-form-wrap .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.38rem;
+        }
+
+        .consult-form-wrap .form-field label {
+            font-size: 0.74rem;
+            letter-spacing: 0.12em;
+            color: rgba(31, 58, 95, 0.62);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .consult-form-wrap .form-input {
+            border: 1px solid rgba(17, 24, 39, 0.18);
+            border-radius: 0;
+            padding: 0.78rem 0.82rem;
+            font-size: 0.92rem;
+            color: #111318;
+            background: #ffffff;
+            box-shadow: none;
+        }
+
+        .consult-form-wrap .form-input:focus {
+            border-color: #1f3a5f;
+            box-shadow: 0 0 0 2px rgba(31, 58, 95, 0.1);
+        }
+
+        .consult-submit-row {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border-top: 1px solid rgba(17, 24, 39, 0.09);
+            padding-top: 0.72rem;
+        }
+
+        .consult-submit-row .consultation-note {
+            margin: 0;
+            color: rgba(17, 24, 39, 0.56);
+            text-align: left;
+            flex: 1;
+        }
+
+        .consult-submit-row .btn-primary {
+            min-width: 12.5rem;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 0.78rem 1.25rem;
+            box-shadow: none;
+        }
+
+        .consult-submit-row .btn-primary:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .consult-form-wrap .consultation-note {
+            grid-column: 1 / -1;
+            margin: 0;
+            color: rgba(17, 24, 39, 0.56);
+            text-align: left;
+        }
+
+        #successMessage {
+            margin-top: 1rem;
+            border-radius: 0;
+            border-width: 1px;
+            box-shadow: none;
+        }
+
+        body.dark-mode #contact.consultation-scene {
+            background: #121a28 !important;
+        }
+
+        body.dark-mode .consult-kicker { color: rgba(184, 198, 212, 0.62); }
+        body.dark-mode .consult-title { color: #e6edf3; }
+        body.dark-mode .consult-summary {
+            color: rgba(184, 198, 212, 0.72);
+            border-color: rgba(184, 198, 212, 0.16);
+        }
+        body.dark-mode .consult-form-wrap {
+            background: rgba(21, 31, 47, 0.92);
+            border-color: rgba(184, 198, 212, 0.18);
+        }
+        body.dark-mode .consult-form-wrap .form-field label { color: rgba(168, 216, 255, 0.74); }
+        body.dark-mode .consult-form-wrap .form-input {
+            background: rgba(14, 22, 35, 0.9);
+            color: #e6edf3;
+            border-color: rgba(184, 198, 212, 0.24);
+        }
+        body.dark-mode .consult-form-wrap .consultation-note {
+            color: rgba(184, 198, 212, 0.66);
+            border-color: rgba(184, 198, 212, 0.14);
+        }
+
+        @media (max-width: 1100px) {
+            #contact.consultation-scene {
+                padding-top: 4rem !important;
+                padding-bottom: 5rem !important;
+            }
+
+            .consult-intro {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+
+            .consult-form-wrap #consultationForm {
+                grid-template-columns: 1fr;
+            }
+
+            .consult-form-wrap .form-field[style] {
+                grid-column: auto !important;
+            }
+
+            .consult-submit-row {
+                justify-content: flex-start;
+            }
+
+            .consult-submit-row .consultation-note {
+                order: 2;
+                flex-basis: 100%;
+                text-align: left;
+            }
+        }
+
+        /* Cinematic Hero */
         .hero-section {
             position: relative;
-            min-height: 760px;
+            height: 100svh;
+            min-height: 100svh;
             overflow: hidden;
             isolation: isolate;
         }
 
-        .hero-track {
-            display: flex;
-            height: 100%;
-            transition: transform 1.4s ease;
-            will-change: transform;
+        @keyframes heroKenBurns {
+            0%   { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
 
-        .hero-bg-slide {
-            position: relative;
-            min-width: 100%;
-            height: 760px;
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/hero-slide-1.jpg.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            transform: scale(1);
-            transition: transform 8s ease;
+            animation: heroKenBurns 20s ease-out infinite alternate;
             will-change: transform;
+            z-index: 0;
         }
 
-        .hero-bg-slide.active {
-            transform: scale(1.07);
-        }
-
-        .hero-bg-slide::before {
+        .hero-bg::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -1051,81 +2389,50 @@
             z-index: 3;
             display: flex;
             align-items: center;
-        }
-
-        .hero-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 4;
-            width: 46px;
-            height: 46px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 9999px;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(2px);
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
-
-        .hero-arrow:hover {
-            background: rgba(255, 255, 255, 0.24);
-            transform: translateY(-50%) scale(1.03);
-        }
-
-        .hero-arrow.left {
-            left: 16px;
-        }
-
-        .hero-arrow.right {
-            right: 16px;
-        }
-
-        .hero-indicators {
-            position: absolute;
-            left: 50%;
-            bottom: 24px;
-            transform: translateX(-50%);
-            z-index: 4;
-            display: flex;
-            gap: 0.55rem;
-        }
-
-        .hero-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.45);
-            transition: width 0.25s ease, background 0.25s ease;
-        }
-
-        .hero-indicator.active {
-            width: 28px;
-            background: #ffffff;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                min-height: 620px;
-            }
-
-            .hero-bg-slide {
-                height: 620px;
-                background-position: 70% center;
-            }
-
-            .hero-arrow {
-                width: 40px;
-                height: 40px;
-            }
+            padding-top: var(--header-offset);
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .hero-bg-slide,
-            .hero-bg-slide.active {
-                transition: none;
-                transform: scale(1);
+            .hero-bg {
+                animation: none;
             }
+        }
+
+        /* Site Header */
+        .site-header {
+            background: transparent;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        body.dark-mode .site-header {
+            background: rgba(27, 29, 35, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        body:not(.dark-mode) .site-header:not(.scrolled) .nav-link {
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        body:not(.dark-mode) .site-header:not(.scrolled) .nav-link:hover {
+            color: #ffffff;
+        }
+
+        body:not(.dark-mode) .site-header:not(.scrolled) .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+        }
+
+        body:not(.dark-mode) .site-header:not(.scrolled) .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.28);
         }
 
         /* GovsBiz Banner */
@@ -1853,7 +3160,7 @@
                 padding: 1.5rem;
             }
 
-            .team-slide > div,
+            .directions-panel,
             #consultationForm {
                 padding: 1.5rem;
             }
@@ -1893,7 +3200,7 @@
 
             footer a,
             footer span {
-                overflow-wrap: anywhere;
+                overflow-wrap: break-word;
             }
         }
 
@@ -1922,12 +3229,9 @@
                 line-height: 1.25;
             }
 
-            .team-slider-container {
-                padding: 0 2rem;
-            }
-
-            .team-slide > div {
-                padding: 1.25rem;
+            .directions-map-wrap,
+            .directions-map {
+                min-height: 16.5rem;
             }
 
             .govsbiz-glow,
@@ -1979,7 +3283,7 @@
 
             .service-card,
             .case-card,
-            .team-slide > div,
+            .directions-panel,
             #consultationForm {
                 padding: 1.2rem;
             }
@@ -1990,10 +3294,10 @@
         }
     </style>
 </head>
-<body class="dark-mode bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
     
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <header id="siteHeader" class="site-header fixed top-0 left-0 right-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
                 <a href="#" class="flex items-center" aria-label="NLB LAB 홈">
@@ -2002,18 +3306,10 @@
                 
                 <!-- Navigation Menu -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <button id="themeToggle" class="theme-toggle" aria-label="테마 전환">
-                        <svg id="sunIcon" class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <svg id="moonIcon" class="theme-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
                     <a href="#about" class="nav-link">엔엘비랩</a>
                     <a href="#services" class="nav-link">서비스</a>
                     <a href="#cases" class="nav-link">성공사례</a>
-                    <a href="#team" class="nav-link">전문가 소개</a>
+                    <a href="#team" class="nav-link">찾아오시는길</a>
                     <a href="#contact" class="nav-link-cta">상담신청</a>
                 </div>
                 
@@ -2027,36 +3323,18 @@
             
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="hidden lg:hidden mt-4 pb-4 space-y-3">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-semibold text-gray-700">테마 설정</span>
-                    <button id="themeToggleMobile" class="theme-toggle" aria-label="테마 전환">
-                        <svg id="sunIconMobile" class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <svg id="moonIconMobile" class="theme-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
-                </div>
                 <a href="#about" class="block nav-link-mobile">엔엘비랩</a>
                 <a href="#services" class="block nav-link-mobile">서비스</a>
                 <a href="#cases" class="block nav-link-mobile">성공사례</a>
-                <a href="#team" class="block nav-link-mobile">전문가 소개</a>
+                <a href="#team" class="block nav-link-mobile">찾아오시는길</a>
                 <a href="#contact" class="block nav-link-mobile">상담신청</a>
             </div>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-section" aria-label="메인 슬라이드">
-        <div id="heroTrack" class="hero-track">
-            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-1.jpg.png');"></div>
-            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-2.jpg.png');"></div>
-            <div class="hero-bg-slide" style="background-image: url('assets/hero-slide-3.jpg.png');"></div>
-        </div>
-
-        <button id="heroPrevBtn" class="hero-arrow left" aria-label="이전 슬라이드">&#10094;</button>
-        <button id="heroNextBtn" class="hero-arrow right" aria-label="다음 슬라이드">&#10095;</button>
+    <section class="hero-section" aria-label="메인 히어로">
+        <div class="hero-bg" aria-hidden="true"></div>
 
         <div class="hero-overlay">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -2064,12 +3342,12 @@
                     <h2 class="text-5xl md:text-7xl font-bold mb-6 text-white">
                         Nation's Lightbearer
                     </h2>
-                    <p id="heroLeadText" class="text-xl md:text-2xl text-white/90 mb-4">
-                        기업의 성장에는 전략이 필요합니다
+                    <p class="text-xl md:text-2xl text-white/90 mb-4">
+                        엔엘비랩은
                     </p>
-                    <p id="heroSubText" class="text-lg md:text-xl text-white/85 mb-12">
-                        정책자금 · 정부지원금 · 기업인증까지<br class="hidden md:block">
-                        <span id="heroSubHighlight" class="font-semibold">엔엘비랩이 기업의 자금 전략을 설계합니다</span>
+                    <p class="text-lg md:text-xl text-white/85 mb-12">
+                        법인 설립부터 기업의 성장 전 과정을 함께 설계하는<br class="hidden md:block">
+                        <span class="font-semibold">종합 경영·재무 컨설팅 파트너</span>
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="#contact">
@@ -2082,328 +3360,249 @@
                 </div>
             </div>
         </div>
-
-        <div class="hero-indicators" role="tablist" aria-label="메인 슬라이드 페이지">
-            <button class="hero-indicator active" data-slide="0" aria-label="1번 슬라이드"></button>
-            <button class="hero-indicator" data-slide="1" aria-label="2번 슬라이드"></button>
-            <button class="hero-indicator" data-slide="2" aria-label="3번 슬라이드"></button>
-        </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-24 problem-section night-sky-section">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl md:text-5xl font-bold problem-title problem-title-sweep leading-tight mb-14 md:mb-16" data-text="기업 운영 과정에서 이런 문제를 겪고 계신가요?">
-                기업 운영 과정에서 이런 문제를 겪고 계신가요?
-            </h3>
+    <!-- About Section Slider -->
+    <section id="about" class="py-24 problem-section night-sky-section page-two-scene">
+        <div class="page-two-shell max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="about-slider" data-about-slider>
+                <div class="about-slider-track">
+                    <article class="about-slide" data-about-slide-index="0" aria-label="기업 고민 슬라이드">
+                        <p class="page-two-eyebrow">MEGAINFO COMPANY'S</p>
+                        <div class="page-two-grid">
+                            <div>
+                                <h3 class="page-two-title">POLICY <span>·</span><br>FUNDING</h3>
+                                <p class="page-two-subtitle">기업 성장에 맞춘 자금컨설팅</p>
+                            </div>
+                            <div>
+                                <p class="page-two-right-title">기업 운영 과정에서 이런 고민이 반복됩니다</p>
+                                <ul class="page-two-list" aria-label="기업 운영 고민 목록">
+                                    <li>정부 무상지원, 어디서 어떻게 받나요?</li>
+                                    <li>매년 연금처럼 받는 인건비가 있다던데..</li>
+                                    <li>세금 절세받을 수 있는 방법은 없나요?</li>
+                                    <li>지원금을 계속 받으면서 회사를 운영할 수 있나요?</li>
+                                    <li>광고 마케팅 방법을 모르겠어요</li>
+                                    <li>투자를 받고싶은데 방법을 모르겠어요</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="page-two-footer" aria-hidden="true">
+                            <strong>1</strong>
+                            <span>/ 2</span>
+                            <span class="page-two-progress"></span>
+                        </div>
+                        <div class="about-slide-controls" aria-label="소개 슬라이드 이동">
+                            <button type="button" class="about-slide-btn" data-about-slide-nav="prev" aria-disabled="true" tabindex="-1">이전</button>
+                            <button type="button" class="about-slide-btn" data-about-slide-nav="next">다음</button>
+                        </div>
+                    </article>
 
-            <div class="problem-list">
-                <div class="problem-row left problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;정부 무상지원, 어디서 어떻게 받나요?&quot;</p>
-                </div>
-                <div class="problem-row right problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;매년 연금처럼 받는 인건비가 있다던데..&quot;</p>
-                </div>
-                <div class="problem-row left problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;세금이 너무 많이 나와요&quot;</p>
-                </div>
-                <div class="problem-row right problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;지원금을 계속 받으면서 회사를 운영할 수 있나요?&quot;</p>
-                </div>
-                <div class="problem-row left problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;광고 마케팅 방법을 모르겠어요&quot;</p>
-                </div>
-                <div class="problem-row right problem-reveal">
-                    <p class="inline-flex items-center rounded-3xl problem-chip problem-bubble px-5 md:px-6 py-4 text-base md:text-2xl font-bold leading-snug">&quot;투자를 받고싶은데 방법을 모르겠어요&quot;</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-bridge" aria-hidden="true">
-        <div class="section-bridge-dots">
-            <span class="section-bridge-dot"></span>
-            <span class="section-bridge-dot"></span>
-            <span class="section-bridge-dot"></span>
-            <span class="section-bridge-dot"></span>
-        </div>
-    </div>
-
-    <!-- About Solutions Section -->
-    <section id="about-solution" class="py-24 problem-section night-sky-section">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center solution-content">
-                <p class="text-base md:text-xl font-normal problem-title opacity-80">고민이 많은 대표님들께</p>
-                <p class="mt-3 text-3xl md:text-5xl font-bold problem-title leading-tight">엔엘비랩이 드리는 해답</p>
-
-                <div class="answer-solutions" aria-label="엔엘비랩 3가지 솔루션">
-                    <div class="answer-circles">
-                        <article class="answer-circle">
-                            <h4 class="answer-circle-title">기업 맞춤<br>솔루션 제공</h4>
-                            <p class="answer-circle-desc">기업의 상황과 성장 단계에 맞춰 <span class="solution-marker-highlight">최적의 자금 전략과 컨설팅 솔루션을 제공합니다.</span></p>
-                        </article>
-                        <article class="answer-circle">
-                            <h4 class="answer-circle-title">스마트AX 기반 원스탑 서비스 제공</h4>
-                            <p class="answer-circle-desc"><span class="solution-marker-highlight">스마트AX 기반으로 모든 업무를 한 번에 해결</span>하는 통합 서비스 제공합니다.</p>
-                        </article>
-                        <article class="answer-circle">
-                            <h4 class="answer-circle-title">광고 마케팅 및<br>홈페이지 구축</h4>
-                            <p class="answer-circle-desc"><span class="solution-marker-highlight">메타광고, 디자인, 홈페이지 구축, 회사소개서 제작, 사업계획서 제작</span> 등 기업을 홍보하고 성장시킵니다.</p>
-                        </article>
-                    </div>
+                    <article id="about-solution" class="about-slide" data-about-slide-index="1" aria-label="해결 방안 슬라이드">
+                        <p class="page-two-eyebrow">MEGAINFO COMPANY'S</p>
+                        <div class="page-two-grid">
+                            <div>
+                                <h3 class="page-two-title">SOLUTION <span>·</span><br>PACKAGE</h3>
+                                <p class="page-two-subtitle">고민을 해결하는 3가지 방법</p>
+                            </div>
+                            <div class="solution-list-wrap">
+                                <p class="page-two-right-title">3가지 접근으로 모든 고민을 해결합니다</p>
+                                <div class="solution-item">
+                                    <span class="solution-item-num">01</span>
+                                    <div>
+                                        <strong>기업 맞춤 자금 전략</strong>
+                                        <p>정부지원금 발굴 · 세금 최적화 · 인건비 절감</p>
+                                    </div>
+                                </div>
+                                <div class="solution-item">
+                                    <span class="solution-item-num">02</span>
+                                    <div>
+                                        <strong>원스탑 통합 서비스</strong>
+                                        <p>회계 · 세무 · 인사 관리를 한 번에</p>
+                                    </div>
+                                </div>
+                                <div class="solution-item">
+                                    <span class="solution-item-num">03</span>
+                                    <div>
+                                        <strong>마케팅 &amp; 투자 유치</strong>
+                                        <p>광고 · 홈페이지 · 사업계획서 · 투자 컨설팅</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-two-footer" aria-hidden="true">
+                            <strong>2</strong>
+                            <span>/ 2</span>
+                            <span class="page-two-progress" style="--progress-width:100%"></span>
+                        </div>
+                        <div class="about-slide-controls" aria-label="소개 슬라이드 이동">
+                            <button type="button" class="about-slide-btn" data-about-slide-nav="prev">이전</button>
+                            <button type="button" class="about-slide-btn" data-about-slide-nav="next" aria-disabled="true" tabindex="-1">다음</button>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
-                    제공 <span class="gradient-text">서비스</span>
-                </h3>
-                <p class="text-xl text-gray-600 mt-8">AI 플랫폼과 전문 컨설턴트의 협업으로, 귀사에 가장 유리한 정부지원 전략을 설계합니다</p>
+    <section id="services" class="py-24 night-sky-section page-three-scene">
+        <!-- 티커 -->
+        <div class="svc-ticker-wrap">
+            <div class="svc-ticker-track">
+                <span>NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp;</span>
+                <span>NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp; NLB CONSULTING &nbsp;&nbsp;—&nbsp;&nbsp;</span>
             </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-piggy-bank"></i></div>
-                    <h4 class="text-xl font-bold mb-3">정부지원사업 컨설팅</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>기업 맞춤 컨설팅을 제공합니다.</span>
-                        <span>AI 기반 맞춤 공고를 안내합니다.</span>
-                        <span>사업계획서 작성부터 기타 자료 준비까지 함께합니다.</span>
-                    </p>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="svc-grid">
+                <!-- 좌: 서비스 리스트 -->
+                <div>
+                    <p class="svc-right-title">전문 컨설턴트가 직접 설계하는 6가지 서비스</p>
+                    <div class="svc-item-grid">
+                        <div class="svc-item">
+                            <strong>정부지원사업 컨설팅</strong>
+                            <p>AI 기반 맞춤 공고 안내 · 사업계획서 작성</p>
+                        </div>
+                        <div class="svc-item">
+                            <strong>광고 마케팅</strong>
+                            <p>메타광고 · 블로그 콘텐츠 · 홈페이지 제작</p>
+                        </div>
+                        <div class="svc-item">
+                            <strong>연구소 설립 · 연구일지</strong>
+                            <p>기업부설연구소 설립 · 연구일지 제작</p>
+                        </div>
+                        <div class="svc-item">
+                            <strong>투자 · 투자자 연계</strong>
+                            <p>IR 자료 · 투자자 연계 · 투자 전략 설계</p>
+                        </div>
+                        <div class="svc-item">
+                            <strong>세무 · 법무</strong>
+                            <p>파트너 협업 · 기업 맞춤 절세 설계</p>
+                        </div>
+                        <div class="svc-item">
+                            <strong>기업 각종 인증</strong>
+                            <p>벤처 · 이노비즈 인증 · IR 자료 전과정</p>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-chart-line"></i></div>
-                    <h4 class="text-xl font-bold mb-3">광고 마케팅</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>메타광고 운영을 지원합니다.</span>
-                        <span>블로그 콘텐츠 기획과 디자인을 지원합니다.</span>
-                        <span>홈페이지 및 상세페이지 제작을 지원합니다.</span>
-                    </p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-flask-vial"></i></div>
-                    <h4 class="text-xl font-bold mb-3">연구소 설립 및 연구일지 제작</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>기업부설연구소 설립을 지원합니다.</span>
-                        <span>연구소 유지에 필요한 연구일지 제작을 지원합니다.</span>
-                    </p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-rocket"></i></div>
-                    <h4 class="text-xl font-bold mb-3">투자 및 투자자 연계</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>투자에 필요한 부가 자료 준비를 지원합니다.</span>
-                        <span>적합한 투자자 연계를 지원합니다.</span>
-                        <span>기업 상황에 맞는 투자 전략을 제공합니다.</span>
-                    </p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-star"></i></div>
-                    <h4 class="text-xl font-bold mb-3">세무·법무</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>세무사·법무사 파트너와 협업합니다.</span>
-                        <span>기업 맞춤 절세 혜택 설계를 지원합니다.</span>
-                    </p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="text-4xl mb-4 text-primary"><i class="fas fa-medal"></i></div>
-                    <h4 class="text-xl font-bold mb-3">기업 각종 인증</h4>
-                    <p class="text-gray-600 service-card-copy">
-                        <span>벤처인증, 이노비즈 등 기업 인증을 지원합니다.</span>
-                        <span>IR 자료 제작부터 신청까지 전 과정을 지원합니다.</span>
-                    </p>
+                <!-- 우: 얼짤한 타이틀 -->
+                <div class="svc-title-col">
+                    <p class="svc-eyebrow">NLB LAB'S</p>
+                    <h3 class="svc-big-title">OUR<br>SERVICES</h3>
+                    <div class="svc-divider"></div>
+                    <p class="svc-sub">기업 성장의 모든 단계를 함께합니다</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Success Cases Section -->
-    <section id="cases" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
-                    <span class="gradient-text">성공</span> 사례
-                </h3>
-                <p class="text-xl text-gray-600 mt-8">지금도 수많은 기업이 실행으로 결과를 증명하고 있습니다</p>
+    <section id="cases" class="py-24 night-sky-section cases-scene">
+        <div class="cases-shell max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="cases-intro">
+                <div>
+                    <p class="cases-kicker">NLB LAB'S</p>
+                    <h3 class="cases-title"><strong>SUCCESS</strong><br>CASES</h3>
+                </div>
+                <p class="cases-summary">지금도 수많은 기업이 실행으로 결과를 증명하고 있습니다</p>
             </div>
 
             <div class="cases-slider">
                 <div class="cases-track">
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">제조업 A사</h4>
-                                <p class="text-sm text-gray-500">법인설립 → 연구소 인증</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아
-                            정책자금 <strong>5억원</strong>을 확보했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">법인설립</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">연구소인증</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">정책자금</span>
+                    <article class="case-card">
+                        <p class="case-num">01 · 제조업</p>
+                        <h4 class="case-company">A사</h4>
+                        <p class="case-route">법인설립 → 연구소 인증</p>
+                        <p class="case-body">법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아 정책자금 <strong>5억원</strong>을 확보했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">법인설립</span>
+                            <span class="case-tag">연구소인증</span>
+                            <span class="case-tag">정책자금</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-laptop"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">IT 스타트업 B사</h4>
-                                <p class="text-sm text-gray-500">벤처인증 → 투자 유치</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고
-                            성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">벤처인증</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">이노비즈</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">투자유치</span>
+                    <article class="case-card">
+                        <p class="case-num">02 · IT 스타트업</p>
+                        <h4 class="case-company">B사</h4>
+                        <p class="case-route">벤처인증 → 투자 유치</p>
+                        <p class="case-body">벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고 성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">벤처인증</span>
+                            <span class="case-tag">이노비즈</span>
+                            <span class="case-tag">투자유치</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">부동산 개발사 C사</h4>
-                                <p class="text-sm text-gray-500">사업용 부동산 취득</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            설립자금과 운영자금 조달을 통해 사업장 부지 확보 및
-                            <strong>공장 신축</strong>을 완료했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">설립자금</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">부동산</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">공장신축</span>
+                    <article class="case-card">
+                        <p class="case-num">03 · 부동산 개발사</p>
+                        <h4 class="case-company">C사</h4>
+                        <p class="case-route">사업용 부동산 취득</p>
+                        <p class="case-body">설립자금과 운영자금 조달을 통해 사업장 부지 확보 및 <strong>공장 신축</strong>을 완료했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">설립자금</span>
+                            <span class="case-tag">부동산</span>
+                            <span class="case-tag">공장신축</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-bullseye"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">서비스업 D사</h4>
-                                <p class="text-sm text-gray-500">창업자금 → 사업 확장</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고
-                            성공적으로 사업을 시작했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">창업자금</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">사업확장</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">컨설팅</span>
+                    <article class="case-card">
+                        <p class="case-num">04 · 서비스업</p>
+                        <h4 class="case-company">D사</h4>
+                        <p class="case-route">창업자금 → 사업 확장</p>
+                        <p class="case-body">창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고 성공적으로 사업을 시작했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">창업자금</span>
+                            <span class="case-tag">사업확장</span>
+                            <span class="case-tag">컨설팅</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">제조업 A사</h4>
-                                <p class="text-sm text-gray-500">법인설립 → 연구소 인증</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아
-                            정책자금 <strong>5억원</strong>을 확보했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">법인설립</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">연구소인증</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">정책자금</span>
+                    <!-- 순환 복제 -->
+                    <article class="case-card" aria-hidden="true">
+                        <p class="case-num">01 · 제조업</p>
+                        <h4 class="case-company">A사</h4>
+                        <p class="case-route">법인설립 → 연구소 인증</p>
+                        <p class="case-body">법인 설립부터 기업부설연구소 인증까지 전 과정을 지원받아 정책자금 <strong>5억원</strong>을 확보했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">법인설립</span>
+                            <span class="case-tag">연구소인증</span>
+                            <span class="case-tag">정책자금</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-laptop"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">IT 스타트업 B사</h4>
-                                <p class="text-sm text-gray-500">벤처인증 → 투자 유치</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고
-                            성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">벤처인증</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">이노비즈</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">투자유치</span>
+                    <article class="case-card" aria-hidden="true">
+                        <p class="case-num">02 · IT 스타트업</p>
+                        <h4 class="case-company">B사</h4>
+                        <p class="case-route">벤처인증 → 투자 유치</p>
+                        <p class="case-body">벤처인증과 이노비즈 인증을 통해 기업 가치를 입증하고 성공적으로 <strong>시리즈 A 투자</strong>를 유치했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">벤처인증</span>
+                            <span class="case-tag">이노비즈</span>
+                            <span class="case-tag">투자유치</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">부동산 개발사 C사</h4>
-                                <p class="text-sm text-gray-500">사업용 부동산 취득</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            설립자금과 운영자금 조달을 통해 사업장 부지 확보 및
-                            <strong>공장 신축</strong>을 완료했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">설립자금</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">부동산</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">공장신축</span>
+                    <article class="case-card" aria-hidden="true">
+                        <p class="case-num">03 · 부동산 개발사</p>
+                        <h4 class="case-company">C사</h4>
+                        <p class="case-route">사업용 부동산 취득</p>
+                        <p class="case-body">설립자금과 운영자금 조달을 통해 사업장 부지 확보 및 <strong>공장 신축</strong>을 완료했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">설립자금</span>
+                            <span class="case-tag">부동산</span>
+                            <span class="case-tag">공장신축</span>
                         </div>
                     </article>
 
-                    <article class="case-card bg-white rounded-2xl p-8 shadow-lg" aria-hidden="true">
-                        <div class="flex items-center mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mr-4 text-white text-2xl">
-                                <i class="fas fa-bullseye"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold">서비스업 D사</h4>
-                                <p class="text-sm text-gray-500">창업자금 → 사업 확장</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고
-                            성공적으로 사업을 시작했습니다.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">창업자금</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">사업확장</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">컨설팅</span>
+                    <article class="case-card" aria-hidden="true">
+                        <p class="case-num">04 · 서비스업</p>
+                        <h4 class="case-company">D사</h4>
+                        <p class="case-route">창업자금 → 사업 확장</p>
+                        <p class="case-body">창업자금 컨설팅을 통해 초기 자금 <strong>2억원</strong>을 확보하고 성공적으로 사업을 시작했습니다.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">창업자금</span>
+                            <span class="case-tag">사업확장</span>
+                            <span class="case-tag">컨설팅</span>
                         </div>
                     </article>
                 </div>
@@ -2411,176 +3610,66 @@
         </div>
     </section>
 
-    <!-- Team Section with Slider -->
-    <section id="team" class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 night-sky-section">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Title Section -->
-            <div class="text-center mb-16">
-                <h3 class="text-3xl md:text-4xl font-bold mb-4 section-title">
-                    <span class="gradient-text">조직도 소개</span> 및 오시는 길
-                </h3>
-                <p class="text-lg text-gray-600 mt-8">각 분야 최고의 전문가들이 검증된 전략으로 성과를 만듭니다</p>
+    <!-- Directions Section -->
+    <section id="team" class="py-24 night-sky-section directions-scene">
+        <div class="directions-shell max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="directions-intro motion-stagger">
+                <div>
+                    <p class="directions-kicker motion-item">NLB LAB'S</p>
+                    <h3 class="directions-title motion-item"><strong>VISIT</strong><br>US</h3>
+                </div>
+                <p class="directions-summary motion-item">아래 지도와 연락처로 엔엘비랩 오시는 길을 확인하세요.</p>
             </div>
 
-            <!-- Content Grid -->
-            <div class="grid lg:grid-cols-2 gap-12 items-start">
-                <!-- Left Side: Slider -->
-                <div>
-                    <div class="team-slider-container">
-                        <div class="team-slider-wrapper overflow-hidden">
-                            <div class="team-slider flex transition-transform duration-500">
-                                <!-- Expert 1 -->
-                                <div class="team-slide flex-shrink-0 w-full">
-                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
-                                        <div class="w-32 h-40 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
-                                            <i class="fas fa-user-tie"></i>
-                                        </div>
-                                        <h4 class="text-2xl font-bold mb-1 text-center">컨설팅팀</h4>
-                                        <p class="text-sm text-primary font-semibold text-center mb-6">대표CEO</p>
-                                        <div class="space-y-2 text-sm text-gray-700">
-                                            <p>• 재무컨설팅 담당</p>
-                                            <p>• 한국비즈플랜 에너지 자금 담당</p>
-                                            <p>• 기업 재무 분석</p>
-                                            <p>• 정책자금 심사 지원</p>
-                                            <p>• 투자자치 전략 수립</p>
-                                            <p>• 기술보증기금 연계</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">연간 300여 기업 재무컨설팅 경험<br>투자자치 중액 50억원 달성</p>
-                                    </div>
-                                </div>
-
-                                <!-- Expert 2 -->
-                                <div class="team-slide flex-shrink-0 w-full">
-                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
-                                        <div class="w-32 h-40 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <h4 class="text-2xl font-bold mb-1 text-center">연구소</h4>
-                                        <p class="text-sm text-primary font-semibold text-center mb-6">연구소 소장</p>
-                                        <div class="space-y-2 text-sm text-gray-700">
-                                            <p>• 기업 인증 및 법무 전문가</p>
-                                            <p>• 벤처기업 및 이노비즈 인증</p>
-                                            <p>• 법인 설립 및 구두 변경</p>
-                                            <p>• 지식재산권 보호</p>
-                                            <p>• 계약서 검토 및 작성</p>
-                                            <p>• 규제 자유특구 신청</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">10년 이상 기업 인증 경험<br>연간 150건 이상 인증 추진</p>
-                                    </div>
-                                </div>
-
-                                <!-- Expert 3 -->
-                                <div class="team-slide flex-shrink-0 w-full">
-                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
-                                        <div class="w-32 h-40 bg-gradient-to-br from-green-400 to-emerald-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
-                                            <i class="fas fa-flask"></i>
-                                        </div>
-                                        <h4 class="text-2xl font-bold mb-1 text-center">송하영</h4>
-                                        <p class="text-sm text-primary font-semibold text-center mb-6">대리</p>
-                                        <div class="space-y-2 text-sm text-gray-700">
-                                            <p>• 기업 연구소설립 지원</p>
-                                            <p>• 비지니스 모델 설계 및 사업소개서 담당</p>
-                                            <p>• 연구소 설립 및 연구일지 제작</p>
-                                            <p>• 메타광고 및 마케팅 담당</p>
-                                            <p>• 웹디자인 및 디자인</p>
-                                            <p>• ㅇㅇ</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">기술개발 연간 20건 이상 지원<br>연구비 감액 누적 30억원</p>
-                                    </div>
-                                </div>
-
-                                <!-- Expert 4 -->
-                                <div class="team-slide flex-shrink-0 w-full">
-                                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8">
-                                        <div class="w-32 h-40 bg-gradient-to-br from-orange-400 to-red-400 rounded-xl mx-auto mb-6 flex items-center justify-center overflow-hidden text-white text-5xl">
-                                            <i class="fas fa-gavel"></i>
-                                        </div>
-                                        <h4 class="text-2xl font-bold mb-1 text-center">최종수</h4>
-                                        <p class="text-sm text-primary font-semibold text-center mb-6">이사</p>
-                                        <div class="space-y-2 text-sm text-gray-700">
-                                            <p>• 전략 컨설턴트 및 경영 고문</p>
-                                            <p>• 중소기업 성장 전략 수립</p>
-                                            <p>• 정부지원 프로그램 연계</p>
-                                            <p>• 사업계획서 작성 및 검증</p>
-                                            <p>• 시장 진출 전략 컨설팅</p>
-                                            <p>• 기업 관리 및 운영 개선</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-6 pt-6 border-t">20년 이상 컨설팅 경력<br>500건 이상 프로젝트 운영</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Navigation Arrows -->
-                        <button id="teamPrevBtn" class="team-nav-btn team-nav-btn-prev" aria-label="이전 전문가">
-                            <span class="text-xl">‹</span>
-                        </button>
-                        <button id="teamNextBtn" class="team-nav-btn team-nav-btn-next" aria-label="다음 전문가">
-                            <span class="text-xl">›</span>
-                        </button>
-                    </div>
-
-                    <!-- Indicators -->
-                    <div class="flex justify-center gap-3 mt-8">
-                        <button class="team-indicator w-2 h-2 rounded-full bg-primary active transition-all" data-index="0"></button>
-                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="1"></button>
-                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="2"></button>
-                        <button class="team-indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="3"></button>
-                    </div>
+            <div class="directions-grid">
+                <div class="directions-map-wrap">
+                    <iframe src="https://www.google.com/maps?q=%EA%B4%91%EB%AA%85G%ED%83%80%EC%9B%8C&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="directions-map"></iframe>
                 </div>
 
-                <!-- Right Side: Map -->
-                <div>
-                    <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl overflow-hidden h-full min-h-96 flex flex-col">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.5844652779166!2d126.86084952346947!3d37.47886587059824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b63e09abcdef1%3A0x1234567890abcdef!2z7J2I64GVRyCsgqDsp4Hsp4g!5e0!3m2!1sko!2skr!4v1234567890" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full flex-1 min-h-80"></iframe>
+                <aside class="directions-panel motion-stagger">
+                    <div class="directions-block motion-item">
+                        <p class="directions-label">Address</p>
+                        <p class="directions-value">경기도 광명시 소하로 190, 광명G타워 A동 628호</p>
                     </div>
-                    <div class="mt-8 bg-white p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-lg mb-3">주소</h4>
-                        <p class="text-gray-700 mb-4">경기도 소하로 190, 광명G타워 A동 628호</p>
-                        <h4 class="font-bold text-lg mb-3 mt-6">운영시간</h4>
-                        <p class="text-gray-700">월-금 09:00 - 18:00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- GovsBiz Reference Banner -->
-    <section class="w-full">
-        <div class="govsbiz-banner px-6 py-10 md:py-14">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="relative z-10 max-w-3xl md:pl-6">
-                    <p class="text-white text-3xl md:text-5xl font-extrabold leading-[1.35] tracking-tight">
-                        내 기업에 맞는 지원사업을<br>
-                        AI로 한 번에 찾아보세요
-                    </p>
-                    <a href="https://www.govsbiz.com/" target="_blank" rel="noopener noreferrer" class="govsbiz-btn mt-8">
-                        바로가기
+                    <div class="directions-block motion-item">
+                        <p class="directions-label">Hours</p>
+                        <p class="directions-value">월-금 09:00 - 18:00</p>
+                    </div>
+
+                    <div class="directions-block motion-item">
+                        <p class="directions-label">Contact</p>
+                        <p class="directions-value"><a href="tel:0260710600" class="hover:text-primary transition">02-6071-0600</a></p>
+                    </div>
+
+                    <div class="directions-block motion-item">
+                        <p class="directions-label">Email</p>
+                        <p class="directions-value"><a href="mailto:david-g@naver.com" class="hover:text-primary transition">david-g@naver.com</a></p>
+                    </div>
+
+                    <a href="https://map.naver.com/" target="_blank" rel="noopener noreferrer" class="directions-link motion-item">
+                        길찾기 바로가기
                     </a>
-                </div>
+                </aside>
             </div>
-
-            <span class="govsbiz-glow g1" aria-hidden="true"></span>
-            <span class="govsbiz-glow g2" aria-hidden="true"></span>
-            <span class="govsbiz-glow g3" aria-hidden="true"></span>
         </div>
     </section>
 
     <!-- Contact Form Section -->
-    <section id="contact" class="py-20 contact-section animated-gradient">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h3 class="text-4xl md:text-5xl font-bold mb-4 section-title">
-                    <span class="gradient-text">무료 상담</span> 신청
-                </h3>
-                <p class="text-xl text-gray-700 mt-8">지금 이 순간에도 수많은 기업 대표님들이 기회를 선점하고 있습니다.<br>주저함은 성공의 타이밍을 늦출 뿐입니다.</p>
+    <section id="contact" class="py-24 night-sky-section consultation-scene">
+        <div class="consult-shell max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="consult-intro motion-stagger">
+                <div>
+                    <p class="consult-kicker motion-item">NLB LAB'S</p>
+                    <h3 class="consult-title motion-item"><strong>FREE</strong><br>CONSULTING</h3>
+                </div>
+                <p class="consult-summary motion-item">무료상담은 핵심 정보 입력 후 빠르게 연락드립니다.</p>
             </div>
-            
-            <form id="consultationForm" class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-3xl p-8 md:p-12 shadow-2xl">
-                <div class="space-y-6">
-                    <!-- 사업자 유형 -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">사업자 유형 *</label>
+
+            <div class="consult-form-wrap">
+                <form id="consultationForm" class="motion-stagger">
+                    <div class="form-field motion-item">
+                        <label>사업자 유형 *</label>
                         <select name="businessType" class="form-input" required>
                             <option value="">선택해주세요</option>
                             <option value="개인 사업자">개인 사업자</option>
@@ -2589,10 +3678,9 @@
                             <option value="법인설립">법인설립 예정</option>
                         </select>
                     </div>
-                    
-                    <!-- 상담 종류 -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">상담 종류 *</label>
+
+                    <div class="form-field motion-item">
+                        <label>상담 종류 *</label>
                         <select name="consultationType" class="form-input" required>
                             <option value="">선택해주세요</option>
                             <option value="기업 컨설팅">기업 컨설팅</option>
@@ -2605,38 +3693,29 @@
                             <option value="마케팅">마케팅</option>
                         </select>
                     </div>
-                    
-                    <!-- 성함 -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">성함 *</label>
+
+                    <div class="form-field motion-item">
+                        <label>성함 *</label>
                         <input type="text" name="name" class="form-input" placeholder="홍길동" required>
                     </div>
-                    
-                    <!-- 연락처 -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">연락처 *</label>
+
+                    <div class="form-field motion-item">
+                        <label>연락처 *</label>
                         <input type="tel" name="phone" class="form-input" placeholder="010-1234-5678" required>
                     </div>
-                    
-                    <!-- 이메일 -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">이메일 *</label>
+
+                    <div class="form-field motion-item">
+                        <label>이메일 *</label>
                         <input type="email" name="email" class="form-input" placeholder="example@email.com" required>
                     </div>
-                    
-                    <!-- 제출 버튼 -->
-                    <div class="pt-4">
-                        <button type="submit" class="btn-primary w-full text-center">
-                            상담 신청하기
-                        </button>
+
+                    <div class="consult-submit-row motion-item">
+                        <p class="consultation-note text-sm">접수하신 내용은 24시간 이내에 담당자가 연락드립니다.</p>
+                        <button type="submit" class="btn-primary text-center">상담 신청하기</button>
                     </div>
-                    
-                    <p class="consultation-note text-sm text-center">
-                        접수하신 내용은 24시간 이내에 담당자가 연락드립니다.
-                    </p>
-                </div>
-            </form>
-            
+                </form>
+            </div>
+
             <!-- Success Message (hidden by default) -->
             <div id="successMessage" class="hidden mt-8 bg-green-50 border-2 border-green-500 rounded-2xl p-6 text-center">
                 <div class="text-4xl mb-3">✅</div>
@@ -2700,6 +3779,10 @@
         </div>
     </footer>
 
+    <aside id="fullpageIndicator" class="fullpage-indicator" aria-label="페이지 이동">
+        <div id="fullpageIndicatorDots" class="fullpage-indicator-dots" role="tablist"></div>
+    </aside>
+
     <button id="scrollTopBtn" class="scroll-top-btn" type="button" aria-label="맨 위로 이동" title="맨 위로 이동">
         <svg class="scroll-top-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M12 18V6"></path>
@@ -2758,66 +3841,6 @@
     </aside>
 
     <script>
-        // Dark mode toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const themeToggleMobile = document.getElementById('themeToggleMobile');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        const sunIconMobile = document.getElementById('sunIconMobile');
-        const moonIconMobile = document.getElementById('moonIconMobile');
-        const headerLogo = document.getElementById('headerLogo');
-
-        function updateHeaderLogoByTheme() {
-            if (!headerLogo) {
-                return;
-            }
-
-            headerLogo.src = document.body.classList.contains('dark-mode')
-                ? 'assets/nlblogo2.png'
-                : 'assets/nlblogo.png';
-        }
-        
-        // Check for saved theme preference or default to 'dark'
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        if (currentTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden');
-            sunIconMobile.classList.add('hidden');
-            moonIconMobile.classList.remove('hidden');
-            updateHeaderLogoByTheme();
-        } else {
-            document.body.classList.remove('dark-mode');
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
-            sunIconMobile.classList.remove('hidden');
-            moonIconMobile.classList.add('hidden');
-            updateHeaderLogoByTheme();
-        }
-        
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
-                sunIconMobile.classList.add('hidden');
-                moonIconMobile.classList.remove('hidden');
-                updateHeaderLogoByTheme();
-            } else {
-                localStorage.setItem('theme', 'light');
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
-                sunIconMobile.classList.remove('hidden');
-                moonIconMobile.classList.add('hidden');
-                updateHeaderLogoByTheme();
-            }
-        }
-        
-        themeToggle.addEventListener('click', toggleTheme);
-        themeToggleMobile.addEventListener('click', toggleTheme);
-
         // Keep exactly 3 case cards visible on desktop (1 on mobile).
         function updateCaseCardWidth() {
             const slider = document.querySelector('.cases-slider');
@@ -2944,6 +3967,175 @@
             }
         });
         
+        // ===== Fullpage Mode (Scroll Snap) =====
+        const fullpageWheelState = {
+            locked: false,
+            activeIndex: 0
+        };
+
+        const fullpageIndicator = document.getElementById('fullpageIndicator');
+        const fullpageIndicatorDots = document.getElementById('fullpageIndicatorDots');
+
+        let fullpageDots = [];
+
+        function getFullpagePanels() {
+            return Array.from(document.querySelectorAll('body > section, body > footer'));
+        }
+
+        function getClosestPanelIndex() {
+            const panels = getFullpagePanels();
+            if (!panels.length) {
+                return 0;
+            }
+
+            const currentOffset = 0;
+            let closestIndex = 0;
+            let closestDistance = Number.POSITIVE_INFINITY;
+
+            panels.forEach((panel, index) => {
+                const distance = Math.abs(panel.getBoundingClientRect().top - currentOffset);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+
+            return closestIndex;
+        }
+
+        function buildFullpageIndicator() {
+            if (!fullpageIndicatorDots) {
+                return;
+            }
+
+            const panels = getFullpagePanels();
+            fullpageIndicatorDots.innerHTML = '';
+            fullpageDots = [];
+
+            panels.forEach((panel, index) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'fullpage-dot';
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', `섹션 ${index + 1}`);
+
+                dot.addEventListener('click', () => {
+                    moveToPanelIndex(index);
+                });
+
+                fullpageIndicatorDots.appendChild(dot);
+                fullpageDots.push(dot);
+            });
+        }
+
+        function updateFullpageIndicator(activeIndex) {
+            const panels = getFullpagePanels();
+            if (!panels.length) {
+                return;
+            }
+
+            const clampedIndex = Math.max(0, Math.min(activeIndex, panels.length - 1));
+            fullpageWheelState.activeIndex = clampedIndex;
+
+            fullpageDots.forEach((dot, index) => {
+                const isActive = index === clampedIndex;
+                dot.classList.toggle('is-active', isActive);
+            });
+        }
+
+        function moveToPanelIndex(nextIndex) {
+            const panels = getFullpagePanels();
+            if (!panels.length) {
+                return;
+            }
+
+            const clampedIndex = Math.max(0, Math.min(nextIndex, panels.length - 1));
+            fullpageWheelState.activeIndex = clampedIndex;
+            panels[clampedIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateFullpageIndicator(clampedIndex);
+        }
+
+        function shouldHandleWheelAsFullpage(event) {
+            if (!document.body.classList.contains('fullpage-mode')) {
+                return false;
+            }
+
+            if (window.innerWidth <= 480 || !window.matchMedia('(pointer:fine)').matches) {
+                return false;
+            }
+
+            if (event.target.closest('.chatbot-window')) {
+                return false;
+            }
+
+            const activeElement = document.activeElement;
+            const hasEditableFocus =
+                activeElement &&
+                activeElement.matches('input, textarea, select, [contenteditable="true"]');
+            if (hasEditableFocus) {
+                return false;
+            }
+
+            if (event.ctrlKey || Math.abs(event.deltaY) < 10) {
+                return false;
+            }
+
+            return true;
+        }
+
+        window.addEventListener('wheel', (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+
+            if (!shouldHandleWheelAsFullpage(event)) {
+                return;
+            }
+
+            event.preventDefault();
+
+            if (fullpageWheelState.locked) {
+                return;
+            }
+
+            const direction = event.deltaY > 0 ? 1 : -1;
+            if (direction === 0) {
+                return;
+            }
+
+            fullpageWheelState.activeIndex = getClosestPanelIndex();
+            const nextIndex = fullpageWheelState.activeIndex + direction;
+            const panelCount = getFullpagePanels().length;
+
+            if (nextIndex < 0 || nextIndex >= panelCount) {
+                return;
+            }
+
+            fullpageWheelState.locked = true;
+            moveToPanelIndex(nextIndex);
+
+            window.setTimeout(() => {
+                fullpageWheelState.locked = false;
+            }, 680);
+        }, { passive: false });
+
+        window.addEventListener('scroll', () => {
+            if (!document.body.classList.contains('fullpage-mode')) {
+                return;
+            }
+            updateFullpageIndicator(getClosestPanelIndex());
+        }, { passive: true });
+
+        function applyFullpageMode() {
+            const shouldUseFullpage = window.innerWidth > 480;
+            document.body.classList.toggle('fullpage-mode', shouldUseFullpage);
+            buildFullpageIndicator();
+            updateFullpageIndicator(getClosestPanelIndex());
+        }
+
+        applyFullpageMode();
+        window.addEventListener('resize', applyFullpageMode);
+
         function getHeaderOffset() {
             const header = document.querySelector('header');
             const headerHeight = header ? header.offsetHeight : 0;
@@ -2955,6 +4147,11 @@
         }
 
         function scrollToTargetWithHeaderOffset(target, behavior = 'smooth') {
+            if (document.body.classList.contains('fullpage-mode')) {
+                target.scrollIntoView({ behavior, block: 'start' });
+                return;
+            }
+
             const targetTop = target.getBoundingClientRect().top + window.pageYOffset;
             const offsetTop = targetTop - getHeaderOffset();
             window.scrollTo({ top: offsetTop, behavior });
@@ -3071,115 +4268,32 @@
             });
         });
 
-        // Team Slider functionality
-        let currentTeamSlide = 0;
-        const totalTeamSlides = 4;
-        
-        function updateTeamSlider() {
-            const slider = document.querySelector('.team-slider');
-            const offset = -currentTeamSlide * 100;
-            slider.style.transform = `translateX(${offset}%)`;
-            
-            // Update indicators
-            document.querySelectorAll('.team-indicator').forEach((indicator, index) => {
-                if (index === currentTeamSlide) {
-                    indicator.classList.add('active');
-                    indicator.classList.remove('bg-gray-300');
-                    indicator.classList.add('bg-primary');
-                    indicator.style.width = indicator.classList.contains('active') ? '1.5rem' : '0.5rem';
-                } else {
-                    indicator.classList.remove('active');
-                    indicator.classList.add('bg-gray-300');
-                    indicator.classList.remove('bg-primary');
-                    indicator.style.width = '0.5rem';
-                }
-            });
+
+        // Hero header transparency
+        const siteHeader = document.getElementById('siteHeader');
+        const heroSection = document.querySelector('.hero-section');
+        if (siteHeader && heroSection) {
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        siteHeader.classList.remove('scrolled');
+                        // Transparent header uses light logo.
+                        const headerLogo = document.getElementById('headerLogo');
+                        if (headerLogo) {
+                            headerLogo.src = 'assets/nlblogo2.png';
+                        }
+                    } else {
+                        siteHeader.classList.add('scrolled');
+                        // Scrolled header uses default logo.
+                        const headerLogo = document.getElementById('headerLogo');
+                        if (headerLogo) {
+                            headerLogo.src = 'assets/nlblogo.png';
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+            heroObserver.observe(heroSection);
         }
-        
-        document.getElementById('teamPrevBtn').addEventListener('click', () => {
-            currentTeamSlide = (currentTeamSlide - 1 + totalTeamSlides) % totalTeamSlides;
-            updateTeamSlider();
-        });
-        
-        document.getElementById('teamNextBtn').addEventListener('click', () => {
-            currentTeamSlide = (currentTeamSlide + 1) % totalTeamSlides;
-            updateTeamSlider();
-        });
-        
-        document.querySelectorAll('.team-indicator').forEach((indicator) => {
-            indicator.addEventListener('click', () => {
-                currentTeamSlide = parseInt(indicator.getAttribute('data-index'));
-                updateTeamSlider();
-            });
-        });
-
-        // Hero main slider
-        let currentHeroIndex = 0;
-        const heroTrack = document.getElementById('heroTrack');
-        const heroIndicators = document.querySelectorAll('.hero-indicator');
-        const heroSlides = document.querySelectorAll('.hero-bg-slide');
-        const heroSlideCount = heroIndicators.length;
-        const heroLeadText = document.getElementById('heroLeadText');
-        const heroSubText = document.getElementById('heroSubText');
-        const heroSubHighlight = document.getElementById('heroSubHighlight');
-        const heroCopyBySlide = [
-            {
-                lead: '엔엘비랩은',
-                sub: '법인 설립부터 기업의 성장 전 과정을 함께 설계하는',
-                highlight: '종합 경영·재무 컨설팅 파트너'
-            },
-            {
-                lead: '기업의 성장에는 전략이 필요합니다',
-                sub: '정책자금 · 정부지원금 · 기업인증까지',
-                highlight: '엔엘비랩이 기업의 자금 전략을 설계합니다'
-            },
-            {
-                lead: '기업의 성장은 혼자 이루어지지 않습니다',
-                sub: '세무·법무 전문 파트너와의 협업 네트워크를 기반으로',
-                highlight: '기업 경영 전반을 아우르는 통합 컨설팅 솔루션을 제공'
-            }
-        ];
-
-        function updateHeroSlider(index) {
-            currentHeroIndex = (index + heroSlideCount) % heroSlideCount;
-            if (heroTrack) {
-                heroTrack.style.transform = `translateX(-${currentHeroIndex * 100}%)`;
-            }
-
-            heroIndicators.forEach((indicator, indicatorIndex) => {
-                indicator.classList.toggle('active', indicatorIndex === currentHeroIndex);
-            });
-
-            heroSlides.forEach((slide, slideIndex) => {
-                slide.classList.toggle('active', slideIndex === currentHeroIndex);
-            });
-
-            const copy = heroCopyBySlide[currentHeroIndex] || heroCopyBySlide[0];
-            if (heroLeadText && heroSubText && heroSubHighlight) {
-                heroLeadText.textContent = copy.lead;
-                heroSubText.childNodes[0].textContent = `${copy.sub}`;
-                heroSubHighlight.textContent = copy.highlight;
-            }
-        }
-
-        const heroPrevBtn = document.getElementById('heroPrevBtn');
-        const heroNextBtn = document.getElementById('heroNextBtn');
-
-        if (heroPrevBtn && heroNextBtn) {
-            heroPrevBtn.addEventListener('click', () => updateHeroSlider(currentHeroIndex - 1));
-            heroNextBtn.addEventListener('click', () => updateHeroSlider(currentHeroIndex + 1));
-        }
-
-        heroIndicators.forEach((indicator) => {
-            indicator.addEventListener('click', () => {
-                const slide = Number(indicator.getAttribute('data-slide'));
-                updateHeroSlider(slide);
-            });
-        });
-
-        setInterval(() => {
-            updateHeroSlider(currentHeroIndex + 1);
-        }, 8000);
 
         const problemRevealItems = document.querySelectorAll('.problem-reveal');
         const problemListSection = document.querySelector('#about .problem-list');
@@ -3218,6 +4332,32 @@
         const revealSections = document.querySelectorAll(
             'section:not(.hero-section):not(#about-solution) > div, section:not(.hero-section) > .govsbiz-banner'
         );
+
+        function setupStaggerMotion(containerSelector, itemSelector) {
+            const container = document.querySelector(containerSelector);
+            if (!container) {
+                return;
+            }
+
+            const items = Array.from(container.querySelectorAll(itemSelector));
+            if (!items.length) {
+                return;
+            }
+
+            container.classList.add('motion-stagger');
+            items.forEach((item, index) => {
+                item.classList.add('motion-item');
+                item.style.setProperty('--motion-index', String(index));
+            });
+        }
+
+        setupStaggerMotion('#services .svc-item-grid', '.svc-item');
+        setupStaggerMotion('#cases .cases-intro', '.cases-kicker, .cases-title, .cases-summary');
+        setupStaggerMotion('#cases .cases-track', '.case-card:not([aria-hidden="true"])');
+        setupStaggerMotion('#team .directions-intro', '.directions-kicker, .directions-title, .directions-summary');
+        setupStaggerMotion('#team .directions-panel', '.directions-block, .directions-link');
+        setupStaggerMotion('#contact .consult-intro', '.consult-kicker, .consult-title, .consult-summary');
+        setupStaggerMotion('#contact #consultationForm', '.form-field, .consult-submit-row, .consultation-note');
 
         if (prefersReducedMotion) {
             problemRevealItems.forEach((item) => item.classList.add('is-visible'));
@@ -3318,10 +4458,143 @@
                 sectionObserver.observe(content);
             });
         }
+
+        const lightSceneIds = new Set(['about', 'about-solution']);
+        const lightSceneSections = Array.from(document.querySelectorAll('section[id]'));
+
+        const lightSceneObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && lightSceneIds.has(entry.target.id)) {
+                    document.body.classList.add('scene-light');
+                    return;
+                }
+
+                if (entry.isIntersecting && !lightSceneIds.has(entry.target.id)) {
+                    document.body.classList.remove('scene-light');
+                }
+            });
+        }, {
+            threshold: 0.52
+        });
+
+        lightSceneSections.forEach((section) => lightSceneObserver.observe(section));
+
+        const aboutSection = document.getElementById('about');
+        const aboutSliderTrack = document.querySelector('[data-about-slider] .about-slider-track');
+        const aboutSlides = Array.from(document.querySelectorAll('[data-about-slide-index]'));
+        const aboutSlideButtons = Array.from(document.querySelectorAll('[data-about-slide-nav]'));
+        let aboutSlideIndex = 0;
+
+        function isAboutSectionVisible() {
+            if (!aboutSection) {
+                return false;
+            }
+
+            const rect = aboutSection.getBoundingClientRect();
+            const viewportCenter = window.innerHeight * 0.5;
+            return rect.top <= viewportCenter && rect.bottom >= viewportCenter;
+        }
+
+        function setAboutSlide(nextIndex) {
+            if (!aboutSliderTrack || !aboutSlides.length) {
+                return;
+            }
+
+            const maxIndex = aboutSlides.length - 1;
+            aboutSlideIndex = Math.max(0, Math.min(nextIndex, maxIndex));
+            aboutSliderTrack.style.setProperty('--about-slide-index', String(aboutSlideIndex));
+
+            aboutSlides.forEach((slide, index) => {
+                slide.setAttribute('aria-hidden', index === aboutSlideIndex ? 'false' : 'true');
+
+                const progress = slide.querySelector('.page-two-progress');
+                if (!progress) {
+                    return;
+                }
+
+                const progressTarget = `${((index + 1) / aboutSlides.length) * 100}%`;
+                progress.style.setProperty('--progress-width', index === aboutSlideIndex ? progressTarget : '0%');
+            });
+
+            aboutSlideButtons.forEach((button) => {
+                const navDirection = button.getAttribute('data-about-slide-nav');
+                const shouldDisable =
+                    (navDirection === 'prev' && aboutSlideIndex === 0) ||
+                    (navDirection === 'next' && aboutSlideIndex === maxIndex);
+
+                button.setAttribute('aria-disabled', shouldDisable ? 'true' : 'false');
+                button.tabIndex = shouldDisable ? -1 : 0;
+            });
+        }
+
+        aboutSlideButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                if (button.getAttribute('aria-disabled') === 'true') {
+                    return;
+                }
+
+                const navDirection = button.getAttribute('data-about-slide-nav');
+                if (navDirection === 'next') {
+                    setAboutSlide(aboutSlideIndex + 1);
+                    return;
+                }
+
+                if (navDirection === 'prev') {
+                    setAboutSlide(aboutSlideIndex - 1);
+                }
+            });
+        });
+
+        if (aboutSection) {
+            aboutSection.addEventListener('wheel', (event) => {
+                if (!isAboutSectionVisible()) {
+                    return;
+                }
+
+                if (Math.abs(event.deltaY) < 12) {
+                    return;
+                }
+
+                const wheelDirection = event.deltaY > 0 ? 1 : -1;
+                const targetIndex = aboutSlideIndex + wheelDirection;
+                const maxIndex = aboutSlides.length - 1;
+
+                if (targetIndex < 0 || targetIndex > maxIndex) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+                setAboutSlide(targetIndex);
+            }, { passive: false });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+            }
+
+            if (event.target.closest('input, textarea, select, [contenteditable="true"], .chatbot-window')) {
+                return;
+            }
+
+            if (!isAboutSectionVisible()) {
+                return;
+            }
+
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                setAboutSlide(aboutSlideIndex + 1);
+                return;
+            }
+
+            event.preventDefault();
+            setAboutSlide(aboutSlideIndex - 1);
+        });
+
+        setAboutSlide(0);
         
-        // Initialize first slide
-        updateTeamSlider();
-        updateHeroSlider(0);
+        // Team section now shows directions only.
     </script>
 </body>
 </html>
